@@ -59,8 +59,10 @@ void tldlist_destroy(TLDList *tld)
 
 	TLDIterator *iterator = tldlist_iter_create(tld);
 
-	while ((node = tldlist_iter_next(iterator)))
+	while ((node = tldlist_iter_next(iterator))){
+		free(node->content);
 		free(node);
+	}
 
 	tldlist_iter_destroy(iterator);
 	free(tld);
@@ -73,15 +75,15 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 
 	TLDNode *node = (TLDNode *)malloc(sizeof(TLDNode));
 	if (node) {
-		char* endofurl = strrchr(hostname, '.') + 1;
-		char* url = strdup(endofurl);
+		char* url = strrchr(hostname, '.') + 1;
 
 		if (!tld->head){
-			node->content = url;
+			node->content = strdup(url);
 			node->count = 1;
+			node->left = NULL;
+			node->right = NULL;
 			tld->head = node;
 			tld->count++;
-			//free(url);
 			return 1;
 		}
 
@@ -92,12 +94,12 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 				if (cur->right != NULL) 
 					cur = cur->right;
 				else {
-					node->content = url;
+					node->content = strdup(url);
 					node->count = 1;
+					node->left = NULL;
+					node->right = NULL;
 					cur->right = node;
 					tld->count++;
-					//free(url);
-					//free(node);
 					return 1;
 				}
 			}
@@ -105,20 +107,19 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 				if (cur->left != NULL) 
 					cur = cur->left;
 				else {
-					node->content = url;
+					node->content = strdup(url);
 					node->count = 1;
+					node->left = NULL;
+					node->right = NULL;
 					cur->left = node;
 					tld->count++;
-					//free(url);
-					//free(node);
 					return 1;
 				}
 			}
 			else if (strcmp(url, cur->content) == 0) {
 				cur->count++;
 				tld->count++;
-				//free(url);
-				//free(node);
+				free(node);
 				return 1;
 			}
 			else
