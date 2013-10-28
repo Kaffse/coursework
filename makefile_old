@@ -1,0 +1,14 @@
+CC=gcc
+CFLAGS=-w -Wall -g
+LDFLAGS=
+SOURCES=date.c tldlist.c tldmonitor.c
+OBJECTS=$(SOURCES:.c=.o)
+EXECUTABLE=tldmonitor
+
+all: $(SOURCES) $(EXECUTABLE)
+	
+$(EXECUTABLE): $(OBJECTS) 
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+
+.c.o:
+	$(CC) $(CFLAGS) $< -o $@
