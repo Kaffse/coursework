@@ -4,6 +4,8 @@
 #include "tldlist.h"
 #include "date.h"
 
+#define max( a, b ) ( ((a) > (b)) ? (a) : (b) )
+
 /*********************************************************************************
  * Keir Alexander Smith
  * 1102028
@@ -22,10 +24,14 @@ struct tldnode
 	TLDNode *left;
 	//Right child
 	TLDNode *right;
+	//Parent node
+	TLDNode *parent;
 	//TLD
 	char *content;
 	//How many of this TLD?
-	long long count;                                                                                                      
+	long long count;
+	//height of node
+	long height;                                                                                                      
 };
 
 
@@ -77,6 +83,77 @@ static void iterate(TLDNode *tldnode, TLDIterator *iter)
 	iter->cur++;
 }
 
+static int get_height(TLDNode *node) 
+{
+	if (!node)
+		return -1;
+
+	return max(get_height(node->left), get_height(node->right)) + 1; 
+
+	/*long height = 0;
+	if (node->left)
+		height = height + get_height(node->left);
+
+	if (node->right)
+		height = height + get_height(node->right);
+
+	return height;*/
+}
+
+static TLDNode *find_inbalance(TLDNode *node)
+{
+	printf("Finding an Inbalance...\n");
+	if (!node)
+		return NULL;
+	else if ((get_height(node->left) - get_height(node->right)) > 1)
+		return node;
+	else
+		return find_inbalance(node->parent);
+}
+
+static int case1(TLDNode *node)
+{
+	return get_height(node->left) > get_height(node->right) &&
+		get_height(node->left->left) >= get_height(node->left->right);
+}
+
+static int case2(TLDNode *node)
+{
+	return get_height(node->left) > get_height(node->right) &&
+		get_height(node->left->right) > get_height(node->left->left);
+}
+
+static int case3(TLDNode *node)
+{
+	return get_height(node->right) > get_height(node->left) &&
+		get_height(node->right->left) > get_height(node->right->right);
+}
+
+static int case4(TLDNode *node)
+{
+	return get_height(node->right) > get_height(node->left) &&
+		get_height(node->right->right) >= get_height(node->right->left);
+}
+
+static void balance(TLDNode *node)
+{
+	TLDNode *inNode = find_inbalance(node);
+
+	printf("Running Tests...\n");
+	if (inNode) {
+		printf("There is an inbalance!\n");
+		if (case1(node)) 
+			printf("one\n");
+		else if (case2(node))
+			printf("two\n");
+		else if (case3(node))
+			printf("three\n");
+		else if (case4(node))
+			printf("four\n");
+	}
+}
+
+
 //De-constructor, frees up all memory used by the whole tree using an iterator
 void tldlist_destroy(TLDList *tld)
 {
@@ -118,43 +195,59 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 			node->count = 1;
 			node->left = NULL;
 			node->right = NULL;
+			node->parent = NULL;
+			node->height = -1;
 			tld->head = node;
 			tld->count++;
+			balance(node);
 			return 1;
 		}
 
 		//Right, we've got a head, let's start from the head and move down the tree
 		TLDNode *cur = tld->head;
+		TLDNode *last;
+		long height = -1;
 
 		//While there are nodes to check...
 		while(cur){
 			//Do we put the new node to the right?
 			if (strcmp(url, cur->content) > 0) {
 				//Yep! But is there a node already there?
-				if (cur->right != NULL) 
+				if (cur->right != NULL){ 
 					//Yes! Let's go down the tree futher
+					last = cur;
 					cur = cur->right;
+					height++;
+				}
 				else {
 					//Nope! Let's add this node to the tree...
 					node->content = strdup(url);
 					node->count = 1;
 					node->left = NULL;
 					node->right = NULL;
+					node->parent = last; 
+					node->height = height;
 					cur->right = node;
 					tld->count++;
+					balance(node);
 					return 1;
 				}
 			}
 			//Does it go to the left?...
 			else if (strcmp(url, cur->content) < 0) {
 				//Yep! Same as above
-				if (cur->left != NULL) 
+				if (cur->left != NULL){
+					last = cur;	
 					cur = cur->left;
+					height++;
+				}
 				else {
 					node->content = strdup(url);
 					node->count = 1;
 					node->left = NULL;
 					node->right = NULL;
+					node->parent = last;
+					node->height = height;
 					cur->left = node;
 					tld->count++;
 					return 1;
