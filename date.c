@@ -44,24 +44,14 @@ Date *date_duplicate(Date *d)
 	return new_date;
 }
 
+//Compare two dates, if date1>date1 return >1, d1==d2 r 0, d1<d2 r <0 and look how pretty this is!
 int date_compare(Date *date1, Date *date2)
 {
-	if (date1->year >= date2->year)
-		if (date1->month >= date2->month)
-			if (date1->day >= date2->day)
-				return 1;
-			else if (date1->day == date2->day && 
-					date1->month == date2->month && 
-					date1->year == date2->year)
-				return 0;
-			else
-				return -1;
-		else
-			return -1;
-	else 
-		return -1;
+	return ( ( date1->year * 10000000 + date1->month * 1000 + date1->day ) - 
+	( date2->year * 10000000 + date2->month * 10000 + date2->day ) );
 }
 
+//Deconstruct date
 void date_destroy(Date *d)
 {
 	free(d);
