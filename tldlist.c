@@ -85,22 +85,29 @@ static void iterate(TLDNode *tldnode, TLDIterator *iter)
 
 static int get_height(TLDNode *node) 
 {
-	if (!node)
-		return -1;
-
-	return max(get_height(node->left), get_height(node->right)) + 1; 
-
+	/*
+	   if (node){
+	   int left = get_height(node->left);
+	   int right = get_height(node->right);
+	   return (1 + (left > right ? left : right));
+	   }
+	   */
+	if (node)
+		return 1 + max(get_height(node->left), get_height(node->right));
+	return -1;
 }
 
 static TLDNode *find_inbalance(TLDNode *node)
 {
-	//printf("Finding an Inbalance...\n");
-	if (!node)
+	if (!node){
 		return NULL;
-	else if ((get_height(node->left) - get_height(node->right)) > 1)
+	}
+	else if ((get_height(node->left) - get_height(node->right)) > 1){
 		return node;
-	else
+	}
+	else{
 		return find_inbalance(node->parent);
+	}
 }
 
 static int case1(TLDNode *node)
@@ -127,26 +134,107 @@ static int case4(TLDNode *node)
 		get_height(node->right->right) >= get_height(node->right->left);
 }
 
-static void balance(TLDNode *node)
+static void doubleRotate(TLDNode *k1, TLDNode *k2, TLDNode *k3, TLDNode *p, int leftChild, TLDList *tld)
+{
+	TLDNode *a = k1->left;
+	TLDNode *b = k2->left;
+	TLDNode *c = k2->right;
+	TLDNode *d = k3->right;
+
+	k1->left = a;
+	k1->right = b;
+	k3->left = c;
+	k3->right = d;
+	k2->left = k1; 
+	k2->right = k3; 
+
+	if (!p) {
+		tld->head = k2; 
+		k2->parent = NULL;
+	}
+	else if (leftChild)
+		p->left = k2; 
+	else
+		p->right = k2; 
+	balance(k3, tld);
+}
+
+
+static void LLRoation(TLDNode *node, TLDList *tld)
+{
+	TLDNode *k2 = node;
+	TLDNode *k1 = node->left;
+	TLDNode *p = k2->parent;
+
+	if (!p) {
+		tld->head = k1;
+		k1->parent = NULL;
+	}
+	else if (strcmp(k2->parent->left->content, k2->content) == 0)
+		p->left = k2;
+	else
+		p->right = k2;
+
+	k1->right = k2->left;
+	k2->left = k1;
+	balance(k2, tld);
+}
+
+static void RRRotation(TLDNode *node, TLDList *tld)
+{
+	TLDNode *k1 = node;
+	TLDNode *k2 = node->right;
+	TLDNode *p = node->parent;
+
+	if (!p) {
+		tld->head = k2;
+		k2->parent = NULL;
+	}
+	else if (strcmp(k1->parent->left->content, k1->content) == 0)
+		p->left = k2;
+	else
+		p->right = k2;
+
+	k1->right = k2->left;
+	k2->left = k1->left;
+	balance(k2, tld);
+}
+
+static void LRRotation(TLDNode *node, TLDList *tld)
+{
+	TLDNode *k3 = node;
+	TLDNode *k1 = node->left;
+	TLDNode *k2 = k1->right;
+	TLDNode *p = node->parent;
+
+	doubleRotate(k1, k2, k3, p, (p && strcmp(node->parent->left->content, node->content) == 0), tld);
+}
+
+static void RLRotation(TLDNode *node, TLDList *tld)
+{
+	TLDNode *k1 = node;
+	TLDNode *k3 = k1->right;
+	TLDNode *k2 = k3->left;
+	TLDNode *p = node->parent;
+
+	doubleRotate(k1, k2, k3, p, (p && strcmp(node->parent->left->content, node->content) == 0), tld);
+}
+
+static void balance(TLDNode *node, TLDList *tld)
 {
 	TLDNode *inNode = find_inbalance(node);
 
-	printf("The node with the TLD %s has a height of %d\n", node->content, get_height(node));
-
-	//printf("Running Tests...\n");
 	if (inNode) {
-		//printf("There is an inbalance!\n");
-		if (case1(node)) 
-			printf("one\n");
-		else if (case2(node))
-			printf("two\n");
-		else if (case3(node))
-			printf("three\n");
-		else if (case4(node))
-			printf("four\n");
-	}
+		if (case1(inNode)) 
+			LLRotation(inNode, tld);
+		else if (case2(inNode))
+			LRRotation(inNode, tld);
+		else if (case3(inNode))
+			RLRotation(inNode, tld);
+		else if (case4(inNode))
+			RRRotation(inNode, tld);
+	}   
 }
-
 
 //De-constructor, frees up all memory used by the whole tree using an iterator
 void tldlist_destroy(TLDList *tld)
@@ -167,7 +255,7 @@ void tldlist_destroy(TLDList *tld)
 //Add a node to the tree, checking if it's within the input parameters
 int tldlist_add(TLDList *tld, char *hostname, Date *d)
 {
-	
+
 	//Compare the dates, is the date of this node within the limits?
 	if (date_compare(d, tld->begin) < 0 && date_compare(d, tld->end) > 0)
 		return 0;
@@ -177,7 +265,7 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 
 	//Malloc successful? Great!
 	if (node) {
-		
+
 		//Let's get a new string to hold our TLD using strrchr
 		char* url = strrchr(hostname, '.') + 1;
 
@@ -193,7 +281,6 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 			node->height = -1;
 			tld->head = node;
 			tld->count++;
-			balance(node);
 			return 1;
 		}
 
@@ -223,7 +310,7 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 					node->height = height;
 					cur->right = node;
 					tld->count++;
-					balance(node);
+					balance(node, tld);
 					return 1;
 				}
 			}
@@ -244,6 +331,7 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 					node->height = height;
 					cur->left = node;
 					tld->count++;
+					balance(node, tld);
 					return 1;
 				}
 			}
@@ -294,7 +382,7 @@ TLDIterator *tldlist_iter_create(TLDList *tld)
 TLDNode *tldlist_iter_next(TLDIterator *iter)
 {
 	if (!iter) 
-	    return NULL;
+		return NULL;
 
 	//Decrement current node
 	iter->cur = iter->cur - 1;
