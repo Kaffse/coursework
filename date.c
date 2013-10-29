@@ -7,6 +7,8 @@
  * 1102028
  * 29/10/2013
  *
+ * Advanced Programming 3 - Assessed Exercise 1
+ *
  * This is my own work as defined in the Academic Ethics agreement I have signed.
  *********************************************************************************/
 
@@ -47,8 +49,7 @@ Date *date_duplicate(Date *d)
 //Compare two dates, if date1>date1 return >1, d1==d2 r 0, d1<d2 r <0 and look how pretty this is!
 int date_compare(Date *date1, Date *date2)
 {
-	return ( ( date1->year * 10000000 + date1->month * 1000 + date1->day ) - 
-	( date2->year * 10000000 + date2->month * 10000 + date2->day ) );
+	return ( ( date1->year * 10000000 + date1->month * 1000 + date1->day ) - ( date2->year * 10000000 + date2->month * 10000 + date2->day ) );
 }
 
 //Deconstruct date

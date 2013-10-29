@@ -9,6 +9,8 @@
  * 1102028
  * 29/10/2013
  *
+ * Advanced Programming 3 - Assessed Exercise 1
+ *
  * This is my own work as defined in the Academic Ethics agreement I have signed.
  *********************************************************************************/
 
