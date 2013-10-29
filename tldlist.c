@@ -16,6 +16,19 @@
  * This is my own work as defined in the Academic Ethics agreement I have signed.
  *********************************************************************************/
 
+/*static void iterate(TLDNode *tldnode, TLDIterator *iter);
+static int get_height(TLDNode *node);
+static TLDNode *find_inbalance(TLDNode *node);
+static int case1(TLDNode *node);
+static int case2(TLDNode *node)
+static int case3(TLDNode *node);
+static int case4(TLDNode *node);
+static void doubleRotate(TLDNode *k1, TLDNode *k2, TLDNode *k3, TLDNode *p, int leftChild, TLDList *tld);
+static void LLRoation(TLDNode *node, TLDList *tld);
+static void RRRotation(TLDNode *node, TLDList *tld);
+static void LRRotation(TLDNode *node, TLDList *tld);
+static void RLRotation(TLDNode *node, TLDList *tld);
+*/
 
 //Define Structs for each 'object' in the tree
 struct tldnode
@@ -54,6 +67,9 @@ struct tlditerator
 	//Pointer to the current end of the array
 	long cur;
 };
+static void LLRotation(TLDNode *node, TLDList *tld);
+static void balance(TLDNode *node, TLDList *tld);
+
 
 //Constructor method, inits values and returns a pointer to new tldlist
 TLDList *tldlist_create(Date *begin, Date *end)
@@ -160,7 +176,7 @@ static void doubleRotate(TLDNode *k1, TLDNode *k2, TLDNode *k3, TLDNode *p, int 
 }
 
 
-static void LLRoation(TLDNode *node, TLDList *tld)
+static void LLRotation(TLDNode *node, TLDList *tld)
 {
 	TLDNode *k2 = node;
 	TLDNode *k1 = node->left;
