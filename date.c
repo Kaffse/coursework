@@ -10,6 +10,7 @@
  * This is my own work as defined in the Academic Ethics agreement I have signed.
  *********************************************************************************/
 
+//Let's define our date struct...
 struct date 
 {
 	int day;
@@ -17,14 +18,20 @@ struct date
 	int year;
 };
 
+//Date constructor
 Date *date_create(char *datestr)
 {
+	//Malloc a new date....
 	Date *new_date = (Date *)malloc(sizeof(Date));
+	
+	//If it malloc'd, use sscanf to return the three ints in the formatted string
 	if (new_date)
 		sscanf(datestr, "%d/%d/%d", &new_date->day, &new_date->month, &new_date->year);
+
 	return new_date;
 }
 
+//Copy constructor for date, super simple
 Date *date_duplicate(Date *d)
 {
 	Date *new_date = (Date *)malloc(sizeof(Date));
