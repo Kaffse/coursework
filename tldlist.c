@@ -90,19 +90,11 @@ static int get_height(TLDNode *node)
 
 	return max(get_height(node->left), get_height(node->right)) + 1; 
 
-	/*long height = 0;
-	if (node->left)
-		height = height + get_height(node->left);
-
-	if (node->right)
-		height = height + get_height(node->right);
-
-	return height;*/
 }
 
 static TLDNode *find_inbalance(TLDNode *node)
 {
-	printf("Finding an Inbalance...\n");
+	//printf("Finding an Inbalance...\n");
 	if (!node)
 		return NULL;
 	else if ((get_height(node->left) - get_height(node->right)) > 1)
@@ -139,9 +131,11 @@ static void balance(TLDNode *node)
 {
 	TLDNode *inNode = find_inbalance(node);
 
-	printf("Running Tests...\n");
+	printf("The node with the TLD %s has a height of %d\n", node->content, get_height(node));
+
+	//printf("Running Tests...\n");
 	if (inNode) {
-		printf("There is an inbalance!\n");
+		//printf("There is an inbalance!\n");
 		if (case1(node)) 
 			printf("one\n");
 		else if (case2(node))
