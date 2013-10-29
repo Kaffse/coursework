@@ -2,6 +2,14 @@
 #include <stdio.h>
 #include "date.h"
 
+/*********************************************************************************
+ * Keir Alexander Smith
+ * 1102028
+ * 29/10/2013
+ *
+ * This is my own work as defined in the Academic Ethics agreement I have signed.
+ *********************************************************************************/
+
 struct date 
 {
 	int day;
