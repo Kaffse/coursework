@@ -1,0 +1,16 @@
+/*********************************************************************************
+ * Keir Alexander Smith
+ * 1102028
+ * 29/10/2013
+ *
+ * Advanced Programming 3 - Assessed Exercise 1
+ *
+ * This is my own work as defined in the Academic Ethics agreement I have signed.
+ *********************************************************************************/
+
+
+As far as I can tell from using the test data, my program is 100% valid and fit for puropose. It passes the compiler warnings, valgrind is happy with no errors nor memory leaks.
+
+However I realise there are areas for improvment, mainly in the add function. It's a bit of a mess and could really use tidied up and there is probably a far less stupid way of doing it.
+
+Except for that I am very happy with this implementation. Even if it is only a BST it is still fit for purpose.
