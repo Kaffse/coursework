@@ -114,34 +114,6 @@ static TLDNode *find_inbalance(TLDNode *node)
 	}
 }
 
-{
-	printf("Preforming double rotation...\n");
-	TLDNode *a = k1->left;
-	TLDNode *b = k2->left;
-	TLDNode *c = k3->right;
-	TLDNode *d = k3->right;
-
-	k1->left = a;
-	k1->right = b;
-	k3->left = c;
-	k3->right = d;
-	k2->left = k1; 
-	k2->right = k3; 
-
-	if (!p) {
-		tld->head = k2; 
-		k2->parent = NULL;
-	}
-	else if (leftChild)
-		p->left = k2; 
-	else
-		p->right = k2; 
-	printf("Done! Balancing k3...\n");
-	balance(k3, tld, !leftChild);
-	printf("Done!\n\n");
-}*/
-
-
 static void right_rotation(TLDNode *node, TLDList *tld)
 {
 	printf("Preforming Right Rotation on %s...\n", node->content);
@@ -178,14 +150,11 @@ static void left_rotation(TLDNode *node, TLDList *tld)
 	TLDNode *q = node->right;
 	TLDNode *pa = node->parent;
 
-	printf("one\n");
 	if (pa == NULL) {
-		printf("three\n");
 		tld->head = q;
 		q->parent = NULL;
 	}
 	else{ 
-		printf("five");
 		q->parent = pa;
 		if (is_left(p))
 			pa->left = q;
@@ -212,18 +181,6 @@ static void rightleft_rotation(TLDNode *node, TLDList *tld)
 	right_rotation(node->right, tld);
 	left_rotation(node, tld);
 }
-
-  static void RLRotation(TLDNode *node, TLDList *tld)
-  {
-  printf("Preforming RLRotation...\n");
-  TLDNode *k1 = node;
-  TLDNode *k3 = k1->right;
-  TLDNode *k2 = k3->left;
-  TLDNode *p = node->parent;
-
-  doubleRotate(k1, k2, k3, p, (p && strcmp(node->parent->left->content, node->content) == 0), tld);
-  printf("Done!\n\n");
-  }*/
 
 static void balance(TLDNode *node, TLDList *tld, int side)
 {
