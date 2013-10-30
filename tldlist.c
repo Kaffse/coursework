@@ -89,12 +89,12 @@ static int get_height(TLDNode *node)
 	return -1;
 }
 
-/*static int is_left(TLDNode *node)
+static int is_left(TLDNode *node)
 {
 	if(node->parent->left)
 		return strcmp(node->parent->left->content, node->content) == 0;
 	return 0;
-}*/
+}
 
 static int get_balance(TLDNode *node)
 {
@@ -114,7 +114,6 @@ static TLDNode *find_inbalance(TLDNode *node)
 	}
 }
 
-/*static void doubleRotate(TLDNode *k1, TLDNode *k2, TLDNode *k3, TLDNode *p, int leftChild, TLDList *tld)
 {
 	printf("Preforming double rotation...\n");
 	TLDNode *a = k1->left;
@@ -156,7 +155,11 @@ static void right_rotation(TLDNode *node, TLDList *tld)
 	}
 	else{
 		p->parent = pa;
-		pa->right = p;
+		if (is_left(q))
+			pa->left = p;
+		else
+			pa->right = p;
+		printf("ng\n");
 	}
 
 	q->left = p->right;
@@ -175,15 +178,21 @@ static void left_rotation(TLDNode *node, TLDList *tld)
 	TLDNode *q = node->right;
 	TLDNode *pa = node->parent;
 
-	if (!pa) {
+	printf("one\n");
+	if (pa == NULL) {
+		printf("three\n");
 		tld->head = q;
 		q->parent = NULL;
 	}
 	else{ 
+		printf("five");
 		q->parent = pa;
-		pa->left = q;
+		if (is_left(p))
+			pa->left = q;
+		else
+			pa->right = q;
 	}
-
+	printf("two\n");
 	p->right = q->left;
 	if (q->left)
 		q->left->parent = p;
@@ -194,44 +203,15 @@ static void left_rotation(TLDNode *node, TLDList *tld)
 
 static void leftright_rotation(TLDNode *node, TLDList *tld)
 {
-	/*TLDNode *p = node->left;
-	TLDNode *pq = p->right;
-
-	p->left = pq;
-	p->right = NULL;*/
-
 	left_rotation(node->left, tld);
 	right_rotation(node, tld);
 }
 
 static void rightleft_rotation(TLDNode *node, TLDList *tld)
 {
-	/*TLDNode *q = node->right;
-	TLDNode *qp = q->left;
-
-	qp->left = q;
-	qp->parent = q->parent;
-	if (q->parent)
-		q->parent = qp;
-
-	q->right = qp;
-	q->left = NULL;
-	*/
 	right_rotation(node->right, tld);
 	left_rotation(node, tld);
 }
-
-/*static void LRRotation(TLDNode *node, TLDList *tld)
-  {
-  printf("Preforming LRRitation...\n");
-  TLDNode *k3 = node;
-  TLDNode *k1 = node->left;
-  TLDNode *k2 = k1->right;
-  TLDNode *p = node->parent;
-
-  doubleRotate(k1, k2, k3, p, (p && is_left(node)), tld);
-  printf("Done!\n\n");
-  }
 
   static void RLRotation(TLDNode *node, TLDList *tld)
   {
@@ -320,7 +300,6 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 				if (cur->right != NULL){ 
 					//Yes! Let's go down the tree futher
 					cur = cur->right;
-					printf("next\n");
 				}
 				else {
 					//Nope! Let's add this node to the tree...
@@ -332,7 +311,6 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 					cur->right = node;
 					tld->count++;
 					balance(node, tld, 1);
-					printf("done\n");
 					return 1;
 				}
 			}
@@ -341,7 +319,6 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 				//Yep! Same as above
 				if (cur->left != NULL){
 					cur = cur->left;
-					printf("next\n");
 				}
 				else {
 					node->content = strdup(url);
@@ -352,7 +329,6 @@ int tldlist_add(TLDList *tld, char *hostname, Date *d)
 					cur->left = node;
 					tld->count++;
 					balance(node, tld, 0);
-					printf("done\n");
 					return 1;
 				}
 			}
