@@ -1,6 +1,24 @@
 import java.util.*;
 
 public class includeCrawler{
+
+    private static String parseDir(String dir) {
+        if (!dir.split(dir.length() - 1).equals("/")){
+            return dir + "/";
+        }
+        else {
+            return dir;
+        }
+    }
+
+    private static ArrayList<String> process(String file) {
+        Scanner s = new Scanner(new File(file));
+        
+    }
+
+    private static void printDeps() {
+    }
+
     public static void main (String[] args){
         HashMap<String, ArrayList<String>> deptable;
         ArrayList<String> workQ;
@@ -23,14 +41,14 @@ public class includeCrawler{
         start = i;
         m = start -1;
         String[m + n + 2] dirs;
-        dirs[0] = formatDir("./");
+        dirs[0] = parseDir("./");
         for (i = 1; i < start; i++){
-            dir[i] = formatDir(arg[i].substring(2));
+            dir[i] = parseDir(arg[i].substring(2));
         }
 
         if (cpathdirs.length > 0){
             for (j = i; j - i < cpathdirs.length; j++){
-                dir[j] = formatDir(cpathdirs[j]);
+                dir[j] = parseDir(cpathdirs[j]);
             }
         }
 
@@ -42,7 +60,7 @@ public class includeCrawler{
         for (i = start; i < args.length; i++){
         ArrayList<String> al;
         String obj;
-        String[] file = args[i].split(".");
+        String[] file = args[i].split("\\.");
         
         if (ext.equals("c") || ext.equals("y") || ext.equals("l")){
             System.println("Illegal File Name: " + arg[i]);
@@ -74,4 +92,9 @@ public class includeCrawler{
 
         for (i = start; i < args.length; i++){
             String obj;
-            String[] file = arg[i].split(".");
+            String[] file = arg[i].split("\\.");
+            obj = file[0] + ".obj";
+            System.out.print(file[0] + ": ");
+            printDeps(arg[i]);
+            System.out.println();
+        }
