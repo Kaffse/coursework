@@ -3,7 +3,7 @@ import java.util.*;
 public class includeCrawler{
 
     private static String parseDir(String dir) {
-        if (!dir.split(dir.length() - 1).equals("/")){
+        if (!dir.substring(dir.length() - 1).equals("/")){
             return dir + "/";
         }
         else {
@@ -13,10 +13,49 @@ public class includeCrawler{
 
     private static ArrayList<String> process(String file) {
         Scanner s = new Scanner(new File(file));
-        
+        ArrayList<String> list = new ArrayList<String>();
+
+        while (s.hasNext()){
+            String line = s.nextLine();
+
+            int i = 1;
+
+            while (i <= line.length() && line.substring(i - 1, i).equals(" ")){
+                i++;
+            }
+
+            if (!line.substring(i, i + 9).equals("#include")){
+                continue;
+            }
+
+            i = i + 9;
+
+            while (i < line.length() && line.substring(i, i + 1).equals(" ")){
+                i++;
+            }
+
+            i++;
+
+            if (!line.substring(i, i + 1).equals("\"")){
+                continue;
+            }
+
+            int j = ++i;
+
+            while (i < line.length() && !line.substring(i, i + 1).equals("\"")){
+                i++;
+            }
+            String name = line.substring(j, i);
+            list.add(name);
+            if (deptable.get(name) != null){
+                continue;
+            }
+            deptable.add(name, new ArrayList<String>());
+        }
     }
 
-    private static void printDeps() {
+    private static void printDeps(String name) {
+        System.out.println("LOL");
     }
 
     public static void main (String[] args){
@@ -40,7 +79,7 @@ public class includeCrawler{
 
         start = i;
         m = start -1;
-        String[m + n + 2] dirs;
+        String[] dirs;
         dirs[0] = parseDir("./");
         for (i = 1; i < start; i++){
             dir[i] = parseDir(arg[i].substring(2));
@@ -55,7 +94,7 @@ public class includeCrawler{
         dir[j] = NULL;
         deptable = new HashMap<String, ArrayList>(Integer.MAX_VALUE);
 
-        workQ = new ArrayList<String>;
+        workQ = new ArrayList<String>();
 
         for (i = start; i < args.length; i++){
         ArrayList<String> al;
@@ -98,3 +137,5 @@ public class includeCrawler{
             printDeps(arg[i]);
             System.out.println();
         }
+    }
+}
