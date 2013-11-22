@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class includeCrawler{
 
@@ -11,24 +12,27 @@ public class includeCrawler{
         }
     }
 
-    private static ArrayList<String> process(String file) {
-        Scanner s = new Scanner(new File(file));
-        ArrayList<String> list = new ArrayList<String>();
+    private static void process(String file, HashMap<String, ArrayList<String>> deptable, ArrayList<String> list, ArrayList<String> workQ) throws IOException {
+        Scanner s = new Scanner(new FileReader(file));
 
         while (s.hasNext()){
             String line = s.nextLine();
 
             int i = 1;
 
+            if (!line.contains("#include")){
+                continue;
+            }
+
             while (i <= line.length() && line.substring(i - 1, i).equals(" ")){
                 i++;
             }
 
-            if (!line.substring(i, i + 9).equals("#include")){
+            if (!line.substring(i, i + 7).equals("include")){
                 continue;
             }
 
-            i = i + 9;
+            i = i + 7;
 
             while (i < line.length() && line.substring(i, i + 1).equals(" ")){
                 i++;
@@ -36,11 +40,11 @@ public class includeCrawler{
 
             i++;
 
-            if (!line.substring(i, i + 1).equals("\"")){
+            if (!line.substring(i - 1, i).equals("\"")){
                 continue;
             }
 
-            int j = ++i;
+            int j = i++;
 
             while (i < line.length() && !line.substring(i, i + 1).equals("\"")){
                 i++;
@@ -50,12 +54,25 @@ public class includeCrawler{
             if (deptable.get(name) != null){
                 continue;
             }
-            deptable.add(name, new ArrayList<String>());
+            deptable.put(name, new ArrayList<String>());
+            workQ.add(name);
         }
     }
 
-    private static void printDeps(String name) {
-        System.out.println("LOL");
+    private static void printDeps(HashMap<String, ArrayList<String>> deptable, HashMap<String, Boolean> printed, ArrayList<String> process) {
+        while (!process.isEmpty()){
+            String cur = process.remove(0);
+            ArrayList<String> deps = deptable.get(cur);
+
+            for (String s : deps){
+                if (printed.get(s) != null){
+                    continue;
+                }
+                System.out.print(" " + s);
+                printed.put(s, true);
+                process.add(s);
+            }
+        }
     }
 
     public static void main (String[] args){
@@ -63,78 +80,96 @@ public class includeCrawler{
         ArrayList<String> workQ;
 
         String cpath = System.getenv("CPATH");
-        String[] cpathdirs;
+        String[] cpathdirs = null;
 
+        int cpathlen = 0;
 
         if (cpath != null){
             cpathdirs = cpath.split(":");
+            cpathlen = cpathdirs.length;
         }
 
         int i;
-        for (i = 1; i < args.lenght; i++){
-            if (!arg.substring(0, 2).equals("-I")){
+        for (i = 0; i < args.length; i++){
+            if (!args[i].substring(0, 2).equals("-I")){
                 break;
             }
         }
 
-        start = i;
-        m = start -1;
+        int start = i;
+        int m = start - 1;
         String[] dirs;
+        dirs = new String[m + cpathlen + 3];
         dirs[0] = parseDir("./");
         for (i = 1; i < start; i++){
-            dir[i] = parseDir(arg[i].substring(2));
+            dirs[i] = parseDir(args[i].substring(2));
         }
 
-        if (cpathdirs.length > 0){
+        int j = i;
+        if (cpathlen > 1){
             for (j = i; j - i < cpathdirs.length; j++){
-                dir[j] = parseDir(cpathdirs[j]);
+                dirs[j] = parseDir(cpathdirs[j]);
             }
         }
 
-        dir[j] = NULL;
-        deptable = new HashMap<String, ArrayList>(Integer.MAX_VALUE);
+        dirs[j] = null;
+        deptable = new HashMap<String, ArrayList<String>>(10000);
 
         workQ = new ArrayList<String>();
 
         for (i = start; i < args.length; i++){
-        ArrayList<String> al;
-        String obj;
-        String[] file = args[i].split("\\.");
-        
-        if (ext.equals("c") || ext.equals("y") || ext.equals("l")){
-            System.println("Illegal File Name: " + arg[i]);
-            System.exit(0);
-        }
+            ArrayList<String> al;
+            String obj;
+            String[] file = args[i].split("\\.");
 
-        obj = root + ".o";
+            if (!file[1].equals("c") && !file[1].equals("y") && !file[1].equals("l")){
+                System.out.println("Illegal File Name: " + args[i]);
+                System.exit(0);
+            }
 
-        al = new ArrayList<String>();
-        al.add(arg[i]);
-        deptable.put(obj, al);
+            obj = file[0] + ".o";
 
-        workQ.add(arg[i]);
+            al = new ArrayList<String>();
+            al.add(args[i]);
+            deptable.put(obj, al);
 
-        al = new ArrayList<String>();
-        deptable.put(arg[i], al);
+            workQ.add(args[i]);
+
+            al = new ArrayList<String>();
+            deptable.put(args[i], al);
         }
 
         while (!workQ.isEmpty()){
             String current = workQ.remove(0);
             ArrayList<String> curlist = deptable.get(current);
-            if(curlist.isEmpty()){
+            if(curlist == null){
                 System.out.println("Mismatch between table and workQ!");
                 System.exit(0);
             }
-            process(current, curlist);
-            deplist.put(current, curlist);
+            try{
+                process(current, deptable, curlist, workQ);
+            }
+            catch (IOException e){
+                System.out.println("Error Reading file " + current + "!");
+                System.exit(0);
+            }
+            deptable.put(current, curlist);
+            curlist = deptable.get(current);
         }
 
         for (i = start; i < args.length; i++){
             String obj;
-            String[] file = arg[i].split("\\.");
-            obj = file[0] + ".obj";
-            System.out.print(file[0] + ": ");
-            printDeps(arg[i]);
+            ArrayList<String> process = new ArrayList<String>();
+            HashMap<String, Boolean> printed = new HashMap<String, Boolean>(100);
+
+            String[] file = args[i].split("\\.");
+            obj = file[0] + ".o";
+            System.out.print(obj + ":");
+
+            process.add(obj);
+
+            printDeps(deptable, printed, process);
+
             System.out.println();
         }
     }
