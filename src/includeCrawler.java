@@ -2,18 +2,19 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 
-public class includeCrawler{
+class WorkerThread implements Runnable {
 
-    private static String parseDir(String dir) {
-        if (!dir.substring(dir.length() - 1).equals("/")){
-            return dir + "/";
-        }
-        else {
-            return dir;
-        }
+    String file;
+    ConcurrentLinkedQueue<String> list;
+    ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
+    ConcurrentLinkedQueue<String> workQ;
+
+    public WorkerThread(String file, ConcurrentLinkedQueue<String> list, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentLinkedQueue<String> workQ){
+        file = f;
+        list = l;
     }
 
-    private static void process(String file, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentLinkedQueue<String> list, ConcurrentLinkedQueue<String> workQ) throws IOException {
+    public void run(String file, ConcurrentLinkedQueue<String> list, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentLinkedQueue<String> workQ) throws IOException {
         Scanner s = new Scanner(new FileReader(file));
 
         while (s.hasNext()){
@@ -59,6 +60,18 @@ public class includeCrawler{
             workQ.add(name);
         }
     }
+}
+
+public class includeCrawler{
+
+    private static String parseDir(String dir) {
+        if (!dir.substring(dir.length() - 1).equals("/")){
+            return dir + "/";
+        }
+        else {
+            return dir;
+        }
+    }
 
     private static void printDeps(ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentHashMap<String, Boolean> printed, ConcurrentLinkedQueue<String> process) {
         while (!process.isEmpty()){
@@ -79,7 +92,6 @@ public class includeCrawler{
     public static void main (String[] args){
         ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
         ConcurrentLinkedQueue<String> workQ;
-
         String cpath = System.getenv("CPATH");
         String[] cpathdirs = null;
 
@@ -148,7 +160,8 @@ public class includeCrawler{
                 System.exit(0);
             }
             try{
-                process(current, deptable, curlist, workQ);
+                WorkerThread w = new WorkerThread();
+                new Thead(w).start(current, curlist, deptable, workQ);
             }
             catch (IOException e){
                 System.out.println("Error Reading file " + current + "!");
