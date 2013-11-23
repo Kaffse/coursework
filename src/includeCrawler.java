@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.*;
 import java.io.*;
 
 public class includeCrawler{
@@ -12,7 +13,7 @@ public class includeCrawler{
         }
     }
 
-    private static void process(String file, HashMap<String, ArrayList<String>> deptable, ArrayList<String> list, ArrayList<String> workQ) throws IOException {
+    private static void process(String file, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentLinkedQueue<String> list, ConcurrentLinkedQueue<String> workQ) throws IOException {
         Scanner s = new Scanner(new FileReader(file));
 
         while (s.hasNext()){
@@ -54,15 +55,15 @@ public class includeCrawler{
             if (deptable.get(name) != null){
                 continue;
             }
-            deptable.put(name, new ArrayList<String>());
+            deptable.put(name, new ConcurrentLinkedQueue<String>());
             workQ.add(name);
         }
     }
 
-    private static void printDeps(HashMap<String, ArrayList<String>> deptable, HashMap<String, Boolean> printed, ArrayList<String> process) {
+    private static void printDeps(ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentHashMap<String, Boolean> printed, ConcurrentLinkedQueue<String> process) {
         while (!process.isEmpty()){
-            String cur = process.remove(0);
-            ArrayList<String> deps = deptable.get(cur);
+            String cur = process.poll();
+            ConcurrentLinkedQueue<String> deps = deptable.get(cur);
 
             for (String s : deps){
                 if (printed.get(s) != null){
@@ -76,8 +77,8 @@ public class includeCrawler{
     }
 
     public static void main (String[] args){
-        HashMap<String, ArrayList<String>> deptable;
-        ArrayList<String> workQ;
+        ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
+        ConcurrentLinkedQueue<String> workQ;
 
         String cpath = System.getenv("CPATH");
         String[] cpathdirs = null;
@@ -113,12 +114,12 @@ public class includeCrawler{
         }
 
         dirs[j] = null;
-        deptable = new HashMap<String, ArrayList<String>>(10000);
+        deptable = new ConcurrentHashMap<String, ConcurrentLinkedQueue<String>>(10000);
 
-        workQ = new ArrayList<String>();
+        workQ = new ConcurrentLinkedQueue<String>();
 
         for (i = start; i < args.length; i++){
-            ArrayList<String> al;
+            ConcurrentLinkedQueue<String> al;
             String obj;
             String[] file = args[i].split("\\.");
 
@@ -129,19 +130,19 @@ public class includeCrawler{
 
             obj = file[0] + ".o";
 
-            al = new ArrayList<String>();
+            al = new ConcurrentLinkedQueue<String>();
             al.add(args[i]);
             deptable.put(obj, al);
 
             workQ.add(args[i]);
 
-            al = new ArrayList<String>();
+            al = new ConcurrentLinkedQueue<String>();
             deptable.put(args[i], al);
         }
 
         while (!workQ.isEmpty()){
-            String current = workQ.remove(0);
-            ArrayList<String> curlist = deptable.get(current);
+            String current = workQ.poll();
+            ConcurrentLinkedQueue<String> curlist = deptable.get(current);
             if(curlist == null){
                 System.out.println("Mismatch between table and workQ!");
                 System.exit(0);
@@ -159,8 +160,8 @@ public class includeCrawler{
 
         for (i = start; i < args.length; i++){
             String obj;
-            ArrayList<String> process = new ArrayList<String>();
-            HashMap<String, Boolean> printed = new HashMap<String, Boolean>(100);
+            ConcurrentLinkedQueue<String> process = new ConcurrentLinkedQueue<String>();
+            ConcurrentHashMap<String, Boolean> printed = new ConcurrentHashMap<String, Boolean>(100);
 
             String[] file = args[i].split("\\.");
             obj = file[0] + ".o";
