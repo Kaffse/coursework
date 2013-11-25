@@ -2,20 +2,33 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 
-class WorkerThread implements Runnable {
+/*class WorkerThread implements Runnable {
 
     String file;
     ConcurrentLinkedQueue<String> list;
     ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
     ConcurrentLinkedQueue<String> workQ;
 
-    public WorkerThread(String file, ConcurrentLinkedQueue<String> list, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentLinkedQueue<String> workQ){
+    public WorkerThread(String f, ConcurrentLinkedQueue<String> l, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> dt, ConcurrentLinkedQueue<String> wq){
         file = f;
         list = l;
+        deptable = dt;
+        workQ = wq;
     }
 
-    public void run(String file, ConcurrentLinkedQueue<String> list, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable, ConcurrentLinkedQueue<String> workQ) throws IOException {
-        Scanner s = new Scanner(new FileReader(file));
+    public void run(){
+        Scanner s = null;
+        try{
+            s = new Scanner(new FileReader(file));
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Error! " + file + " not found!");
+            System.exit(0);
+        }
+        catch (IOExpection e){
+            System.out.println("Error, " + file + " not found!");
+            System.exit(0);
+        }
 
         while (s.hasNext()){
             String line = s.nextLine();
@@ -60,7 +73,7 @@ class WorkerThread implements Runnable {
             workQ.add(name);
         }
     }
-}
+}*/
 
 public class includeCrawler{
 
@@ -90,6 +103,7 @@ public class includeCrawler{
     }
 
     public static void main (String[] args){
+        String[] dirs;
         ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
         ConcurrentLinkedQueue<String> workQ;
         String cpath = System.getenv("CPATH");
@@ -111,21 +125,20 @@ public class includeCrawler{
 
         int start = i;
         int m = start - 1;
-        String[] dirs;
         dirs = new String[m + cpathlen + 3];
         dirs[0] = parseDir("./");
-        for (i = 1; i < start; i++){
-            dirs[i] = parseDir(args[i].substring(2));
+        for (i = 0; i < start; i++){
+            dirs[i + 1] = parseDir(args[i].substring(2));
+            //System.out.println("dirs[i+1] = " + dirs[i+1]);
         }
 
         int j = i;
         if (cpathlen > 1){
             for (j = i; j - i < cpathdirs.length; j++){
-                dirs[j] = parseDir(cpathdirs[j]);
+                dirs[j + 1] = parseDir(cpathdirs[j]);
             }
         }
 
-        dirs[j] = null;
         deptable = new ConcurrentHashMap<String, ConcurrentLinkedQueue<String>>(10000);
 
         workQ = new ConcurrentLinkedQueue<String>();
@@ -159,14 +172,17 @@ public class includeCrawler{
                 System.out.println("Mismatch between table and workQ!");
                 System.exit(0);
             }
+            WorkerThread w = new WorkerThread(current , curlist, deptable, workQ, dirs);
+            Thread wt = new Thread(w);
+            wt.start();
             try{
-                WorkerThread w = new WorkerThread();
-                new Thead(w).start(current, curlist, deptable, workQ);
+                wt.join();
             }
-            catch (IOException e){
-                System.out.println("Error Reading file " + current + "!");
+            catch(InterruptedException e) {
+                System.out.println("Error! Interrupt failed!");
                 System.exit(0);
             }
+
             deptable.put(current, curlist);
             curlist = deptable.get(current);
         }
