@@ -2,80 +2,26 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 
-/*class WorkerThread implements Runnable {
-
-    String file;
-    ConcurrentLinkedQueue<String> list;
-    ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
-    ConcurrentLinkedQueue<String> workQ;
-
-    public WorkerThread(String f, ConcurrentLinkedQueue<String> l, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> dt, ConcurrentLinkedQueue<String> wq){
-        file = f;
-        list = l;
-        deptable = dt;
-        workQ = wq;
-    }
-
-    public void run(){
-        Scanner s = null;
-        try{
-            s = new Scanner(new FileReader(file));
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Error! " + file + " not found!");
-            System.exit(0);
-        }
-        catch (IOExpection e){
-            System.out.println("Error, " + file + " not found!");
-            System.exit(0);
-        }
-
-        while (s.hasNext()){
-            String line = s.nextLine();
-
-            int i = 1;
-
-            if (!line.contains("#include")){
-                continue;
-            }
-
-            while (i <= line.length() && line.substring(i - 1, i).equals(" ")){
-                i++;
-            }
-
-            if (!line.substring(i, i + 7).equals("include")){
-                continue;
-            }
-
-            i = i + 7;
-
-            while (i < line.length() && line.substring(i, i + 1).equals(" ")){
-                i++;
-            }
-
-            i++;
-
-            if (!line.substring(i - 1, i).equals("\"")){
-                continue;
-            }
-
-            int j = i++;
-
-            while (i < line.length() && !line.substring(i, i + 1).equals("\"")){
-                i++;
-            }
-            String name = line.substring(j, i);
-            list.add(name);
-            if (deptable.get(name) != null){
-                continue;
-            }
-            deptable.put(name, new ConcurrentLinkedQueue<String>());
-            workQ.add(name);
-        }
-    }
-}*/
-
 public class includeCrawler{
+
+    /*static class WaitClass implements Runnable{
+
+        WaitClass(){}
+
+        public void run(){
+            try{
+                wait();
+            }
+            catch(InterruptedException e){
+                System.out.println("Caught Wait Exception!");
+            }
+        }
+
+    }*/
+
+    static final int THREADS = 10;
+    //static ConcurrentLinkedQueue<Thread> threadlist = new ConcurrentLinkedQueue<Thread> threadlist;
+    static ArrayList<Thread> threadlist = new ArrayList<Thread>();
 
     private static String parseDir(String dir) {
         if (!dir.substring(dir.length() - 1).equals("/")){
@@ -165,6 +111,7 @@ public class includeCrawler{
             deptable.put(args[i], al);
         }
 
+        Thread wt = new Thread(new WaitClass());
         while (!workQ.isEmpty()){
             String current = workQ.poll();
             ConcurrentLinkedQueue<String> curlist = deptable.get(current);
@@ -172,19 +119,24 @@ public class includeCrawler{
                 System.out.println("Mismatch between table and workQ!");
                 System.exit(0);
             }
-            WorkerThread w = new WorkerThread(current , curlist, deptable, workQ, dirs);
-            Thread wt = new Thread(w);
-            wt.start();
-            try{
-                wt.join();
+            if (threadlist.size() >= THREADS) {
+               /* wt.start();
+                try{
+                    wt.join();
+                }
+                catch(InterruptedException e){
+                    System.out.println("Wait Exception Caught");
+                }*/
+                threadlist.get(0).
+                for (Thread t : threadlist){
+                    if (t.isInterrupted()){
+                        threadlist.remove(t);
+                    }
+                }
             }
-            catch(InterruptedException e) {
-                System.out.println("Error! Interrupt failed!");
-                System.exit(0);
-            }
-
-            deptable.put(current, curlist);
-            curlist = deptable.get(current);
+            WorkerThread w = new WorkerThread(current , curlist, deptable, workQ, dirs, wt);
+            threadlist.add(new Thread(w));
+            threadlist.get(threadlist.size() - 1).start();
         }
 
         for (i = start; i < args.length; i++){

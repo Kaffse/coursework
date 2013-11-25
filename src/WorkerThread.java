@@ -9,13 +9,15 @@ public class WorkerThread implements Runnable {
     ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
     ConcurrentLinkedQueue<String> workQ;
     String[] dirlist;
+    Thread wt;
 
-    public WorkerThread(String f, ConcurrentLinkedQueue<String> l, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> dt, ConcurrentLinkedQueue<String> wq, String[] dl ){
+    public WorkerThread(String f, ConcurrentLinkedQueue<String> l, ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> dt, ConcurrentLinkedQueue<String> wq, String[] dl, Thread wait ){
         file = f;
         list = l;
         deptable = dt;
         workQ = wq;
         dirlist = dl;
+        wt = wait;
     }
 
     public void run(){
@@ -79,6 +81,8 @@ public class WorkerThread implements Runnable {
             }
             deptable.put(name, new ConcurrentLinkedQueue<String>());
             workQ.add(name);
+            deptable.put(file, list);
+            wt.notify();
         }
     }
 }
