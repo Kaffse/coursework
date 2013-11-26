@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.*;
 import java.io.*;
 
 public class includeCrawler{
@@ -54,6 +55,7 @@ public class includeCrawler{
         ConcurrentLinkedQueue<String> workQ;
         String cpath = System.getenv("CPATH");
         String[] cpathdirs = null;
+        AtomicInteger count = new AtomicInteger(THREADS);
 
         int cpathlen = 0;
 
@@ -111,7 +113,7 @@ public class includeCrawler{
             deptable.put(args[i], al);
         }
 
-        Thread wt = new Thread(new WaitClass());
+        /*Thread wt = new Thread(new WaitClass());
         while (!workQ.isEmpty()){
             String current = workQ.poll();
             ConcurrentLinkedQueue<String> curlist = deptable.get(current);
@@ -120,13 +122,13 @@ public class includeCrawler{
                 System.exit(0);
             }
             if (threadlist.size() >= THREADS) {
-               /* wt.start();
+               wt.start();
                 try{
                     wt.join();
                 }
                 catch(InterruptedException e){
                     System.out.println("Wait Exception Caught");
-                }*/
+                }
                 threadlist.get(0).
                 for (Thread t : threadlist){
                     if (t.isInterrupted()){
@@ -137,6 +139,24 @@ public class includeCrawler{
             WorkerThread w = new WorkerThread(current , curlist, deptable, workQ, dirs, wt);
             threadlist.add(new Thread(w));
             threadlist.get(threadlist.size() - 1).start();
+        }
+        */
+
+        count = new AtomicInteger(THREADS);
+        for (int k = 0; k < THREADS; k++){
+            WorkerThread w = new WorkerThread(deptable, workQ, dirs, count);
+            threadlist.add(new Thread(w));
+            threadlist.get(threadlist.size() - 1).start();
+        }
+
+        while(!threadlist.isEmpty()){
+            try{
+                threadlist.remove(0).join();
+            }
+            catch (InterruptedException e){
+                System.out.println("Main Interrupted");
+                System.exit(0);
+            }
         }
 
         for (i = start; i < args.length; i++){
