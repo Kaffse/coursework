@@ -5,8 +5,6 @@ import java.io.*;
 
 public class WorkerThread implements Runnable {
 
-    //String file;
-    //ConcurrentLinkedQueue<String> list;
     ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
     ConcurrentLinkedQueue<String> workQ;
     String[] dirlist;

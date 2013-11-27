@@ -20,7 +20,7 @@ public class includeCrawler{
 
     }*/
 
-    static final int THREADS = 10;
+    static int THREADS = 2;
     //static ConcurrentLinkedQueue<Thread> threadlist = new ConcurrentLinkedQueue<Thread> threadlist;
     static ArrayList<Thread> threadlist = new ArrayList<Thread>();
 
@@ -57,6 +57,12 @@ public class includeCrawler{
         String[] cpathdirs = null;
         AtomicInteger count = new AtomicInteger(THREADS);
 
+        long s = System.currentTimeMillis();
+
+        if (System.getenv("CRAWLER_THREADS") != null){
+            THREADS = Integer.parseInt(System.getenv("CRAWLER_THREADS"));
+        }
+
         int cpathlen = 0;
 
         if (cpath != null){
@@ -77,11 +83,10 @@ public class includeCrawler{
         dirs[0] = parseDir("./");
         for (i = 0; i < start; i++){
             dirs[i + 1] = parseDir(args[i].substring(2));
-            //System.out.println("dirs[i+1] = " + dirs[i+1]);
         }
 
         int j = i;
-        if (cpathlen > 1){
+        if (cpathlen >= 1){
             for (j = i; j - i < cpathdirs.length; j++){
                 dirs[j + 1] = parseDir(cpathdirs[j]);
             }
@@ -112,35 +117,6 @@ public class includeCrawler{
             al = new ConcurrentLinkedQueue<String>();
             deptable.put(args[i], al);
         }
-
-        /*Thread wt = new Thread(new WaitClass());
-        while (!workQ.isEmpty()){
-            String current = workQ.poll();
-            ConcurrentLinkedQueue<String> curlist = deptable.get(current);
-            if(curlist == null){
-                System.out.println("Mismatch between table and workQ!");
-                System.exit(0);
-            }
-            if (threadlist.size() >= THREADS) {
-               wt.start();
-                try{
-                    wt.join();
-                }
-                catch(InterruptedException e){
-                    System.out.println("Wait Exception Caught");
-                }
-                threadlist.get(0).
-                for (Thread t : threadlist){
-                    if (t.isInterrupted()){
-                        threadlist.remove(t);
-                    }
-                }
-            }
-            WorkerThread w = new WorkerThread(current , curlist, deptable, workQ, dirs, wt);
-            threadlist.add(new Thread(w));
-            threadlist.get(threadlist.size() - 1).start();
-        }
-        */
 
         count = new AtomicInteger(THREADS);
         for (int k = 0; k < THREADS; k++){
@@ -174,5 +150,7 @@ public class includeCrawler{
 
             System.out.println();
         }
+        long e = System.currentTimeMillis();
+        System.out.println("\nElapsed Time: " + (e - s) + " milliseconds");
     }
 }
