@@ -1,27 +1,11 @@
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
+import java.util.concurrent.locks.*;
 import java.io.*;
 
 public class includeCrawler{
 
-    /*static class WaitClass implements Runnable{
-
-        WaitClass(){}
-
-        public void run(){
-            try{
-                wait();
-            }
-            catch(InterruptedException e){
-                System.out.println("Caught Wait Exception!");
-            }
-        }
-
-    }*/
-
     static int THREADS = 2;
-    //static ConcurrentLinkedQueue<Thread> threadlist = new ConcurrentLinkedQueue<Thread> threadlist;
     static ArrayList<Thread> threadlist = new ArrayList<Thread>();
 
     private static String parseDir(String dir) {
@@ -52,15 +36,20 @@ public class includeCrawler{
     public static void main (String[] args){
         String[] dirs;
         ConcurrentHashMap<String, ConcurrentLinkedQueue<String>> deptable;
-        ConcurrentLinkedQueue<String> workQ;
+        LinkedBlockingQueue<String> workQ;
         String cpath = System.getenv("CPATH");
         String[] cpathdirs = null;
-        AtomicInteger count = new AtomicInteger(THREADS);
+        ConcurrentCounter count;
 
         long s = System.currentTimeMillis();
 
         if (System.getenv("CRAWLER_THREADS") != null){
-            THREADS = Integer.parseInt(System.getenv("CRAWLER_THREADS"));
+            try {
+                THREADS = Integer.parseInt(System.getenv("CRAWLER_THREADS"));
+            } catch (NumberFormatException e) {
+                System.out.println("Warning! CRAWLER_THREADS not set correctly!");
+                System.out.println("Continuing with 2 threads");
+            }
         }
 
         int cpathlen = 0;
@@ -94,7 +83,7 @@ public class includeCrawler{
 
         deptable = new ConcurrentHashMap<String, ConcurrentLinkedQueue<String>>(10000);
 
-        workQ = new ConcurrentLinkedQueue<String>();
+        workQ = new LinkedBlockingQueue<String>();
 
         for (i = start; i < args.length; i++){
             ConcurrentLinkedQueue<String> al;
@@ -112,20 +101,43 @@ public class includeCrawler{
             al.add(args[i]);
             deptable.put(obj, al);
 
-            workQ.add(args[i]);
+            try{
+                workQ.put(args[i]);
+            }
+            catch(InterruptedException e){
+                System.out.println("Main Interrupted");
+            }
 
             al = new ConcurrentLinkedQueue<String>();
             deptable.put(args[i], al);
         }
 
-        count = new AtomicInteger(THREADS);
+        final ReentrantLock lock = new ReentrantLock();
+        final Condition change = lock.newCondition();
+        count = new ConcurrentCounter(THREADS, lock, change); 
+
         for (int k = 0; k < THREADS; k++){
             WorkerThread w = new WorkerThread(deptable, workQ, dirs, count);
             threadlist.add(new Thread(w));
             threadlist.get(threadlist.size() - 1).start();
         }
 
-        while(!threadlist.isEmpty()){
+        lock.lock();
+        try{
+            while (count.get() > 0){
+                change.await();
+            }
+            for (Thread t : threadlist){
+                t.stop();
+            }
+        }
+        catch(InterruptedException e){
+            System.out.println("Main Interrupted");
+        }
+        finally{
+            lock.unlock();
+        }
+        /*while(!threadlist.isEmpty()){
             try{
                 threadlist.remove(0).join();
             }
@@ -133,7 +145,8 @@ public class includeCrawler{
                 System.out.println("Main Interrupted");
                 System.exit(0);
             }
-        }
+        }*/
+
 
         for (i = start; i < args.length; i++){
             String obj;
@@ -142,11 +155,11 @@ public class includeCrawler{
 
             String[] file = args[i].split("\\.");
             obj = file[0] + ".o";
-            System.out.print(obj + ":");
+            //System.out.print(obj + ":");
 
             process.add(obj);
 
-            printDeps(deptable, printed, process);
+            //printDeps(deptable, printed, process);
 
             System.out.println();
         }
