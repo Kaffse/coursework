@@ -6,7 +6,7 @@
  *
  */
 
-#define BUFLEN 1500
+#define BUFLEN 10000
 
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -71,7 +71,7 @@ int main()
         write(connfd, message, strlen(message));
 
         fprintf(stderr, "Grabbing input...\n");
-        rcount = read(fd, buf, BUFLEN);
+        rcount = read(connfd, buf, BUFLEN);
         if (rcount == -1) {
             fprintf(stderr, "Read Error!\n");
         }
