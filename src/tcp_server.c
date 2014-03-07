@@ -28,16 +28,25 @@
 #include <stdarg.h>
 #include <time.h>
 
-int prepare_header(char header[BUFLEN])
+int prepare_header(char header[BUFLEN], char* response, char* conlen, char data[BUFLEN])
 {
     time_t rawtime;
     struct tm * timeinfo;
-    char buffer [10000];
+    char buffer[10000];
+    char timebuf[128];
 
     time (&rawtime);
     timeinfo = localtime (&rawtime);
-    strftime (buffer,sizeof(buffer),"HTTP/1.1 200 OK\r\nDate: %a, %d %b %G %T %Z\r\nAccept-Ranges: bytes\r\nContent-Length: ",timeinfo);
-
+    strftime (timebuf, sizeof(timebuf), "Date: %a, %d %b %G %T %Z",timeinfo);
+    buffer[0] = 'H';
+    strcat(buffer, "TTP/1.1 ");
+    strcat(buffer, response);
+    strcat(buffer, "\r\n");
+    strcat(buffer, timebuf);
+    strcat(buffer, "\r\nAccept-Ranges: bytes\r\nContent-Length: ");
+    strcat(buffer, conlen);
+    strcat(buffer, "\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+    strcat(buffer, data);
     strcpy(header, buffer);
     return 1;
 }
@@ -79,14 +88,16 @@ int main()
     char buf[BUFLEN];
     char *request;
     char * temp;
-    char *filename;
-    //char *hostname;
-    //char ourhost[1024];
-    char cwd[1024];
+    char filename[64];
+    char hostname[64];
+    char ourhost[64];
     char line[1024];
     char messagebuf[BUFLEN];
+    char header[BUFLEN];
+    char *pagenotfound = "<h1>404 - Page Not Found</h1>";
     char bodysizebuf[1024];
     int bodysize;
+    int i = 0;
 
     FILE * req;
 
@@ -105,73 +116,73 @@ int main()
         if ((temp = strstr(request, "GET")) != NULL) 
         {  
             temp = temp + 5;
-            while (*temp != ' ') 
+            while (*temp != ' ' && *temp != '\n' && *temp != '\r') 
             {
-                char temps[2];
-                temps[0] = *temp;
-                temps[1] = '\0';
-                filename = strcat(filename, temps);
+                filename[i] = *temp;
                 temp++;
+                i++;
             }
         }
 
-        /*if ((temp = strstr(request, "Host:")) != NULL) 
+        fprintf(stderr, "Grabbing Hostname...\n");
+
+        i = 0;
+        if ((temp = strstr(request, "Host:")) != NULL) 
         {  
             temp = temp + 6;
-            while (*temp != ' ') 
+            while (*temp != ' ' && *temp != '\n' && *temp != '\r') 
             {
-                char temps[2];
-                temps[0] = *temp;
-                temps[1] = '\0';
-                hostname = strcat(hostname, temps);
+                hostname[i] = *temp;
                 temp++;
+                i++;
             }
         }
 
-        fprintf(stderr, "Checking Hostname...\n");
-        
-        gethostname(ourhost, 1024);
+        fprintf(stderr, "Host: %s\n", hostname);
+        fprintf(stderr, "Checking our Hostname...\n");
+
+        gethostname(ourhost, 64);
+
+        fprintf(stderr, "Our Host: %s\n", ourhost);
 
         if (strcmp(hostname, ourhost) != 0)
         {
             fprintf(stderr, "Warning! Hostname sent was: %s\nExpected: %s\n", hostname, ourhost);
-        }*/
-
-        getcwd(cwd, sizeof(cwd));
-        strcat(cwd, filename);
+        }
 
         fprintf(stderr, "Trying to open %s...\n", filename);
-        if ((req = fopen("index.html", "r")) == NULL)
+        if ((req = fopen(filename, "r")) != NULL)
         {
-            fprintf(stderr, "File Error!\n");
-            continue;
+
+            fprintf(stderr, "Attempting to send data...\n");
+            while (fgets(line, 1024, req) != NULL)
+            {
+                strcat(messagebuf, line);
+            }
+
+            bodysize = strlen(messagebuf) * sizeof(char);
+
+            sprintf(bodysizebuf, "%d", bodysize);
+
+            prepare_header(header, "200 OK", (char *)bodysizebuf, (char *)messagebuf);
+
+            fprintf(stderr, "%s", header);
+
+            write(connfd, header, strlen(header));
+            fprintf(stderr, "Closing file...\n");
+            fclose(req);
         }
-
-        char header[BUFLEN];
-        prepare_header(header);
-
-        fprintf(stderr, "Attempting to send data...\n");
-        while (fgets(line, 1024, req) != NULL)
+        else
         {
-            strcat(messagebuf, line);
+            bodysize = strlen(pagenotfound) * sizeof(char);
+            sprintf(bodysizebuf, "%d", bodysize);
+
+            fprintf(stderr, "File Read Error!\n");
+            prepare_header(header, "404 Not Found", (char *)bodysizebuf, pagenotfound); 
+            fprintf(stderr, "%s", header);
+            write(connfd, header, strlen(header));
+            fprintf(stderr, "Write Successful\n");
         }
-
-        bodysize = strlen(messagebuf) * sizeof(char);
-
-        sprintf(bodysizebuf, "%d", bodysize);
-
-        strcat(header, bodysizebuf);
-
-        temp = "\r\nContent-Type: text/html\r\n\r\n";
-
-        strcat(header, temp);
-
-        strcat(header, messagebuf);
-
-        write(connfd, header, strlen(header));
-        fprintf(stderr, "Closing file...\n");
-
-        fclose(req);
 
         close(connfd);
 
