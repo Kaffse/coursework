@@ -27,8 +27,9 @@
 #include <net/if.h>
 #include <stdarg.h>
 #include <time.h>
+#include <pthread.h>
 
-int prepare_header(char header[BUFLEN], char* response, char* conlen, char data[BUFLEN])
+void *prepare_header(char header[BUFLEN], char* response, char* conlen, char data[BUFLEN])
 {
     time_t rawtime;
     struct tm * timeinfo;
@@ -48,7 +49,111 @@ int prepare_header(char header[BUFLEN], char* response, char* conlen, char data[
     strcat(buffer, "\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
     strcat(buffer, data);
     strcpy(header, buffer);
-    return 1;
+
+    return NULL;
+}
+void *connection_worker(void *socketpt)
+{
+    int socket = *(int *)socketpt;
+
+    ssize_t rcount;
+    char buf[BUFLEN];
+    char *request;
+    char * temp;
+    char filename[64];
+    char hostname[64];
+    char ourhost[64];
+    char line[1024];
+    char messagebuf[BUFLEN];
+    char header[BUFLEN];
+    char *pagenotfound = "<h1>404 - Page Not Found</h1>";
+    char bodysizebuf[1024];
+    int bodysize;
+    int i = 0;
+
+    FILE * req;
+
+    fprintf(stderr, "Grabbing input...\n");
+    rcount = read(socket, buf, BUFLEN);
+    if (rcount == -1) {
+        fprintf(stderr, "Read Error!\n");
+    }
+
+    request = strcat(buf, "\0");
+
+    if ((temp = strstr(request, "GET")) != NULL) 
+    {  
+        temp = temp + 5;
+        while (*temp != ' ' && *temp != '\n' && *temp != '\r') 
+        {
+            filename[i] = *temp;
+            temp++;
+            i++;
+        }
+    }
+
+    fprintf(stderr, "Grabbing Hostname...\n");
+
+    i = 0;
+    if ((temp = strstr(request, "Host:")) != NULL) 
+    {  
+        temp = temp + 6;
+        while (*temp != ' ' && *temp != '\n' && *temp != '\r') 
+        {
+            hostname[i] = *temp;
+            temp++;
+            i++;
+        }
+    }
+
+    fprintf(stderr, "Host: %s\n", hostname);
+    fprintf(stderr, "Checking our Hostname...\n");
+
+    gethostname(ourhost, 64);
+
+    fprintf(stderr, "Our Host: %s\n", ourhost);
+
+    if (strcmp(hostname, ourhost) != 0)
+    {
+        fprintf(stderr, "Warning! Hostname sent was: %s\nExpected: %s\n", hostname, ourhost);
+    }
+
+    fprintf(stderr, "Trying to open %s...\n", filename);
+    if ((req = fopen(filename, "r")) != NULL)
+    {
+
+        fprintf(stderr, "Attempting to send data...\n");
+        while (fgets(line, 1024, req) != NULL)
+        {
+            strcat(messagebuf, line);
+        }
+
+        bodysize = strlen(messagebuf) * sizeof(char);
+
+        sprintf(bodysizebuf, "%d", bodysize);
+
+        prepare_header(header, "200 OK", (char *)bodysizebuf, (char *)messagebuf);
+
+        fprintf(stderr, "%s", header);
+
+        write(socket, header, strlen(header));
+        fprintf(stderr, "Closing file...\n");
+        fclose(req);
+    }
+    else
+    {
+        bodysize = strlen(pagenotfound) * sizeof(char);
+        sprintf(bodysizebuf, "%d", bodysize);
+
+        fprintf(stderr, "File Read Error!\n");
+        prepare_header(header, "404 Not Found", (char *)bodysizebuf, pagenotfound); 
+        fprintf(stderr, "%s", header);
+        write(socket, header, strlen(header));
+        fprintf(stderr, "Write Successful\n");
+    }
+
+    close(socket);
+    return NULL;
 }
 
 int main()
@@ -83,108 +188,16 @@ int main()
     struct sockaddr_in cliaddr;
     socklen_t cliaddr_len = sizeof(cliaddr);
     int connfd;
+    int *cur_sock;
 
-    ssize_t rcount;
-    char buf[BUFLEN];
-    char *request;
-    char * temp;
-    char filename[64];
-    char hostname[64];
-    char ourhost[64];
-    char line[1024];
-    char messagebuf[BUFLEN];
-    char header[BUFLEN];
-    char *pagenotfound = "<h1>404 - Page Not Found</h1>";
-    char bodysizebuf[1024];
-    int bodysize;
-    int i = 0;
-
-    FILE * req;
 
     fprintf(stderr, "Waiting for Connection...\n");
     while((connfd = accept(fd, (struct sockaddr *) &cliaddr, &cliaddr_len)))
     {
+        cur_sock = malloc(1);
+        *cur_sock = connfd;
 
-        fprintf(stderr, "Grabbing input...\n");
-        rcount = read(connfd, buf, BUFLEN);
-        if (rcount == -1) {
-            fprintf(stderr, "Read Error!\n");
-        }
-
-        request = strcat(buf, "\0");
-
-        if ((temp = strstr(request, "GET")) != NULL) 
-        {  
-            temp = temp + 5;
-            while (*temp != ' ' && *temp != '\n' && *temp != '\r') 
-            {
-                filename[i] = *temp;
-                temp++;
-                i++;
-            }
-        }
-
-        fprintf(stderr, "Grabbing Hostname...\n");
-
-        i = 0;
-        if ((temp = strstr(request, "Host:")) != NULL) 
-        {  
-            temp = temp + 6;
-            while (*temp != ' ' && *temp != '\n' && *temp != '\r') 
-            {
-                hostname[i] = *temp;
-                temp++;
-                i++;
-            }
-        }
-
-        fprintf(stderr, "Host: %s\n", hostname);
-        fprintf(stderr, "Checking our Hostname...\n");
-
-        gethostname(ourhost, 64);
-
-        fprintf(stderr, "Our Host: %s\n", ourhost);
-
-        if (strcmp(hostname, ourhost) != 0)
-        {
-            fprintf(stderr, "Warning! Hostname sent was: %s\nExpected: %s\n", hostname, ourhost);
-        }
-
-        fprintf(stderr, "Trying to open %s...\n", filename);
-        if ((req = fopen(filename, "r")) != NULL)
-        {
-
-            fprintf(stderr, "Attempting to send data...\n");
-            while (fgets(line, 1024, req) != NULL)
-            {
-                strcat(messagebuf, line);
-            }
-
-            bodysize = strlen(messagebuf) * sizeof(char);
-
-            sprintf(bodysizebuf, "%d", bodysize);
-
-            prepare_header(header, "200 OK", (char *)bodysizebuf, (char *)messagebuf);
-
-            fprintf(stderr, "%s", header);
-
-            write(connfd, header, strlen(header));
-            fprintf(stderr, "Closing file...\n");
-            fclose(req);
-        }
-        else
-        {
-            bodysize = strlen(pagenotfound) * sizeof(char);
-            sprintf(bodysizebuf, "%d", bodysize);
-
-            fprintf(stderr, "File Read Error!\n");
-            prepare_header(header, "404 Not Found", (char *)bodysizebuf, pagenotfound); 
-            fprintf(stderr, "%s", header);
-            write(connfd, header, strlen(header));
-            fprintf(stderr, "Write Successful\n");
-        }
-
-        close(connfd);
+        connection_worker((void *)cur_sock);
 
         fprintf(stderr, "Waiting for Connection...\n");
 
