@@ -29,7 +29,16 @@
 #include <time.h>
 #include <pthread.h>
 
-void *prepare_header(char header[BUFLEN], char* response, char* conlen, char data[BUFLEN])
+char *get_content_header(char *ext)
+{
+    if ((strcmp(ext, "html")) == 0 || (strcmp(ext, "htm")) == 0) {return "text/html";}
+    else if ((strcmp(ext, "txt")) == 0) {return "text/plain";}
+    else if ((strcmp(ext, "jpg") == 0) || (strcmp(ext, "jpeg")) == 0) {return "image/jpeg";}
+    else if ((strcmp(ext, "gif") == 0)) {return "image/gif";}
+    else {return "application/octet-stream";}
+}
+
+void *prepare_header(char header[BUFLEN], char* response, char* conlen, char *ext, char data[BUFLEN])
 {
     time_t rawtime;
     struct tm * timeinfo;
@@ -38,7 +47,9 @@ void *prepare_header(char header[BUFLEN], char* response, char* conlen, char dat
 
     time (&rawtime);
     timeinfo = localtime (&rawtime);
+
     strftime (timebuf, sizeof(timebuf), "Date: %a, %d %b %G %T %Z",timeinfo);
+
     buffer[0] = 'H';
     strcat(buffer, "TTP/1.1 ");
     strcat(buffer, response);
@@ -46,12 +57,15 @@ void *prepare_header(char header[BUFLEN], char* response, char* conlen, char dat
     strcat(buffer, timebuf);
     strcat(buffer, "\r\nAccept-Ranges: bytes\r\nContent-Length: ");
     strcat(buffer, conlen);
-    strcat(buffer, "\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+    strcat(buffer, "\r\nContent-Type: ");
+    strcat(buffer, get_content_header(ext));
+    strcat(buffer, "\r\nConnection: close\r\n\r\n");
     strcat(buffer, data);
     strcpy(header, buffer);
 
     return NULL;
 }
+
 void *connection_worker(void *socketpt)
 {
     int socket = *(int *)socketpt;
@@ -65,6 +79,7 @@ void *connection_worker(void *socketpt)
     char ourhost[64];
     char line[1024];
     char messagebuf[BUFLEN];
+    char * ext;
     char header[BUFLEN];
     char *pagenotfound = "<h1>404 - Page Not Found</h1>";
     char bodysizebuf[1024];
@@ -127,7 +142,9 @@ void *connection_worker(void *socketpt)
 
             sprintf(bodysizebuf, "%d", bodysize);
 
-            prepare_header(header, "200 OK", (char *)bodysizebuf, (char *)messagebuf);
+            ext = strrchr(filename, '.') + 1;
+
+            prepare_header(header, "200 OK", (char *)bodysizebuf, (char *)ext, (char *)messagebuf);
 
             write(socket, header, strlen(header));
             fprintf(stderr, "Closing file...\n");
@@ -139,7 +156,7 @@ void *connection_worker(void *socketpt)
             sprintf(bodysizebuf, "%d", bodysize);
 
             fprintf(stderr, "File Read Error!\n");
-            prepare_header(header, "404 Not Found", (char *)bodysizebuf, pagenotfound); 
+            prepare_header(header, "404 Not Found", (char *)bodysizebuf, "html", pagenotfound); 
             write(socket, header, strlen(header));
         }
         fprintf(stderr, "Grabbing input...\n");
