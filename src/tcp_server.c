@@ -59,7 +59,7 @@ void *prepare_header(char header[BUFLEN], char* response, char* conlen, char *ex
     strcat(buffer, conlen);
     strcat(buffer, "\r\nContent-Type: ");
     strcat(buffer, get_content_header(ext));
-    strcat(buffer, "\r\nConnection: close\r\n\r\n");
+    strcat(buffer, "\r\n\r\n");
     strcat(buffer, data);
     strcpy(header, buffer);
 
@@ -79,6 +79,7 @@ void *connection_worker(void *socketpt)
     char ourhost[64];
     char line[1024];
     char messagebuf[BUFLEN];
+    char * cur;
     char * ext;
     char header[BUFLEN];
     char *pagenotfound = "<h1>404 - Page Not Found</h1>";
@@ -133,9 +134,12 @@ void *connection_worker(void *socketpt)
             *messagebuf = '\0';
 
             fprintf(stderr, "Attempting to send data...\n");
+            cur = messagebuf;
             while (fgets(line, 1024, req) != NULL)
             {
-                strcat(messagebuf, line);
+                memcpy(cur, line, sizeof(line));
+                cur = strrchr(messagebuf, '\0');
+                //cur = cur + ((strrchr(line, '\0')) - &line);
             }
 
             bodysize = strlen(messagebuf) * sizeof(char);
