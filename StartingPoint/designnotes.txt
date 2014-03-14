@@ -1,0 +1,6 @@
+Slides are hard so I'm going to write text.
+
+I decided to use two threads only for reading and writing, since IO is seralised anyway more threads would make 0 impact to the speed of the program.
+Basically the 'main' thread is running, throwing requests at the read and write functions of the driver, which then packages those requests into respective buffers, meanwhile the two threads go about their business of consistantly pulling off the buffers and probing the disk to do operations. 
+
+Threads block when doing IO, since this should be the only bottleneck in the system. There is a block waiting for the mutex of the voucher too, incase an external program tries to redeem the voucher at the same time the thread is trying to manipliate it.

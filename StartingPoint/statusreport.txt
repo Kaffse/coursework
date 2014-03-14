@@ -1,0 +1,2 @@
+My solution does not compile, however it is mostly code complete. In all honestly I was tied up and forgot to do this. The codebase is there for a ~mostly~ working solution, minus some details like forgetting to return sectordescritors to the store after a successful write or failed read/write (one line of code of each though). 
+The code I've written is commented to some level and I am confident it would work correctly once I'd tidied up things like the structs being defined in the wrong place and pointers to pointers to stucts being accessed correctly.
