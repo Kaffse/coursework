@@ -1,0 +1,11 @@
+Week 1: 
+Research carried out into package mangers existing. A spreadsheet was built on google docs with a list of managers and their types.
+A paper entitled apt-p2p was read, describing a debain package maneger layer above apt which attempted to pull packages from peers before resorting the the central servers. It used distributed hash tables to store peer information.
+
+Week 2:
+Further research into package manegers, further refining the types and which level they operated on (software or OS)
+2 Papers were read this week, both from the same author attempting to build a fully fledged package peer to peer package manager, learning from previous attempts. Things to note, bittorrent is in effective to transfer packages as 85% of packages are under the minimum chunk size for bit torrent. Apt-p2p attempted to fix this by using distributed hash tables, which do infact do a better job, however they are heavy and for lighter devices can cause issues.
+Also noteworthy was his attempt to build a global package manager for all devices big and small. He planned to implement peer "neibourhoods" which knew about packages they all had a common interest in. They could subscribe to packages they were interested in via a shared notice board. Publishers could update packages and have the notice boards inform peers there was a new version avalible to get which would then propagate through the network.
+
+Week 3:
+Fuck
