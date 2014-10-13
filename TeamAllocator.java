@@ -12,6 +12,7 @@ public class TeamAllocator {
     Solver solver; 
     int n;
     int k;
+    int teamSize;
 
     TeamAllocator (String fname) throws IOException {
 	Scanner sc = new Scanner(new File(fname));
@@ -19,21 +20,35 @@ public class TeamAllocator {
 	k          = sc.nextInt(); // number of teams 
 	model      = new CPModel();
 	solver     = new CPSolver();
-	//
+    teamSize = k / n;
+
 	// create constrained integer variables
-	//
+    IntegerVariable[] teamAlloc = new IntegerVariable[n];
+
 	while (sc.hasNext()){
 	    String s = sc.next();
 	    int i = sc.nextInt();
 	    int j = sc.nextInt();
-	    //
+
 	    // add constraints to model
-	    //
-	}
+        if (s.equals("together")) {
+            model.addConstraint(Choco.eq(teamAlloc[i], teamAlloc[j]));
+        } else if (s.equals("apart") {
+            model.addConstraint(Choco.neq(teamAlloc[i], teamAlloc[j]));
+        } else {
+            System.out.println("Error reading line");
+        }
+    }
 	sc.close();
 	//
 	// maybe add more constraints to model
 	//
+    for (int i = 0; i < n; i++) {
+        teamAlloc[i] = Choco.makeIntVar("Player " + Integer.toString(n), 0, k - 1);
+    }
+    for (int i = 0; i < k; i++) {
+        model.addConstraint(occurrence(teamSize, teamAlloc, i));
+    }
 	solver.read(model);
     } 
 
