@@ -24,6 +24,9 @@ public class TeamAllocator {
 
 	// create constrained integer variables
     IntegerVariable[] teamAlloc = new IntegerVariable[n];
+    for (int i = 0; i < n; i++) {
+        teamAlloc[i] = makeIntVar(Integer.toString(i), 0, k - 1);
+    }
 
 	while (sc.hasNext()){
 	    String s = sc.next();
@@ -32,6 +35,7 @@ public class TeamAllocator {
 
 	    // add constraints to model
         if (s.equals("together")) {
+            System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j));
             model.addConstraint(eq(teamAlloc[i], teamAlloc[j]));
         } else if (s.equals("apart")) {
             model.addConstraint(neq(teamAlloc[i], teamAlloc[j]));
@@ -40,22 +44,19 @@ public class TeamAllocator {
         }
     }
 	sc.close();
-	//
+
 	// maybe add more constraints to model
-	//
-    for (int i = 0; i < n; i++) {
-        teamAlloc[i] = makeIntVar("Player " + Integer.toString(n), 0, k - 1);
-    }
-    for (int i = 0; i < k; i++) {
+    /*for (int i = 0; i < k; i++) {
         model.addConstraint(occurrence(teamSize, teamAlloc, i));
-    }
+    }*/
 	solver.read(model);
     } 
 
     boolean solve(){return solver.solve();}
 
     void result(){
-	System.out.println("produce verifiable results from the solver");
+        for (int i = 0; i < k; i++) {
+            String message = 
     }
 
     void stats(){
