@@ -32,9 +32,9 @@ public class TeamAllocator {
 
 	    // add constraints to model
         if (s.equals("together")) {
-            model.addConstraint(Choco.eq(teamAlloc[i], teamAlloc[j]));
-        } else if (s.equals("apart") {
-            model.addConstraint(Choco.neq(teamAlloc[i], teamAlloc[j]));
+            model.addConstraint(eq(teamAlloc[i], teamAlloc[j]));
+        } else if (s.equals("apart")) {
+            model.addConstraint(neq(teamAlloc[i], teamAlloc[j]));
         } else {
             System.out.println("Error reading line");
         }
@@ -44,7 +44,7 @@ public class TeamAllocator {
 	// maybe add more constraints to model
 	//
     for (int i = 0; i < n; i++) {
-        teamAlloc[i] = Choco.makeIntVar("Player " + Integer.toString(n), 0, k - 1);
+        teamAlloc[i] = makeIntVar("Player " + Integer.toString(n), 0, k - 1);
     }
     for (int i = 0; i < k; i++) {
         model.addConstraint(occurrence(teamSize, teamAlloc, i));
