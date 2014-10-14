@@ -62,8 +62,7 @@ eval_range_expr ocl_args par_table var_name = ("DUMMY",[])
 -- ###############################
 main :: IO ()
 main = do 
-    let source = read_F95_src "module_LES_ocl.f95"
-    putStr $ unlines [
+{-    putStr $ unlines [
         "-- read source template from file"
         ,"-- extract OpenACC regions"
         ,"-- parse declarations"
@@ -71,3 +70,7 @@ main = do
         ,"-- generate the target source code" 
         ,"-- write generated source to file"
         ]
+-}
+
+    let source = read_F95_src "module_LES_ocl.f95"
+    write_F95_src "test_output" source

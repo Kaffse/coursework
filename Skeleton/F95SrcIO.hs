@@ -14,4 +14,5 @@ read_F95_src src_name = do
 
 -- given a list of strings, one per line of source code, and the name of the file, write the strings to the file
 write_F95_src :: String -> [String] -> IO ()
-write_F95_src src_name src_lines =  putStrLn "DUMMY!"
+write_F95_src src_name src_lines = do
+    writeFile src_name "test"        
