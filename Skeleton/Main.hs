@@ -9,8 +9,8 @@ import EvalExpr
 import qualified Data.Map as H
 
 {-
-Name 
-Matriculation Number + initial character
+Keir A Smith 
+1102028s
 
 Functional Programming 4
 
@@ -62,6 +62,7 @@ eval_range_expr ocl_args par_table var_name = ("DUMMY",[])
 -- ###############################
 main :: IO ()
 main = do 
+    let source = read_F95_src "module_LES_ocl.f95"
     putStr $ unlines [
         "-- read source template from file"
         ,"-- extract OpenACC regions"
