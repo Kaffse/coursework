@@ -55,8 +55,15 @@ public class TeamAllocator {
     boolean solve(){return solver.solve();}
 
     void result(){
+        String[] message = new String[k] 
         for (int i = 0; i < k; i++) {
-            String message = 
+            message[i] = Integer.toString(i) + " ";
+            for (int j = 0; j < n; j++) {
+                if (solver.getVar(teamAlloc[i]).getVal() == j) {
+                    message[i].concat(Integer.toString(solver.getVar(teamAlloc[i]).getVal()));
+                }
+            }
+        }
     }
 
     void stats(){
