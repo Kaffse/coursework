@@ -12,4 +12,4 @@ for c in string.ascii_lowercase:
         file = r.head(url + c + '/' + dir_name)
         if 'content-length' in file.headers:
             size = file.headers['content-length']
-            print dir_name + " " + size
+            print dir_name + "," + size
