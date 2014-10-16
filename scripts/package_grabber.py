@@ -9,7 +9,7 @@ for c in string.ascii_lowercase:
     html = soup(r.get(url + c).text)
     for tag in html.findAll('a', {'href': True}):
         dir_name = tag.attrMap['href']
-        file = r.get(url + c + '/' + dir_name)
+        file = r.head(url + c + '/' + dir_name)
         if 'content-length' in file.headers:
             size = file.headers['content-length']
             print dir_name + " " + size
