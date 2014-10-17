@@ -5,7 +5,7 @@ from BeautifulSoup import BeautifulSoup as soup
 #url = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/20/'
 url = 'http://dl.fedoraproject.org/pub/fedora/linux/releases/20/Everything/x86_64/os/Packages/'
 
-for c in string.ascii_lowercase:
+for c in string.ascii_lowercase[6:]:
     html = soup(r.get(url + c).text)
     for tag in html.findAll('a', {'href': True}):
         dir_name = tag.attrMap['href']
