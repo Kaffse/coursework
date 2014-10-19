@@ -13,6 +13,7 @@ public class TeamAllocator {
     int n;
     int k;
     int teamSize;
+	IntegerVariable[] teamAlloc;
 
     TeamAllocator (String fname) throws IOException {
 	Scanner sc = new Scanner(new File(fname));
@@ -23,10 +24,7 @@ public class TeamAllocator {
     teamSize = k / n;
 
 	// create constrained integer variables
-    IntegerVariable[] teamAlloc = new IntegerVariable[n];
-    for (int i = 0; i < n; i++) {
-        teamAlloc[i] = makeIntVar(Integer.toString(i), 0, k - 1);
-    }
+	teamAlloc = makeIntVarArray("Teams", n, 0, k - 1);
 
 	while (sc.hasNext()){
 	    String s = sc.next();
@@ -35,7 +33,7 @@ public class TeamAllocator {
 
 	    // add constraints to model
         if (s.equals("together")) {
-            System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j));
+            //System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j));
             model.addConstraint(eq(teamAlloc[i], teamAlloc[j]));
         } else if (s.equals("apart")) {
             model.addConstraint(neq(teamAlloc[i], teamAlloc[j]));
@@ -46,24 +44,28 @@ public class TeamAllocator {
 	sc.close();
 
 	// maybe add more constraints to model
-    /*for (int i = 0; i < k; i++) {
-        model.addConstraint(occurrence(teamSize, teamAlloc, i));
-    }*/
+	IntegerVariable temp;
+    for (int i = 0; i < k; i++) {
+		temp = new IntegerVariable("temp", i, i);
+        model.addConstraint(occurrence(teamSize, temp, teamAlloc));
+    }
 	solver.read(model);
     } 
 
     boolean solve(){return solver.solve();}
 
     void result(){
-        String[] message = new String[k] 
-        for (int i = 0; i < k; i++) {
-            message[i] = Integer.toString(i) + " ";
-            for (int j = 0; j < n; j++) {
-                if (solver.getVar(teamAlloc[i]).getVal() == j) {
-                    message[i].concat(Integer.toString(solver.getVar(teamAlloc[i]).getVal()));
-                }
-            }
+		int[][] teams = new int[k][teamSize];
+		int[] lastpos = new int[k];
+        for (int i = 0; i < n; i++) {
+			//System.out.println("i: " + Integer.toString(i));
+			//System.out.println(solver.getVar(teamAlloc[i]));
+			teams[solver.getVar(teamAlloc[i]).getVal()][lastpos[i]] = i;
+			lastpos[i]++;
         }
+		for (int i = 0; i < k; i++) {
+			System.out.println(Integer.toString(i) + Arrays.toString(teams[i]));
+		};
     }
 
     void stats(){
@@ -74,6 +76,6 @@ public class TeamAllocator {
 	TeamAllocator ta = new TeamAllocator(args[0]);
 	if (ta.solve()) ta.result();
 	else System.out.println(false);
-	//ta.stats(); // optional
+	ta.stats(); // optional
     }
 }
