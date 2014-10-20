@@ -21,10 +21,10 @@ public class TeamAllocator {
 	k          = sc.nextInt(); // number of teams 
 	model      = new CPModel();
 	solver     = new CPSolver();
-    teamSize = k / n;
+    teamSize = n / k;
 
 	// create constrained integer variables
-	teamAlloc = makeIntVarArray("Teams", n, 0, k - 1);
+	teamAlloc = makeIntVarArray("Player", n, 0, k - 1);
 
 	while (sc.hasNext()){
 	    String s = sc.next();
@@ -33,9 +33,10 @@ public class TeamAllocator {
 
 	    // add constraints to model
         if (s.equals("together")) {
-            //System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j));
+            //System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j) + " Are together");
             model.addConstraint(eq(teamAlloc[i], teamAlloc[j]));
         } else if (s.equals("apart")) {
+            //System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j) + " Are apart");
             model.addConstraint(neq(teamAlloc[i], teamAlloc[j]));
         } else {
             System.out.println("Error reading line");
@@ -44,11 +45,10 @@ public class TeamAllocator {
 	sc.close();
 
 	// maybe add more constraints to model
-	IntegerVariable temp;
     for (int i = 0; i < k; i++) {
-		temp = new IntegerVariable("temp", i, i);
-        model.addConstraint(occurrence(teamSize, temp, teamAlloc));
+        model.addConstraint(occurrence(teamSize, teamAlloc, i));
     }
+    //for (int i=0; i < n; i++) {System.out.println(teamAlloc[i]);}
 	solver.read(model);
     } 
 
@@ -57,14 +57,20 @@ public class TeamAllocator {
     void result(){
 		int[][] teams = new int[k][teamSize];
 		int[] lastpos = new int[k];
+        int thisTeam;
         for (int i = 0; i < n; i++) {
 			//System.out.println("i: " + Integer.toString(i));
-			//System.out.println(solver.getVar(teamAlloc[i]));
-			teams[solver.getVar(teamAlloc[i]).getVal()][lastpos[i]] = i;
-			lastpos[i]++;
+            thisTeam = solver.getVar(teamAlloc[i]).getVal();
+			//System.out.println(thisTeam);
+			teams[thisTeam][lastpos[thisTeam]] = i;
+			lastpos[thisTeam]++;
         }
 		for (int i = 0; i < k; i++) {
-			System.out.println(Integer.toString(i) + Arrays.toString(teams[i]));
+			System.out.print(Integer.toString(i));
+            for (int j = 0; j < teamSize; j++) {
+                System.out.print(" " + Integer.toString(teams[i][j]));
+            }
+            System.out.print("\n");
 		};
     }
 
