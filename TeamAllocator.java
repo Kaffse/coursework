@@ -33,10 +33,8 @@ public class TeamAllocator {
 
 	    // add constraints to model
         if (s.equals("together")) {
-            //System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j) + " Are together");
             model.addConstraint(eq(teamAlloc[i], teamAlloc[j]));
         } else if (s.equals("apart")) {
-            //System.out.println("i: " + Integer.toString(i) + " j: " + Integer.toString(j) + " Are apart");
             model.addConstraint(neq(teamAlloc[i], teamAlloc[j]));
         } else {
             System.out.println("Error reading line");
@@ -48,7 +46,6 @@ public class TeamAllocator {
     for (int i = 0; i < k; i++) {
         model.addConstraint(occurrence(teamSize, teamAlloc, i));
     }
-    //for (int i=0; i < n; i++) {System.out.println(teamAlloc[i]);}
 	solver.read(model);
     } 
 
@@ -59,9 +56,7 @@ public class TeamAllocator {
 		int[] lastpos = new int[k];
         int thisTeam;
         for (int i = 0; i < n; i++) {
-			//System.out.println("i: " + Integer.toString(i));
             thisTeam = solver.getVar(teamAlloc[i]).getVal();
-			//System.out.println(thisTeam);
 			teams[thisTeam][lastpos[thisTeam]] = i;
 			lastpos[thisTeam]++;
         }

@@ -1,0 +1,21 @@
+---Model used---
+I decided to go with a simple model of a single array of ints in which the index represents the player (this naturally holds the one player per team and all players must have a team constraints) and each held int representing the team  the player belongs to.
+Each variable in this list must be in the domain of 0 to <number of teams - 1>.
+By simply adding a constraint (here I used occurrence) to ensure each team number occurs the correct number of times (players/team size) I can ensure the correct number of players are allocated to each team.
+Lastly I simply need to loop through the together and apart contrasts, adding a equals to constraint to list indexes representing the correct players to ensure they are together or not equals to for apart.
+
+--Thoughts on the model--
+Often the simplest is the best, in this case I believe this model hits most of the nails on the head. However there are issues, as always.
+I am personally not happy with the occurrence constraint, I feel this could be done using sets or something similar to ensure team sizes are consistent.
+I am sure that the use of the occurrence constraint ensures the solver takes a long time to discover that problems are unsolvable.
+Bar this, I am happy with the natural constraints of using a 1d array and the together and apart constraints are handled elegantly enough they shouldn't cause much overhead when the solver gets it's teeth into it.
+
+--Performance of the model--
+The model seems to perform well in most situations, especially in solvable cases. However there are cases in which it takes a great deal of time (10s of seconds) to discover a unsolvable problem.
+Again I believe this is the fault of the occurrence constraint (and likely being naive).
+I got the chance to try the model against some even harder problems supplied by Ciaran, which empithised this issue to a much greater extent.
+
+--Alternate models--
+I considered using a list of sets, one set per team. However I quickly noticed how much of a pain it would be to ensure together/apart constraints and ensure players aren't shared between teams.
+Also considered was a 2d array of teams and their players. I felt that this would get very complicated very quickly as I would need to dig into each array, setting up constraints. It worried me that this would effect performance overall as it got more complicated.
+In the end I decided to go for the simplest approach, as it's usually the correct one.
