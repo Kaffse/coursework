@@ -8,4 +8,26 @@ Further research into package manegers, further refining the types and which lev
 Also noteworthy was his attempt to build a global package manager for all devices big and small. He planned to implement peer "neibourhoods" which knew about packages they all had a common interest in. They could subscribe to packages they were interested in via a shared notice board. Publishers could update packages and have the notice boards inform peers there was a new version avalible to get which would then propagate through the network.
 
 Week 3:
-Fuck
+Much discussion took place regarding the future of the project, considering
+the ammount of previous research put into the area. We had a brain storming
+session and came out with an idea to change the project direction to look at
+package recommendations. We spoke about a system that records what users
+install and uses this data on a backend to make recommndations to users based
+on what they already have installed/are currently installing.
+
+Week 4:
+The idea was futher discussed and systems currently being used were
+investigated. One of note was NuGet Concierge which supports .net packages.
+This manager implemented a graph based recommnedation engine which told users
+what other packages were popularly installed with the ones they had. However
+this uses a 1-1 relation between packages, and doesn't look through the 'web'
+of packages.
+Discussion was had regarding using RPM and DNF (Fedora's new package manager
+replacing Yum) for the project.
+
+Week 5: 
+It was discovered that DNF allows plugins which we can use to implement our
+system on the user's side. We discussed a system diagram with our plugin
+grabbing a list of user's packages when installed and feeding that to a
+backend server we run. Everytime the user does operations with DNF, our plugin
+can also do work to find recommndations. 
