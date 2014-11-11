@@ -1,0 +1,14 @@
+course: CA4
+exercise: 1
+date: 2014-10-27
+surname: Smith
+forename: Keir
+email: 1102028s@student.gla.ac.uk
+
+Firstly I formed a formula for working out the fibanacci sequence, akin to psuedo code. From this I used building blocks (mux for ifs and adders for + etc) to form a circuit design.
+It was a simple case of translating this to Hydra and then writing the test data around it.
+My solution works correctly, however it doesn't handle overflow. There is no specification for how to handle this so I left it out.
+Posible solutions would be feeding the c out of the adder into an OR with the reset value, meaning overflow would reset both x and y to 1 and 0 respectivally.
+Other solutions would require more thought and potentially changing the circuit design (for example switching to registers and holding the last value on overflow)
+Par this I feel it is a entirely standard and "correct" solution.
+For testing I reset the circut, let it run for a while (reset = 0) to ensure the sequence was correct, then reset again to ensure it worked correctly.
