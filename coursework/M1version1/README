@@ -1,0 +1,10 @@
+M1 circuit for Sigma16 architecture
+Hydra hardware description language
+John O'Donnell, 2014
+
+make           compile, execute, and save output as text file
+make clean     remove auxiliary and temporary files
+
+M1cpu.hs       Defines the processor circuit
+M1run.hs       Simulation driver for M1cpu
+ArrayMax.hs    (main) Machine language program (find max element of array)
