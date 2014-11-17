@@ -2,6 +2,14 @@ from dnfpluginscore import logger
 
 import dnf
 
+def register(packagelist, uid):
+    return None
+
+def installed_package(package, uid):
+    return None
+
+def uninstalled_package(package, uid):
+    return None
 
 class Recommend(dnf.Plugin):
 
@@ -28,3 +36,9 @@ class Recommend(dnf.Plugin):
 class RecommendCommand(dnf.cli.Command):
     aliases = ['recommend']
     summary = _('Makes a recommendation based on your currently installed packaged')
+
+    def update_packages(package, uid):
+        return None
+
+    def get_recommend_list(uid):
+        return None

@@ -31,3 +31,6 @@ system on the user's side. We discussed a system diagram with our plugin
 grabbing a list of user's packages when installed and feeding that to a
 backend server we run. Everytime the user does operations with DNF, our plugin
 can also do work to find recommndations. 
+
+Week 6:
+This week we discussed writing the plugin fully with a mock API for next week in an attempt to get a 'Wizard of Oz' style demo working.
