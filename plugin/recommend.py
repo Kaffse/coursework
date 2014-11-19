@@ -1,15 +1,22 @@
 from dnfpluginscore import logger
 
 import dnf
+import requests as r
+import json
+
+SERVER_ADDRESS = 127.0.0.1
 
 def register(packagelist, uid):
-    return None
+    data = json.dumps({'packagelist':packagelist, 'uid':uid})
+    return r.post(SERVER_ADDRESS + '/register', data)
 
 def installed_package(package, uid):
-    return None
+    data = json.dumps({'package':package, 'uid':uid})
+    return r.post(SERVER_ADDRESS + '/install', data)
 
 def uninstalled_package(package, uid):
-    return None
+    data = json.dumps({'package':package, 'uid':uid})
+    return r.post(SERVER_ADDRESS + '/uninstall', data)
 
 class Recommend(dnf.Plugin):
 
@@ -37,8 +44,10 @@ class RecommendCommand(dnf.cli.Command):
     aliases = ['recommend']
     summary = _('Makes a recommendation based on your currently installed packaged')
 
-    def update_packages(package, uid):
-        return None
+    def update_packages(packagelist, uid):
+        data = json.dumps({'packagelist':packagelist, 'uid':uid})
+        return r.post(SERVER_ADDRESS + '/update', data)
 
     def get_recommend_list(uid):
-        return None
+        data = json.dumps({'uid':uid})
+        return r.post(SERVER_ADDRESS + '/recommend', data)
