@@ -1,0 +1,42 @@
+Constraint Programming AX 2
+Keir Smith
+1102028s
+
+====Model====
+
+I decided to go for the most simple model for this exercise. In this case my decision variables where an array of integer varaibles of size number of meetings, each with a domain of size equal to the number of timeslots in range 0 to timeslots - 1.
+I also needed several other datastructures to support the construction of constraints:
+
+agentAttendance - a 2D array showing which agent attends which meeting
+distanceMatrix - a 2D array showing the distances between meetings i and j where distanceMatrix[i][j] is the distance between them
+attended - an array showing which meetings are attended at all, 1 being an attended meeting, 0 with no agents attending
+clash - a 2D array showing when meetings [i][j] cannot be in the same timeslot due to sharing an agent, they must adhear to the distance rule
+
+In regards to constraints, the following must be satisfied:
+
+1. Meetings attended by the same agent cannot happen in the same timeslot
+2. Meetings attended by the same agent must have timeslots free between them > their distanceMatrix value
+3. Meetings must fall inside the timeslots allocated in the problem
+
+In order to comply with 1 I checked if an agent attends 2 meetings and added a clash to the clash matrix, then later I ensured the two meetings could not occupy the same timeslot using the distanceGT constraint.
+By fulling 1, I also fufill 2.
+3. is fufilled by my domain constraints.
+
+Looking at my code in hindsight, I realise the neq (not equals to) constraint between meetings is a pointless over constraint as the distance matrix holds this true anyway. However, I've already compiled all my results with it there, so for sake of accucary with my current results I've left it unmodified.
+
+To modify my model for optimise I didn't have to to much. I simply added a new integer variable called highSlot and ensured it was equal to the variable with the highest assingined domain. I then added a solver time limit from the command line input to adhear to the other requirement and finally changed the solve method to a minimise highSlot method for the solver. 
+
+====Huristics====
+
+I looked into variable ordering huristics and never managed to correctly implement them. I was attempting to implement a smallest domain first variable ordering huristic but didn't manage to successfuly get it to run in CHOCO.
+
+====Results====
+Please see the end of this file for the results.
+I noticed that Solve seemed to be unsucessful on some of the problems. I assume there must be an issue with my code, however Optimize seems to get almost all of them, except the ones I assume are impossible.
+Saying this, I am assuming that Solve isn't correct, however I couldn't find a source of the problem looking through the code.
+
+====Alternitave Model====
+An aternative way of modelling this would be a meetings x timeslots array of decision variables with each row of timeslots summing to 1.
+This model is a little more complicated than the one I decided to use, as it would require further constraints to fufull 1, 2 and 3 above. However, as a model, it's easy to understand.
+
+====Solve Results ====

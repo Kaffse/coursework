@@ -1,0 +1,374 @@
+==> rProblem_sol/result_100-50-10-2-00.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-2-01.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-2-02.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-2-03.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-2-04.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-9-00.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-9-01.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-9-02.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-9-03.txt <==
+true
+
+==> rProblem_sol/result_100-50-10-9-04.txt <==
+true
+
+==> rProblem_sol/result_10-5-20-2-00.txt <==
+true
+
+==> rProblem_sol/result_10-5-30-2-00.txt <==
+true
+
+==> rProblem_sol/result_20-10-10-2-00.txt <==
+true
+
+==> rProblem_sol/result_20-10-10-2-01.txt <==
+true
+
+==> rProblem_sol/result_20-10-10-2-02.txt <==
+true
+
+==> rProblem_sol/result_20-10-10-2-03.txt <==
+true
+
+==> rProblem_sol/result_20-10-10-2-04.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-2-00.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-2-01.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-2-02.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-2-03.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-2-04.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-9-00.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-9-01.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-9-02.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-9-03.txt <==
+true
+
+==> rProblem_sol/result_20-10-20-9-04.txt <==
+true
+
+==> rProblem_sol/result_20-10-30-2-00.txt <==
+true
+
+==> rProblem_sol/result_20-10-30-2-01.txt <==
+true
+
+==> rProblem_sol/result_20-10-30-2-02.txt <==
+true
+
+==> rProblem_sol/result_20-10-30-2-03.txt <==
+true
+
+==> rProblem_sol/result_20-10-30-2-04.txt <==
+true
+
+==> rProblem_sol/result_40-10-20-9-00.txt <==
+true
+
+==> rProblem_sol/result_40-10-20-9-01.txt <==
+true
+
+==> rProblem_sol/result_40-10-20-9-02.txt <==
+true
+
+==> rProblem_sol/result_40-10-20-9-03.txt <==
+true
+
+==> rProblem_sol/result_40-10-20-9-04.txt <==
+true
+
+==> rProblem_sol/result_opt-10-5-30-2-00.txt <==
+true
+==> problem_sol/result_allProblems.txt <==
+
+==> problem_sol/result_problem01.txt <==
+true
+
+==> problem_sol/result_problem02.txt <==
+true
+
+==> problem_sol/result_problem03.txt <==
+true
+
+==> problem_sol/result_problem04.txt <==
+true
+
+==> problem_sol/result_problem05.txt <==
+true
+
+==> problem_sol/result_problem06.txt <==
+
+==> problem_sol/result_problem07.txt <==
+
+==> problem_sol/result_problem08.txt <==
+
+==> problem_sol/result_problem09.txt <==
+
+==> problem_sol/result_problem10.txt <==
+
+==> problem_sol/result_problem11.txt <==
+
+==> problem_sol/result_problem12.txt <==
+
+==> problem_sol/result_problem13.txt <==
+
+==> problem_sol/result_problem14.txt <==
+
+==> problem_sol/result_problem15.txt <==
+
+==> problem_sol/result_problem16.txt <==
+
+==> problem_sol/result_problem17.txt <==
+
+==> problem_sol/result_problem18.txt <==
+
+==> problem_sol/result_problem19.txt <==
+true
+
+==> problem_sol/result_problem20.txt <==
+true
+
+==> problem_sol/result_problem21.txt <==
+true
+
+==> problem_sol/result_problem22.txt <==
+true
+
+==> problem_sol/result_problem23.txt <==
+true
+
+==> problem_sol/result_problem24.txt <==
+true
+
+==> problem_sol/result_problem25.txt <==
+
+==> problem_sol/result_problem26.txt <==
+
+==> problem_sol/result_problem27.txt <==
+==> rProblem_sol/sol_100-50-10-2-00.txt <==
+nodes: 143218   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-2-01.txt <==
+nodes: 103796   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-2-02.txt <==
+nodes: 122739   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-2-03.txt <==
+nodes: 117268   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-2-04.txt <==
+nodes: 112862   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-9-00.txt <==
+nodes: 254413   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-9-01.txt <==
+nodes: 218396   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-9-02.txt <==
+nodes: 179336   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-9-03.txt <==
+nodes: 179797   cpu: 10000
+
+==> rProblem_sol/sol_100-50-10-9-04.txt <==
+nodes: 226494   cpu: 10000
+
+==> rProblem_sol/sol_10-5-20-2-00.txt <==
+nodes: 12   cpu: 5
+
+==> rProblem_sol/sol_10-5-30-2-00.txt <==
+nodes: 436   cpu: 130
+
+==> rProblem_sol/sol_20-10-10-2-00.txt <==
+nodes: 96   cpu: 35
+
+==> rProblem_sol/sol_20-10-10-2-01.txt <==
+nodes: 60   cpu: 25
+
+==> rProblem_sol/sol_20-10-10-2-02.txt <==
+nodes: 53   cpu: 26
+
+==> rProblem_sol/sol_20-10-10-2-03.txt <==
+nodes: 43   cpu: 13
+
+==> rProblem_sol/sol_20-10-10-2-04.txt <==
+nodes: 39   cpu: 17
+
+==> rProblem_sol/sol_20-10-20-2-00.txt <==
+nodes: 197   cpu: 81
+
+==> rProblem_sol/sol_20-10-20-2-01.txt <==
+nodes: 1975   cpu: 322
+
+==> rProblem_sol/sol_20-10-20-2-02.txt <==
+nodes: 52789   cpu: 1156
+
+==> rProblem_sol/sol_20-10-20-2-03.txt <==
+nodes: 3444   cpu: 328
+
+==> rProblem_sol/sol_20-10-20-2-04.txt <==
+nodes: 105   cpu: 41
+
+==> rProblem_sol/sol_20-10-20-9-00.txt <==
+nodes: 353   cpu: 141
+
+==> rProblem_sol/sol_20-10-20-9-01.txt <==
+nodes: 1996   cpu: 248
+
+==> rProblem_sol/sol_20-10-20-9-02.txt <==
+nodes: 1070   cpu: 194
+
+==> rProblem_sol/sol_20-10-20-9-03.txt <==
+nodes: 72501   cpu: 1741
+
+==> rProblem_sol/sol_20-10-20-9-04.txt <==
+nodes: 4182   cpu: 374
+
+==> rProblem_sol/sol_20-10-30-2-00.txt <==
+nodes: 16620   cpu: 666
+
+==> rProblem_sol/sol_20-10-30-2-01.txt <==
+nodes: 387990   cpu: 9728
+
+==> rProblem_sol/sol_20-10-30-2-02.txt <==
+nodes: 241337   cpu: 6656
+
+==> rProblem_sol/sol_20-10-30-2-03.txt <==
+nodes: 410395   cpu: 10000
+
+==> rProblem_sol/sol_20-10-30-2-04.txt <==
+nodes: 27831   cpu: 842
+
+==> rProblem_sol/sol_40-10-20-9-00.txt <==
+nodes: 503396   cpu: 10000
+
+==> rProblem_sol/sol_40-10-20-9-01.txt <==
+nodes: 356418   cpu: 10000
+
+==> rProblem_sol/sol_40-10-20-9-02.txt <==
+nodes: 366207   cpu: 10000
+
+==> rProblem_sol/sol_40-10-20-9-03.txt <==
+nodes: 686867   cpu: 10000
+
+==> rProblem_sol/sol_40-10-20-9-04.txt <==
+nodes: 464363   cpu: 10000
+
+==> rProblem_sol/sol_opt-10-5-30-2-00.txt <==
+nodes: 0   cpu: 0
+==> problem_sol/sol_allProblems.txt <==
+
+==> problem_sol/sol_problem01.txt <==
+nodes: 171   cpu: 93
+
+==> problem_sol/sol_problem02.txt <==
+nodes: 703   cpu: 204
+
+==> problem_sol/sol_problem03.txt <==
+nodes: 547   cpu: 188
+
+==> problem_sol/sol_problem04.txt <==
+nodes: 169   cpu: 89
+
+==> problem_sol/sol_problem05.txt <==
+nodes: 193   cpu: 110
+
+==> problem_sol/sol_problem06.txt <==
+nodes: 375   cpu: 157
+
+==> problem_sol/sol_problem07.txt <==
+nodes: 652   cpu: 206
+
+==> problem_sol/sol_problem08.txt <==
+nodes: 619   cpu: 182
+
+==> problem_sol/sol_problem09.txt <==
+nodes: 363   cpu: 141
+
+==> problem_sol/sol_problem10.txt <==
+nodes: 392   cpu: 158
+
+==> problem_sol/sol_problem11.txt <==
+nodes: 814   cpu: 213
+
+==> problem_sol/sol_problem12.txt <==
+nodes: 82   cpu: 58
+
+==> problem_sol/sol_problem13.txt <==
+nodes: 87   cpu: 57
+
+==> problem_sol/sol_problem14.txt <==
+nodes: 103   cpu: 67
+
+==> problem_sol/sol_problem15.txt <==
+nodes: 709   cpu: 191
+
+==> problem_sol/sol_problem16.txt <==
+nodes: 228   cpu: 110
+
+==> problem_sol/sol_problem17.txt <==
+nodes: 247   cpu: 117
+
+==> problem_sol/sol_problem18.txt <==
+nodes: 357   cpu: 156
+
+==> problem_sol/sol_problem19.txt <==
+nodes: 3863   cpu: 547
+
+==> problem_sol/sol_problem20.txt <==
+nodes: 1509   cpu: 229
+
+==> problem_sol/sol_problem21.txt <==
+nodes: 535   cpu: 165
+
+==> problem_sol/sol_problem22.txt <==
+nodes: 1283   cpu: 312
+
+==> problem_sol/sol_problem23.txt <==
+nodes: 356   cpu: 154
+
+==> problem_sol/sol_problem24.txt <==
+nodes: 103   cpu: 58
+
+==> problem_sol/sol_problem25.txt <==
+nodes: 49   cpu: 49
+
+==> problem_sol/sol_problem26.txt <==
+nodes: 13908   cpu: 593
+
+==> problem_sol/sol_problem27.txt <==
+nodes: 19   cpu: 23

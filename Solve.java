@@ -16,6 +16,7 @@ public class Solve {
     int[][] agentAttendance;    //2D array representing the meetings each agent must attend
     int[][] distanceMatrix;     //2D array representing distances between each meeting
     int[] attended;     //Array of meetings showing if they are being attended or not
+    int[][] clash;      //2D array showing all meetings which cannot be on the same slot
 
     IntegerVariable[] meetingAloc;  //A 2D array representing which timeslot each meeting shall be allocated to
 
@@ -36,6 +37,7 @@ public class Solve {
         agentAttendance = new int[agents][meetings];
         distanceMatrix = new int[meetings][meetings];
         attended = new int[meetings];
+        clash = new int[meetings][meetings];
 
         //Get the agent meeting attendance
         //For each agent...
@@ -59,6 +61,9 @@ public class Solve {
                         if (agentAttendance[i][k] == 1) {     //If the agenet attends this meeting...
                             //If the agent attends this meeting, ensure they don't clash
                             model.addConstraint(neq(meetingAloc[j], meetingAloc[k]));
+                            //Add clashes
+                            clash[j][k] = 1;
+                            clash[k][j]= 1;
                         }
                     }
                 }
@@ -82,7 +87,7 @@ public class Solve {
         for (int i = 0; i < meetings; i++) {
             if (attended[i] == 1) {
                 for (int j = i + 1; j < meetings; j++) {
-                    if (attended[j] == 1) {
+                    if (attended[j] == 1 && clash[i][j] == 1) {
                         model.addConstraint(distanceGT(meetingAloc[i], meetingAloc[j], distanceMatrix[i][j]));
                     }
                 }
