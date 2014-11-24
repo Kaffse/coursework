@@ -31,3 +31,7 @@ system on the user's side. We discussed a system diagram with our plugin
 grabbing a list of user's packages when installed and feeding that to a
 backend server we run. Everytime the user does operations with DNF, our plugin
 can also do work to find recommndations. 
+
+Week 6:
+This week we discussed moving forward in the project, how best to start implementation. We decided it would be best to start with the plugin and a mock API, allowing us to simulate the client-side interactions with the server.
+I now have a diagram of the system and a mock API, plus looked into a DNF plugin, which seems fairly trivial.`
