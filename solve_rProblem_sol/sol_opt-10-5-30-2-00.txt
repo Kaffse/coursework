@@ -1,0 +1,1 @@
+nodes: 1   cpu: 1
