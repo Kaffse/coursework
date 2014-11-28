@@ -1,17 +1,19 @@
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AuctionImpl extends java.rmi.server.UnicastRemoteObject implements Auction {
     private UUID auction_id;
-    private int owner_id;
+    private UUID owner_id;
     private String item_name;
     private int min_bid;
     private Date end_time;
     private CopyOnWriteArrayList<Bid> bid_list;
 
-    public AuctionImpl(int owner, String name, int min, Date end) throws java.rmi.RemoteException{
+    public AuctionImpl(UUID owner, String name, int min, Date end) throws java.rmi.RemoteException{
         super();
         auction_id = UUID.randomUUID();
         owner_id = owner;
@@ -19,14 +21,14 @@ public class AuctionImpl extends java.rmi.server.UnicastRemoteObject implements 
         min_bid = min;
         end_time = end;
         bid_list = new CopyOnWriteArrayList<Bid>();
-        bid_list.add(new Bid(0, 0));
+        bid_list.add(new Bid(UUID.randomUUID(), 0));
     }
 
     public UUID getId() throws java.rmi.RemoteException{
         return auction_id;
     }
 
-    public int getOwner() throws java.rmi.RemoteException{
+    public UUID getOwner() throws java.rmi.RemoteException{
         return owner_id;
     }
 
@@ -55,10 +57,25 @@ public class AuctionImpl extends java.rmi.server.UnicastRemoteObject implements 
             return false;
         }
     }
+
+    public ArrayList<String> resolveAuction() {
+        ArrayList<E> results = new ArrayList<E>();
+        if (getHighestBid().getBid() < min_bid) {
+            results.add("Minimum bid not met! Item not sold.");
+        } else {
+            results.add("Winner: " + getHighestBid().getId() + " Winning Bid: " + getHighestBid().getBid());
+        }
+        Iterator<Bid> bid_it = bid_list.iterator();
+        while (bid_it.hasNext()) {
+            results.add(bid_it.next().getId());
+        }
+        return results;
+    }
+
     
     public String toString(){
         try{
-            return item_name + " currently at " + getHighestBid().getPrettyBid() + ". Ends at " + end_time.toString();
+            return "ID: " + auction_id + " Name: " + item_name + " Current Bid: " + getHighestBid().getBid() + " Ends: " + end_time.toString();
         } catch(java.rmi.RemoteException e){
             System.out.println("fuck");
             return "fuck";

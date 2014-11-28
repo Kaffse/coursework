@@ -1,9 +1,12 @@
-public class Bid {
+import java.io.Serializable;
+import java.util.UUID;
 
-    private int bidder_id;
+public class Bid implements java.io.Serializable{
+
+    private UUID bidder_id;
     private int bid;
 
-    public Bid(int id, int ammount) {
+    public Bid(UUID id, int ammount) {
         bidder_id = id;
         bid = ammount;
     }
@@ -12,7 +15,7 @@ public class Bid {
         return bid;
     }
 
-    public int getId() {
+    public UUID getId() {
         return bidder_id;
     }
 
