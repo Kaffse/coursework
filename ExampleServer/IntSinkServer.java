@@ -14,10 +14,10 @@ class IntSinkServer {
             Registry reg = LocateRegistry.getRegistry(regHost,
                                                       regPort.intValue());
             reg.rebind("intSink", iss);
-	} catch (Exception e) {
-            System.out.format("intSink: export error: %s\n", e.getMessage());
-            e.printStackTrace();
-            System.exit(1);
-	}
+        } catch (Exception e) {
+                System.out.format("intSink: export error: %s\n", e.getMessage());
+                e.printStackTrace();
+                System.exit(1);
+        }
     }
 }
