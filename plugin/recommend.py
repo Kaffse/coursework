@@ -4,7 +4,7 @@ import dnf
 import requests as r
 import json
 
-SERVER_ADDRESS = 127.0.0.1
+SERVER_ADDRESS = 'http://127.0.0.1'
 
 def register(packagelist, uid):
     data = json.dumps({'packagelist':packagelist, 'uid':uid})
@@ -42,12 +42,19 @@ class Recommend(dnf.Plugin):
 
 class RecommendCommand(dnf.cli.Command):
     aliases = ['recommend']
-    summary = _('Makes a recommendation based on your currently installed packaged')
+    summary = 'Makes a recommendation based on your currently installed packaged'
 
-    def update_packages(packagelist, uid):
+    def update_packages(self, packagelist, uid):
         data = json.dumps({'packagelist':packagelist, 'uid':uid})
-        return r.post(SERVER_ADDRESS + '/update', data)
+        response =  r.post(SERVER_ADDRESS + '/update', data)
+        return response.text
 
     def get_recommend_list(uid):
         data = json.dumps({'uid':uid})
         return r.post(SERVER_ADDRESS + '/recommend', data)
+
+    def run(self, extcmds):
+        """Execute the command."""
+
+        list = [100]
+        print(self.update_packages(list ,100))
