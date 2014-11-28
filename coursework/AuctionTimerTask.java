@@ -1,4 +1,5 @@
 import java.util.TimerTask;
+import java.rmi.RemoteException;
 import java.util.UUID;
 
 public class AuctionTimerTask extends TimerTask {
@@ -10,7 +11,11 @@ public class AuctionTimerTask extends TimerTask {
         cata = c;
     }
 
-    public void run() {
-        cata.getAuction(auction_id).resolveAuction();
+    public void run(){
+        try{
+            cata.resolveAuction(auction_id);
+        } catch(java.rmi.RemoteException e){
+            System.out.print(e);
+        }
     }
 }

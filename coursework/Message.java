@@ -1,6 +1,7 @@
 import java.util.UUID;
+import java.io.Serializable;
 
-public class Message {
+public class Message implements java.io.Serializable{
     private UUID client;
     private String message;
 

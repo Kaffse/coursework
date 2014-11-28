@@ -17,9 +17,11 @@ public class AuctionClient {
             Catalogue cata = (Catalogue) Naming.lookup("rmi://localhost/Auction");
             System.out.println("Connection Successful!");
 
+            /*
             ConcurrentLinkedQueue<Message> messageQ = cata.getMessageQ();
             MessageQueueThread msgT = new MessageQueueThread(messageQ, my_id);
             msgT.run();
+            */
 
             System.out.println("The help Comamnd is avaliable");
             System.out.println("Please End Input with ^C");
@@ -34,6 +36,7 @@ public class AuctionClient {
                     case "bid": bid(cata, my_id, input); break;
                     case "add": add(cata, my_id, input); break;
                 }
+                checkMessages(cata, my_id);
                 System.out.println("Please Enter a Command: ");
                 command = input.next().toLowerCase();
             }
@@ -94,10 +97,10 @@ public class AuctionClient {
         int mini = Integer.parseInt(input.next());
 
         System.out.println("Please enter end year: ");
-        int year = Integer.parseInt(input.next());
+        int year = Integer.parseInt(input.next()) - 1900;
 
         System.out.println("Please enter end month: ");
-        int month = Integer.parseInt(input.next());
+        int month = Integer.parseInt(input.next()) - 1;
 
         System.out.println("Please enter end day: ");
         int day = Integer.parseInt(input.next());
@@ -112,4 +115,16 @@ public class AuctionClient {
         UUID id = cata.addAuction(uid, name, mini, end);
         System.out.println("Your Auction ID is: " + id.toString());
     } 
+
+    private static void checkMessages(Catalogue cata, UUID my_id) throws java.rmi.RemoteException{
+        if (cata.isEmpty()) {
+            return;
+        }
+        Message top = (Message)cata.poll();
+        if (top.getId().equals(my_id)) {
+            System.out.println(top.getMessage());
+        } else {
+            cata.add(top);
+        }
+    }
 }

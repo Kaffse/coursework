@@ -21,7 +21,7 @@ public class AuctionImpl extends java.rmi.server.UnicastRemoteObject implements 
         min_bid = min;
         end_time = end;
         bid_list = new CopyOnWriteArrayList<Bid>();
-        bid_list.add(new Bid(UUID.randomUUID(), 0));
+        bid_list.add(new Bid(owner, 0));
     }
 
     public UUID getId() throws java.rmi.RemoteException{
@@ -58,8 +58,8 @@ public class AuctionImpl extends java.rmi.server.UnicastRemoteObject implements 
         }
     }
 
-    public ArrayList<String> resolveAuction() {
-        ArrayList<E> results = new ArrayList<E>();
+    public ArrayList<Object> resolveAuction() throws java.rmi.RemoteException{
+        ArrayList<Object> results = new ArrayList<Object>();
         if (getHighestBid().getBid() < min_bid) {
             results.add("Minimum bid not met! Item not sold.");
         } else {
