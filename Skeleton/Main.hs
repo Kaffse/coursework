@@ -16,13 +16,13 @@ Functional Programming 4
 
 Assessed Exercise 1 (Mandatory): Parsing, Code Generation and State Manipulation in Haskell: a Real-world Application
 
-Date
+03/12/14
 -}
 
 {-
 Status report:
 
-Report the status of your submission. Which parts did you do? Does your solution work? What bugs are you aware of? Which extensions, if any, did you implement?
+Currerntly the soltion only reads in files, and writes placeholder text, none of the parsing or any of the core functioanlity is even written.
         
 -}
 
