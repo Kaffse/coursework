@@ -38,3 +38,15 @@ I now have a diagram of the system and a mock API, plus looked into a DNF plugin
 
 Week 7:
 This week we discussed writing the plugin fully with a mock API for next week in an attempt to get a 'Wizard of Oz' style demo working.
+
+Week 8: 
+Spent this week getting initial support for the plugin working, so users can use the commands but they don't do anything
+
+Week 9: 
+This week was spent making the backend server to reply to the mock frontend
+
+Week 10:
+This week tidied up front end plugin, made the backend reply with some useful JSON
+
+Week 11:
+
