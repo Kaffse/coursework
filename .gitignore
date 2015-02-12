@@ -1,3 +1,4 @@
 plugin/env/
+scripts/env
 server/env/
 *.pyc
