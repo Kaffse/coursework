@@ -3,6 +3,8 @@ from dnfpluginscore import logger
 import dnf
 import requests as r
 import json
+import uuid
+from py2neo import Graph, Node, Relationship
 
 SERVER_ADDRESS = 'http://127.0.0.1'
 
@@ -73,6 +75,20 @@ class RecommendCommand(dnf.cli.Command):
         data = json.dumps({'uid':uid})
         return r.post(SERVER_ADDRESS + '/recommend', data)
 
+    def make_graph(self, packagelist):
+        graph = Graph()
+
+        user_list = graph.merge("User", "id", uuid.uuid1())
+
+        for user in user_list:
+         this_pc = user
+
+        for package in packagelist:
+            nodes = graph.merge("Package", "name", package.name)
+            for node in nodes:
+                relationship = Relationship(this_pc, "INSTALLED", node)
+                graph.create(relationship)
+
     def run(self, extcmds):
         """Execute the command."""
 
@@ -82,7 +98,10 @@ class RecommendCommand(dnf.cli.Command):
         if len(extcmds) > 1:
             print "Invalid Argments for Recommend plugin"
         elif len(extcmds) == 0:
-            print_recommend(self.get_recommend_list(100))
+            packages = self.base.sack.query()
+            packages = packages.installed()
+            packagelist = list(packages)
+            self.make_graph(packagelist)
         elif extcmds[0].lower() == "update":
             print_recommend(self.update_packages(list, 100))
         else:
