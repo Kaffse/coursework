@@ -1,6 +1,20 @@
+import sys
+
 filename = raw_input("Filename of network file: ")
 
-file = open(filename, "r")
+try:
+    file = open(filename, "r")
+except:
+    print "Error opening file"
+    sys.exit(0)
+
+cost_matrix = []
 
 for line in file:
-    print line
+    #remove the newline
+    line = line[:-1]
+
+    #pack information into a datastruture
+    cost_matrix += [line.split()]
+
+print cost_matrix
