@@ -17,4 +17,8 @@ for line in file:
     #pack information into a datastruture
     cost_matrix += [line.split()]
 
-print cost_matrix
+#set n to be total number of nodes in the network
+n = len(cost_matrix)
+
+for node in range(n):
+    #routing stuff
