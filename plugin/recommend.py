@@ -7,6 +7,7 @@ import uuid
 from py2neo import Graph, Node, Relationship
 
 SERVER_ADDRESS = 'http://127.0.0.1'
+THIS_UUID = uuid.uuid1()
 
 def register(packagelist, uid):
     data = json.dumps({'packagelist':packagelist, 'uid':uid})
@@ -38,6 +39,12 @@ class Recommend(dnf.Plugin):
     def __init__(self, base, cli):
         self.base = base
         self.cli = cli
+        try:
+            id_file = open("~/.recommend_uuid", 'r')
+            THIS_UUID = id_file.read_line()
+            id_file.close()
+        except:
+            print "No UUID File. New UUID"
 
         if self.cli is not None:
             self.cli.register_command(RecommendCommand)
@@ -71,14 +78,23 @@ class RecommendCommand(dnf.cli.Command):
         print SERVER_ADDRESS + '/update'
         return response.text
 
-    def get_recommend_list(self, uid):
-        data = json.dumps({'uid':uid})
-        return r.post(SERVER_ADDRESS + '/recommend', data)
+    def get_recommend_list(self, package):
+    graph = Graph()
+
+    search_term = package
+    limit = "2500"
+
+    result = graph.cypher.execute('MATCH n--u WHERE u.name = "' + search_term + '"AND n.id = "'THIS_UUID.hex'"  MATCH u--n1 WHERE n1.id <> n.id MATCH n1--u1 WHERE u1.name <> "' + search_term + '" AND NOT u1--n RETURN u1 LIMIT ' + limit)
+
+    print result
 
     def make_graph(self, packagelist):
         graph = Graph()
 
-        user_list = graph.merge("User", "id", uuid.uuid1())
+        user_list = graph.merge("User", "id", THIS_UUID.hex)
+
+        id_file = open("~/.recommend_uuid", "w")
+        id_file.write(THIS_UUID)
 
         for user in user_list:
          this_pc = user
@@ -93,15 +109,18 @@ class RecommendCommand(dnf.cli.Command):
         """Execute the command."""
 
         #placeholder for recommend list
-        list = [100]
+        rec_list = [100]
 
         if len(extcmds) > 1:
             print "Invalid Argments for Recommend plugin"
         elif len(extcmds) == 0:
+            print("Discovering Installed Packages..."
+            self.base.fill_sack()
             packages = self.base.sack.query()
             packages = packages.installed()
-            packagelist = list(packages)
-            self.make_graph(packagelist)
+            print("Building Graph...")
+            self.make_graph(list(packages))
+            print("Complete!")
         elif extcmds[0].lower() == "update":
             print_recommend(self.update_packages(list, 100))
         else:
@@ -110,10 +129,8 @@ class RecommendCommand(dnf.cli.Command):
 # implement A/B UI
 # auto install - prompt based - list
 
-
 # write working config
 # num of reccomends, ip of server
-
 
 # association rule mining??
 # Look into ways to store backend table stuff
