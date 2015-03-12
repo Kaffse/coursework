@@ -15,23 +15,26 @@ class Node:
     def __str__(self):
         return str(self.id)
 
-    def update(self, updated_matrix):
+    def update(self, updated_matrix, recieved_from):
+        print self.id
+        print updated_matrix
+        print ""
         for item in updated_matrix.keys():
             dest = item
-            recieved_from = updated_matrix[item][0]
-            distance = updated_matrix[item][0]
+            distance = updated_matrix[item][1]
+            recieved_from_dist = self.cost_map[recieved_from][1]
 
             if dest not in self.cost_map.keys():
-                self.cost_map[dest] = (recieved_from, distance)
-            elif self.cost_map[dest] > distance:
-                self.cost_map[dest] = (recieved_from, distance)
+                self.cost_map[dest] = (recieved_from, distance + recieved_from_dist)
+            elif self.cost_map[dest] > (distance + recieved_from_dist):
+                self.cost_map[dest] = (recieved_from, distance + recieved_from_dist)
 
     def update_adj(self, adj_list):
         self.adj_nodes = adj_list
 
-    def step_routing():
+    def step_routing(self):
         for node in self.adj_nodes:
-            node.update(self.cost_map)
+            node.update(self.cost_map, self.id)
 
     def pretty_print(self):
         print str(self.id)
@@ -62,9 +65,9 @@ def load_file():
 
 com = string.lower(raw_input(">"))
 
+node_matrix = []
+split_horizon = True
 while com != "quit":
-    node_matrix = []
-    split_horizon = True
 
     if com == "load":
         node_matrix = load_file()
@@ -76,12 +79,11 @@ while com != "quit":
             node.update_adj(adj_list)
 
     elif com == "tables":
-        print node_matrix
-        for i in range(3):
+        for i in range(1):
             for node in node_matrix:
-                node.step()
-        for node in node_matrix:
-            node.pretty_print()
+                node.step_routing()
+            for node in node_matrix:
+                node.pretty_print()
     elif com == "preset":
         print "preset"
     elif com == "route":
