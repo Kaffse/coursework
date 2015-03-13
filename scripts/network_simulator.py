@@ -19,21 +19,15 @@ class Node:
         return str(self.id)
 
     def update(self, updated_matrix, recieved_from):
-        #print self.id, recieved_from
-        #print updated_matrix
-        #print ""
         for item in updated_matrix.keys():
             dest = item
             distance = updated_matrix[item][1]
             recieved_from_dist = self.cost_map[recieved_from][1]
-            #print dest, distance, recieved_from_dist
 
             if dest not in self.cost_map.keys():
                 self.cost_map[dest] = (recieved_from, distance + recieved_from_dist)
             elif self.cost_map[dest][1] > (distance + recieved_from_dist):
-                #print self.cost_map[dest]
                 self.cost_map[dest] = (recieved_from, distance + recieved_from_dist)
-                #print self.cost_map[dest]
 
     def update_adj(self, adj_list):
         self.adj_nodes = adj_list
@@ -74,6 +68,7 @@ def load_file():
 
     try:
         file = open(filename, "r")
+        print "File succesfully opened"
     except:
         print "Error opening file"
         sys.exit(0)
@@ -94,6 +89,7 @@ def load_file():
 print "ANC4 Network Simulator"
 print "Commands are as follows: load, tables, preset, route, trace, split, help, quit"
 print "Please use help for speicifc help on each command"
+print "Ensure you load a file before preforming other commands"
 com = string.lower(raw_input(">"))
 
 node_matrix = []
@@ -101,7 +97,10 @@ split_horizon = False
 while com != "quit":
 
     if com == "load":
+        #grab the node matrix
         node_matrix = load_file()
+
+        #set up adjacent node lists for each node in network
         for node in node_matrix:
             adj_list = []
             this_adj = node.adj_nodes
@@ -114,6 +113,7 @@ while com != "quit":
         for i in range(cycles):
             for node in node_matrix:
                 node.step_routing(split_horizon)
+        #print all the routing tables when iterations complete
         for node in node_matrix:
             node.pretty_print()
 
@@ -122,6 +122,7 @@ while com != "quit":
         source = int(raw_input("Origin node of change: "))
         dest = int(raw_input("Destination node of change: "))
         change = int(raw_input("Change of cost: "))
+        #set the change on both sides of the link
         node_matrix[source].set_failure(cycle, dest, change)
         node_matrix[dest].set_failure(cycle, source, change)
 
@@ -133,8 +134,11 @@ while com != "quit":
             for node in node_matrix:
                 node.step_routing(split_horizon)
         source = node_matrix[source]
+
+        #check if there exists a route from the source node
         if dest in source.cost_map.keys():
             cur_node = source
+            #jump through the nodes until we get to the destination
             while cur_node.id != dest:
                 print str(cur_node.id) + " -> " + str(cur_node.cost_map[dest][0])
                 cur_node = node_matrix[cur_node.cost_map[dest][0]]
