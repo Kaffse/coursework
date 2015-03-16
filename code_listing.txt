@@ -1,0 +1,81 @@
+-module(tempclock). 
+-export([start/1]). 
+
+start(sensors) ->
+    spawn(?MODULE, loop, [sensors]).
+
+send_tick(sensors) ->
+    {Sone, Stwo} = sensors, 
+    Sone ! {self(), {tick}},
+    Stwo ! {self(), {tick}}.
+
+loop(sensors) ->
+    receive
+    after 1000 -> 
+        send_tick(sensors),
+        loop(sensors)
+    end.
+-module(tempcon). 
+-export([start/0]). 
+
+start() ->
+    spawn(?MODULE, loop, []).
+
+send_cel_to_far(Sensor, Ref, C) ->
+    F = C * (9/5) + 32,
+    Sensor ! {self(), Ref, {far, F, C}}.
+
+send_far_to_cel(Sensor, Ref, F) ->
+    C = (F - 32) * (5/9),
+    Sensor ! {self(), Ref, {cel, C, F}}.
+
+loop() ->
+    receive
+        {From, MsgRef, {celtofar, C}} ->
+            send_cel_to_far(From, MsgRef, C),
+            loop();
+        {From, MsgRef, {fartocel, F}} ->
+            send_far_to_cel(From, MsgRef, F),
+            loop()
+    end.
+-module(tempdisplay). 
+-export([start/0]). 
+
+start() ->
+    spawn(?MODULE, loop, []).
+
+loop() ->
+    receive
+        {Pid, MsgRef, {Type, T}} ->
+            case Type of
+                cel ->
+                    io:format("Reading: ~f ~s", T, "degrees C"),
+                    loop();
+                far ->
+                    io:format("Reading: ~f ~s", T, "degrees F"),
+                    loop()
+            end
+    end.
+-module(tempsen). 
+-export([start/2]). 
+
+start(convertor, display) ->
+    spawn(?MODULE, loop, [convertor, display]). 
+
+send_temp(convertor) ->
+    ReplyRef = make_ref(),
+    Temp = random:uniform(50),  
+    convertor ! {self(), ReplyRef, {celtofar, Temp}}.  
+
+loop(convetor, display) ->
+    receive 
+        {Pid, tick} ->
+            send_temp(convertor),
+            loop(convertor, display);
+        {Pid, MsgRef, {cel, C, F}} ->
+            display ! {self(), MsgRef, {cel, C}},
+            loop(convertor, display);
+        {Pid, MsgRef, {far, F, C}} ->
+            display ! {self(), MsgRef, {far, F}},
+            loop(convertor, display)
+    end. 

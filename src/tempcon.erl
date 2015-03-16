@@ -1,22 +1,23 @@
 -module(tempcon). 
--export(start/0). 
+-export([start/0]). 
 
 start() ->
-    spawn(?MODULE, loop)
+    spawn(?MODULE, loop, []).
 
 send_cel_to_far(Sensor, Ref, C) ->
-    F = C * (9/5) + 32.
-    Sensor ! {self(), Ref, {far, F, C}}
+    F = C * (9/5) + 32,
+    Sensor ! {self(), Ref, {far, F, C}}.
 
 send_far_to_cel(Sensor, Ref, F) ->
-    C = (F - 32) * (5/9).
-    Sensor ! {self(), Ref, {cel, C, F}}
+    C = (F - 32) * (5/9),
+    Sensor ! {self(), Ref, {cel, C, F}}.
 
 loop() ->
-    recieve
+    receive
         {From, MsgRef, {celtofar, C}} ->
-            send_cel_to_far(From, MsgRef, C, F)
+            send_cel_to_far(From, MsgRef, C),
+            loop();
         {From, MsgRef, {fartocel, F}} ->
-            send_far_to_cel(From, MsgRef, C, F)
+            send_far_to_cel(From, MsgRef, F),
+            loop()
     end.
-    loop().
