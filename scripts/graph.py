@@ -5,7 +5,7 @@ list_file = open("installed.txt", "r")
 packagelist = []
 
 for line in list_file:
-    packagelist = packagelist + [line.split()[0]]
+    packagelist = packagelist + [line.split('.')[0]]
 
 list_file.close()
 
@@ -20,4 +20,4 @@ for package in packagelist:
     nodes = graph.merge("Package", "name", package)
     for node in nodes:
         relationship = Relationship(this_pc, "INSTALLED", node)
-        graph.create(relationship)
+        graph.create_unique(relationship)
