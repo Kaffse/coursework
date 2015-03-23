@@ -8,7 +8,7 @@ import os
 from py2neo import Graph, Node, Relationship
 
 HOME = os.getenv('HOME')
-SERVER_ADDRESS = 'http://127.0.0.1:7474/'
+SERVER_ADDRESS = 'http://main.f-t.so:7474/db/data'
 THIS_UUID = uuid.uuid1()
 
 class Recommend(dnf.Plugin):
