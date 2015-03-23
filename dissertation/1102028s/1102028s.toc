@@ -5,6 +5,8 @@
 \contentsline {section}{\numberline {1.4}Report outline}{1}{section.1.4}
 \contentsline {chapter}{\numberline {2}Background}{2}{chapter.2}
 \contentsline {chapter}{\numberline {3}Design}{3}{chapter.3}
+\contentsline {section}{\numberline {3.1}Recommend Plugin}{3}{section.3.1}
+\contentsline {section}{\numberline {3.2}Graph Database}{3}{section.3.2}
 \contentsline {chapter}{\numberline {4}Implementation}{4}{chapter.4}
 \contentsline {chapter}{\numberline {5}Evaluation}{5}{chapter.5}
 \contentsline {chapter}{\numberline {6}Conclusion}{6}{chapter.6}

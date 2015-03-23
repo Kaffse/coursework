@@ -38,14 +38,15 @@ I did things.
 \pagenumbering{arabic}
  
 \section{Problem overview}
-In a modern operating system there exists many packages for end users to install and this collection grows every day. Finding useful packages to install can be a labourous task, often involving the use of the internet to track down the package the user has been looking for, if it exists.\\
-Furthermore there exists little support for installing packages commonly installed side by side. For example a user who has vim installed also installs JDK, the user may not be aware of the existence of a java plugin for vim which is extreamly useful.
+In a modern operating system there exists many packages for end users to install and this collection grows every day. Finding useful packages to install can be a laborious task, often involving the use of the internet to track down the package the user has been looking for, if it exists.\\
+Furthermore there exists little support for installing packages commonly installed side by side. For example a user who has vim installed also installs Java Development Kit (JDK), the user may not be aware of the existence of a Java plugin for vim which is extremely useful.
  
 \section{Aims}
-This project aims to attmept to address the issues discussed above. Foremostly the problem of finding new packages by offering a powerful recommendation system for users to discover packages. 
+This project aims to attempt to address the issues discussed above. Fore-mostly the problem of finding new packages by offering a powerful recommendation system for users to discover packages.\\
+Consider a user on a Linux machine, looking for any new useful developer tools to help their work flow. Using an internet search engine returns a fairly miss match set of results, this project aims to supply that user with a command line interface where they can ask for a recommendation based on package of their choice. In this case our user asks for a recommendation based off of the JDK and is returned with a list of useful debugging tools and plugins which they weren't aware of.
  
 \section{Motivation}
-Package management is an interesting and very useful tool for many users, however the basic implementation has been static for many years. With the addidition of this tool, we could see a decrease in users having to use search engines to look for packages they should be able to discover easily on commandline.
+Package management is an interesting and very useful tool for many users, however the basic implementation has been static for many years. With the addition of this tool, we could see a decrease in users having to use search engines to look for packages they should be able to discover easily on command line.
 
 \section{Report outline}
 This report will begin by looking at the research undertaken at the outset of the project, then continue into design of the system. This will lead into the implementation and finally the evaluation and conclusion.
@@ -57,6 +58,11 @@ This report will begin by looking at the research undertaken at the outset of th
 %%%%%%%%%%%%%%%%
  
 \chapter{Background}
+A package manager allows users to search for, install and update packages containing useful programs. For many years Unix has relied on package managers to allow easy management of tools and underlying applications. However in recent times, as package numbers increase and the ease of search engines becomes more prominent, searching using a command line tool has become less prevalent. Unless a user knows exactly what they want, often times they will resort to a internet search engine to find new packages.\\
+A more modern solution to this problem is the use of Graphical User Interfaces (GUIs) to abstract the annoyance of searching on command line away from the user. However this requires that the user is running a system with graphical output, a luxury which is often not found when running Virtual Machines (VMs) or using Secure Shell (SSH).\\
+In a similar vein NUGET (a .NET package manager) experimented with recommendations based off the same method this project uses, with weighting between packages rather than between user's install habits. A user could upload their project's meta data and Concierge would list packages the user may be interested in using based of what their project needs.\\
+This project aims to supply similar functionality to users of DNF, Fedora 21's new package manager. DNF allows plugins to be easily added by simply dropping a Python file into the plugins directory. This allows DNF to be extended easily with little hardship from the user. Building this functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
+
  
 %%%%%%%%%%%%
 %          %
@@ -65,6 +71,25 @@ This report will begin by looking at the research undertaken at the outset of th
 %%%%%%%%%%%%
  
 \chapter{Design}
+This system comes in two parts, a client side plugin for DNF which the user installs by dropping a single Python script into the correct directory. Also a graph server side database to store user's installed packages anonymously and provide data for recommendations.\\
+Each of these components will be discussed in their own sections.
+
+\section{Recommend Plugin}
+In the choice between DNF and dpkg/apt, DNF was chosen due to it's excellent plugin support over the alternative.\\
+The Recommend plugin has two key features:
+\begin{itemize}
+\item Request recommendation from server
+\item Upload user's installed packages anonymously
+\end{itemize}
+Both functions require a connection to the back end database, a connection over the internet is assumed.\\
+The plugin needed to be easy to use, to counter the desire to open a browser. With this in mind it is designed with two clear commands.
+\begin{itemize}
+\item dnf recommend update - Which pushes the user's installed packages to the server
+\item dnf recommend [\textit{package name}] - Which queries the server for recommendations based on the stated package
+\end{itemize}
+
+\section{Graph Database}
+
  
 %%%%%%%%%%%%%%%%%%%%
 %                  %
