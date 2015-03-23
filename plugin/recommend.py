@@ -5,6 +5,7 @@ import requests as r
 import json
 import uuid
 import os
+import collections
 from py2neo import Graph, Node, Relationship
 
 HOME = os.getenv('HOME')
@@ -62,7 +63,9 @@ class RecommendCommand(dnf.cli.Command):
 
         result = graph.cypher.execute(search_string)
 
-        print result
+        popular_counter = collections.Counter(result)
+
+        print popular_counter.most_common(10)
 
     def make_graph(self, packagelist):
         graph = Graph(SERVER_ADDRESS)
@@ -91,8 +94,7 @@ class RecommendCommand(dnf.cli.Command):
         if len(extcmds) > 1:
             print "Invalid Argments for Recommend plugin"
         elif len(extcmds) == 0:
-            print("Querying Graph...")
-            self.get_recommend_list("yum")
+            print("Please add the name of a package or use the 'update' command")
         elif extcmds[0].lower() == "update":
             print("Discovering Installed Packages...")
             self.base.fill_sack()
@@ -101,5 +103,8 @@ class RecommendCommand(dnf.cli.Command):
             print("Building Graph...")
             self.make_graph(list(packages))
             print("Complete!")
+        elif len(extcmds) == 1:
+            print("Querying Graph for " + extcmds[0])
+            self.get_recommend_list(extcmds[0])
         else:
             print "Invalid Argments for Recommend plugin"
