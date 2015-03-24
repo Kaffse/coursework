@@ -129,9 +129,10 @@ DNF allows a developer to hook into its core functionality by extending classes,
 \section{Back End Implementation}
 Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of downloading and running a Neo4j instance on a local machine to test scripts.\\
 The initial script written, shown in figure, read a list of packages from a text file in the format which DNF dumps them and then created each on the database and tied them to a user with a fake ID.\\
-Now that was in place, scripts to find sets of recommendations between packages could be written and tested. 
+With that was in place, scripts to find sets of recommendations between packages can be written and tested.
 
 \section{Bringing it together}
+With the client side UI already written and tested, it was a simple case of changing a constant defining the server address to the operational database which was running on local host.
  
 %%%%%%%%%%%%%%%%
 %              %
@@ -150,10 +151,23 @@ Now that was in place, scripts to find sets of recommendations between packages 
 %%%%%%%%%%%%%%%%
  
 \chapter{Conclusion}
+
 \section{Summary}
+%Lets talk about how kinda rubbish it really is unless its making some really interesting recommendations
 \section{Future Work}
+There exists a lot of scope for this project to expand. This report will discuss two interesting areas for potential future work.
+
+\subsection{Package Groups}
+As a potential future addition, commonly installed package groups could be identified on the back end, which would be pushed forward to end users, allowing them to quickly install a complete set of tools.\\
+An example of this would be web developers, who commonly install at least the three main browsers\footnote{Google Chrome, Mozilla Firefox and Safari} and any debugging/developer tools associated with them.\footnote{For example Firebug}\\
+This kind of powerful inferencing can be done using a graph database made to look for groups like this. If it's possible to then analyse the group and identify what it is, this would give users a lot of power when installing packages.  
+
+\subsection{Weighted Relationships} 
+Weighted relationships is something which NUGET Concierge used to make its recommendations. It's a one directional value assigned between two package nodes to determine how likely it is that one is installed on the same system with the other.\\
+At it's core, it's very simple, however we could go lengths to make this weighting more meaningful, perhaps through the use of labels or special cases we can identify when best to include packages in a recommendation. For example it may be the case that package X is usually only installed when package Y is installed and Z isn't. A weighted relationship would not identify this as it would only recommend the most common. By tagging the relationships we can ensure the correct recommendation is made to the user.
+
 \section{Lessons Learned}
- 
+%Start your dissertation earlier
 %%%%%%%%%%%%%%%%
 %              %
 %  APPENDICES  %
