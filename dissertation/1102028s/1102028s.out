@@ -1,14 +1,26 @@
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.1.1}{Problem overview}{chapter.1}% 2
-\BOOKMARK [1][-]{section.1.2}{Aims}{chapter.1}% 3
-\BOOKMARK [1][-]{section.1.3}{Motivation}{chapter.1}% 4
+\BOOKMARK [1][-]{section.1.2}{Motivation}{chapter.1}% 3
+\BOOKMARK [1][-]{section.1.3}{Aims}{chapter.1}% 4
 \BOOKMARK [1][-]{section.1.4}{Report outline}{chapter.1}% 5
 \BOOKMARK [0][-]{chapter.2}{Background}{}% 6
-\BOOKMARK [0][-]{chapter.3}{Design}{}% 7
-\BOOKMARK [1][-]{section.3.1}{Recommend Plugin}{chapter.3}% 8
-\BOOKMARK [1][-]{section.3.2}{Graph Database}{chapter.3}% 9
-\BOOKMARK [0][-]{chapter.4}{Implementation}{}% 10
-\BOOKMARK [0][-]{chapter.5}{Evaluation}{}% 11
-\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 12
-\BOOKMARK [0][-]{section*.2}{Appendices}{}% 13
-\BOOKMARK [0][-]{Appendix.a.A}{Name of the first appendix}{}% 14
+\BOOKMARK [1][-]{section.2.1}{Modern Graphical Package Managers}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.2}{NUGET Concierge}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.3}{DNF}{chapter.2}% 9
+\BOOKMARK [0][-]{chapter.3}{Design}{}% 10
+\BOOKMARK [1][-]{section.3.1}{Recommend Plugin}{chapter.3}% 11
+\BOOKMARK [1][-]{section.3.2}{Database}{chapter.3}% 12
+\BOOKMARK [2][-]{subsection.3.2.1}{Selection}{section.3.2}% 13
+\BOOKMARK [2][-]{subsection.3.2.2}{Internal Structure}{section.3.2}% 14
+\BOOKMARK [0][-]{chapter.4}{Implementation}{}% 15
+\BOOKMARK [1][-]{section.4.1}{First Pass Mock UI}{chapter.4}% 16
+\BOOKMARK [1][-]{section.4.2}{Back End Implementation}{chapter.4}% 17
+\BOOKMARK [1][-]{section.4.3}{Bringing it together}{chapter.4}% 18
+\BOOKMARK [0][-]{chapter.5}{Evaluation}{}% 19
+\BOOKMARK [1][-]{section.5.1}{Survey Response}{chapter.5}% 20
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 21
+\BOOKMARK [1][-]{section.6.1}{Summary}{chapter.6}% 22
+\BOOKMARK [1][-]{section.6.2}{Future Work}{chapter.6}% 23
+\BOOKMARK [1][-]{section.6.3}{Lessons Learned}{chapter.6}% 24
+\BOOKMARK [0][-]{section*.2}{Appendices}{}% 25
+\BOOKMARK [0][-]{Appendix.a.A}{Name of the first appendix}{}% 26

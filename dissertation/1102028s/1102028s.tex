@@ -22,7 +22,7 @@
 \maketitle
  
 \begin{abstract}
-I did things.
+This paper covers the construction of a basic recommendation engine for operating system packages, specifically for use with the DNF package manager. The tool should allow users to discover useful packages through an easy to use command line interface. 
 \end{abstract}
  
 %\educationalconsent
@@ -40,13 +40,13 @@ I did things.
 \section{Problem overview}
 In a modern operating system there exists many packages for end users to install and this collection grows every day. Finding useful packages to install can be a laborious task, often involving the use of the internet to track down the package the user has been looking for, if it exists.\\
 Furthermore there exists little support for installing packages commonly installed side by side. For example a user who has vim installed also installs Java Development Kit (JDK), the user may not be aware of the existence of a Java plugin for vim which is extremely useful.
+
+\section{Motivation}
+Package management is an interesting and very useful tool for many users, however the basic implementation has been static for many years. With the addition of this tool, we could see a decrease in users having to use search engines to look for packages they should be able to discover easily on command line. 
  
 \section{Aims}
 This project aims to attempt to address the issues discussed above. Fore-mostly the problem of finding new packages by offering a powerful recommendation system for users to discover packages.\\
 Consider a user on a Linux machine, looking for any new useful developer tools to help their work flow. Using an internet search engine returns a fairly miss match set of results, this project aims to supply that user with a command line interface where they can ask for a recommendation based on package of their choice. In this case our user asks for a recommendation based off of the JDK and is returned with a list of useful debugging tools and plugins which they weren't aware of.
- 
-\section{Motivation}
-Package management is an interesting and very useful tool for many users, however the basic implementation has been static for many years. With the addition of this tool, we could see a decrease in users having to use search engines to look for packages they should be able to discover easily on command line.
 
 \section{Report outline}
 This report will begin by looking at the research undertaken at the outset of the project, then continue into design of the system. This will lead into the implementation and finally the evaluation and conclusion.
@@ -59,8 +59,14 @@ This report will begin by looking at the research undertaken at the outset of th
  
 \chapter{Background}
 A package manager allows users to search for, install and update packages containing useful programs. For many years Unix has relied on package managers to allow easy management of tools and underlying applications. However in recent times, as package numbers increase and the ease of search engines becomes more prominent, searching using a command line tool has become less prevalent. Unless a user knows exactly what they want, often times they will resort to a internet search engine to find new packages.\\
+
+\section{Modern Graphical Package Managers}
 A more modern solution to this problem is the use of Graphical User Interfaces (GUIs) to abstract the annoyance of searching on command line away from the user. However this requires that the user is running a system with graphical output, a luxury which is often not found when running Virtual Machines (VMs) or using Secure Shell (SSH).\\
+
+\section{NUGET Concierge}
 In a similar vein NUGET (a .NET package manager) experimented with recommendations based off the same method this project uses, with weighting between packages rather than between user's install habits. A user could upload their project's meta data and Concierge would list packages the user may be interested in using based of what their project needs.\\
+
+\section{DNF}
 This project aims to supply similar functionality to users of DNF, Fedora 21's new package manager. DNF allows plugins to be easily added by simply dropping a Python file into the plugins directory. This allows DNF to be extended easily with little hardship from the user. Building this functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
 
  
@@ -88,7 +94,21 @@ The plugin needed to be easy to use, to counter the desire to open a browser. Wi
 \item dnf recommend [\textit{package name}] - Which queries the server for recommendations based on the stated package
 \end{itemize}
 
-\section{Graph Database}
+
+\section{Database}
+The project requires a back end data storage median. Immediately a database comes to mind for a long term, concurrent access method of storing and returning large volumes of data. Below the various potential choices of database are discussed.
+
+\subsection{Selection}
+Neo4j was selected as the database of choice for this project. There are several key reasons for this:
+\begin{itemize}
+\item NOSQL database which is built for finding paths in mind
+\item A standard SQL database would make storing the data complex
+\item Neo4j is built to scale across distributed systems being a modern database solution
+\end{itemize}
+
+\subsection{Internal Structure}
+Internally the structure of the graph can be seen in the figure below.
+%Make a pretty picture
 
  
 %%%%%%%%%%%%%%%%%%%%
@@ -98,6 +118,20 @@ The plugin needed to be easy to use, to counter the desire to open a browser. Wi
 %%%%%%%%%%%%%%%%%%%%
  
 \chapter{Implementation}
+In regards to development environment, all work took place using a GitHub repository with all the Python scripts kept up to date there. Locally the Recommend plugin was kept in the Git repository folder which was then sym linked to the DNF plugin folder. This enabled work and change tracking to take place without disturbing work flow to test the plugin.\\
+With the design settled, work began with a 'Wizard of Oz' style mock up, where the user could use the command line interface as if the system were complete, however anything they go back was simply place holder.
+
+\section{First Pass Mock UI}
+For this initial development two features needed to be implemented. A command to push installed packages to server and request a recommendation from the server.\\
+DNF allows a developer to hook into its core functionality by extending classes, which allows new commands to be written and functionality added in a single Python script.
+%code snippet of Recommend class and command
+
+\section{Back End Implementation}
+Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of downloading and running a Neo4j instance on a local machine to test scripts.\\
+The initial script written, shown in figure, read a list of packages from a text file in the format which DNF dumps them and then created each on the database and tied them to a user with a fake ID.\\
+Now that was in place, scripts to find sets of recommendations between packages could be written and tested. 
+
+\section{Bringing it together}
  
 %%%%%%%%%%%%%%%%
 %              %
@@ -106,6 +140,8 @@ The plugin needed to be easy to use, to counter the desire to open a browser. Wi
 %%%%%%%%%%%%%%%%
  
 \chapter{Evaluation}
+%or lack thereof
+\section{Survey Response}
  
 %%%%%%%%%%%%%%%%
 %              %
@@ -114,6 +150,9 @@ The plugin needed to be easy to use, to counter the desire to open a browser. Wi
 %%%%%%%%%%%%%%%%
  
 \chapter{Conclusion}
+\section{Summary}
+\section{Future Work}
+\section{Lessons Learned}
  
 %%%%%%%%%%%%%%%%
 %              %
