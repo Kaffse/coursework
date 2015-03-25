@@ -1,5 +1,6 @@
 from py2neo import Graph, Node, Relationship
 
+#installed.txt is a straight dump from dnf list installed piped to a text file
 list_file = open("installed.txt", "r")
 
 packagelist = []

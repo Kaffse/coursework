@@ -39,7 +39,6 @@ class Recommend(dnf.Plugin):
     def _out(self, msg):
         logger.debug('Recommend plugin: %s', msg)
 
-    #this order holds true when updating/installing packages
     def config(self):
         self._out('config')
 
@@ -55,7 +54,7 @@ class RecommendCommand(dnf.cli.Command):
     summary = 'Makes a recommendation based on your currently installed packaged'
 
     def get_recommend_list(self, package):
-        graph = Graph(SERVER_ADDRESS)
+        graph = Graph()
 
         search_term = package
         limit = "2500"
@@ -68,7 +67,7 @@ class RecommendCommand(dnf.cli.Command):
         print popular_counter.most_common(10)
 
     def make_graph(self, packagelist):
-        graph = Graph(SERVER_ADDRESS)
+        graph = Graph()
 
         user_list = graph.merge("User", "id", THIS_UUID.hex)
 
@@ -87,9 +86,6 @@ class RecommendCommand(dnf.cli.Command):
 
     def run(self, extcmds):
         """Execute the command."""
-
-        #placeholder for recommend list
-        rec_list = [100]
 
         if len(extcmds) > 1:
             print "Invalid Argments for Recommend plugin"
