@@ -5,6 +5,7 @@
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{titlesec}
+\usepackage{listings}
 \titlespacing{\subsubsection}{0pt}{6pt}{6pt}
 \definecolor{properBlue}{HTML}{336699}
 \hypersetup{
@@ -22,11 +23,28 @@
 \maketitle
  
 \begin{abstract}
-This paper covers the construction of a basic recommendation engine for operating system packages, specifically for use with the DNF package manager. The tool should allow users to discover useful packages through an easy to use command line interface. 
+This paper covers the construction of a basic recommendation engine for operating system packages, specifically for use with the DNF package manager. The tool should allow users to discover useful packages through an easy to use command line interface.
 \end{abstract}
  
 %\educationalconsent
 \tableofcontents
+
+\lstset{ %
+language=Python,              % choose the language of the code
+basicstyle=\scriptsize,     % the size of the fonts that are used for the code
+%basicstyle=\tiny,     % the size of the fonts that are used for the code
+numbers=left,               % where to put the line-numbers
+%numberstyle=\tiny,    % the size of the fonts that are used for the line-numbers
+numberstyle=\scriptsize,    % the size of the fonts that are used for the line-numbers
+numbersep=10pt,             % how far the line-numbers are from the code
+frame=trBL,                 % adds a frame around the code
+%tabsize=2,                  % sets default tabsize to 2 spaces
+captionpos=b,               % sets the caption-position to bottom
+breaklines=true,            % sets automatic line breaking
+breakatwhitespace=false,    % sets if automatic breaks should only happen at whitespace
+showstringspaces=false,     % Don't show underscores as space characters
+frameround=fttt
+}
  
 %%%%%%%%%%%%%%%%%%
 %                %
@@ -69,7 +87,6 @@ In a similar vein NUGET (a .NET package manager) experimented with recommendatio
 \section{DNF}
 This project aims to supply similar functionality to users of DNF, Fedora 21's new package manager. DNF allows plugins to be easily added by simply dropping a Python file into the plugins directory. This allows DNF to be extended easily with little hardship from the user. Building this functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
 
- 
 %%%%%%%%%%%%
 %          %
 %  DESIGN  %
@@ -88,11 +105,8 @@ The Recommend plugin has two key features:
 \item Upload user's installed packages anonymously
 \end{itemize}
 Both functions require a connection to the back end database, a connection over the internet is assumed.\\
-The plugin needed to be easy to use, to counter the desire to open a browser. With this in mind it is designed with two clear commands.
-\begin{itemize}
-\item dnf recommend update - Which pushes the user's installed packages to the server
-\item dnf recommend [\textit{package name}] - Which queries the server for recommendations based on the stated package
-\end{itemize}
+The plugin needed to be easy to use, to counter the desire to open a browser. With this in mind it is designed with two clear commands.\\
+\includegraphics[scale=0.75]{images/recommend_api.png}
 
 
 \section{Database}
@@ -108,7 +122,8 @@ Neo4j was selected as the database of choice for this project. There are several
 
 \subsection{Internal Structure}
 Internally the structure of the graph can be seen in the figure below.
-%Make a pretty picture
+\vspace{10 px}\\
+\includegraphics[scale=0.9]{images/recommend_graph.png}
 
  
 %%%%%%%%%%%%%%%%%%%%
@@ -123,8 +138,27 @@ With the design settled, work began with a 'Wizard of Oz' style mock up, where t
 
 \section{First Pass Mock UI}
 For this initial development two features needed to be implemented. A command to push installed packages to server and request a recommendation from the server.\\
-DNF allows a developer to hook into its core functionality by extending classes, which allows new commands to be written and functionality added in a single Python script.
-%code snippet of Recommend class and command
+DNF allows a developer to hook into its core functionality by extending classes, which allows new commands to be written and functionality added in a single Python script. Figure 4.1 and 4.2 shows two classes extending DNF plugin and command classes respectively.
+\begin{figure}
+\lstset{caption={Recommend Class},label=codeRecClass}
+\lstinputlisting[firstline=15, lastline=37]{code/recommend.py}
+\end{figure}
+\begin{figure}
+\lstset{caption={Recommend Command Class},label=codeRecCommClass}
+\lstinputlisting[firstline=53]{code/recommend.py}
+\end{figure}
+
+\section{Testing}
+In order to test this system, two scripts were written in Python to fill the database with both real and mock data. Several small Cypher scripts were also written to test that the database was working internally.\\
+Listing 4.3 and 4.4 show the Python scripts for entering data.\\
+\begin{figure}
+\lstset{caption={Fills the graph with real data},label=codeGraphReal}
+\lstinputlisting{code/graph.py}
+\end{figure}
+\begin{figure}
+\lstset{caption={Fills the graph with mock data},label=codeGraphMock}
+\lstinputlisting{code/graph_filler.py}
+\end{figure}
 
 \section{Back End Implementation}
 Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of downloading and running a Neo4j instance on a local machine to test scripts.\\
