@@ -9,21 +9,21 @@
 \contentsline {section}{\numberline {2.3}DNF}{2}{section.2.3}
 \contentsline {chapter}{\numberline {3}Design}{3}{chapter.3}
 \contentsline {section}{\numberline {3.1}Recommend Plugin}{3}{section.3.1}
-\contentsline {section}{\numberline {3.2}Database}{4}{section.3.2}
-\contentsline {subsection}{\numberline {3.2.1}Selection}{4}{subsection.3.2.1}
+\contentsline {section}{\numberline {3.2}Database}{3}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Selection}{3}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}Internal Structure}{4}{subsection.3.2.2}
-\contentsline {chapter}{\numberline {4}Implementation}{6}{chapter.4}
-\contentsline {section}{\numberline {4.1}First Pass Mock UI}{6}{section.4.1}
-\contentsline {section}{\numberline {4.2}Testing}{6}{section.4.2}
-\contentsline {section}{\numberline {4.3}Back End Implementation}{6}{section.4.3}
-\contentsline {section}{\numberline {4.4}Bringing it together}{7}{section.4.4}
-\contentsline {chapter}{\numberline {5}Evaluation}{10}{chapter.5}
-\contentsline {section}{\numberline {5.1}Survey Response}{10}{section.5.1}
-\contentsline {chapter}{\numberline {6}Conclusion}{11}{chapter.6}
-\contentsline {section}{\numberline {6.1}Summary}{11}{section.6.1}
-\contentsline {section}{\numberline {6.2}Future Work}{11}{section.6.2}
-\contentsline {subsection}{\numberline {6.2.1}Package Groups}{11}{subsection.6.2.1}
-\contentsline {subsection}{\numberline {6.2.2}Weighted Relationships}{11}{subsection.6.2.2}
-\contentsline {section}{\numberline {6.3}Lessons Learned}{12}{section.6.3}
-\contentsline {chapter}{Appendices}{13}{section*.2}
-\contentsline {chapter}{\numberline {A}Name of the first appendix}{14}{Appendix.a.A}
+\contentsline {chapter}{\numberline {4}Implementation}{5}{chapter.4}
+\contentsline {section}{\numberline {4.1}First Pass Mock UI}{5}{section.4.1}
+\contentsline {section}{\numberline {4.2}Back End Implementation}{5}{section.4.2}
+\contentsline {section}{\numberline {4.3}Bringing it together}{5}{section.4.3}
+\contentsline {section}{\numberline {4.4}Testing}{6}{section.4.4}
+\contentsline {chapter}{\numberline {5}Evaluation}{12}{chapter.5}
+\contentsline {section}{\numberline {5.1}Survey Response}{12}{section.5.1}
+\contentsline {chapter}{\numberline {6}Conclusion}{13}{chapter.6}
+\contentsline {section}{\numberline {6.1}Summary}{13}{section.6.1}
+\contentsline {section}{\numberline {6.2}Future Work}{13}{section.6.2}
+\contentsline {subsection}{\numberline {6.2.1}Package Groups}{13}{subsection.6.2.1}
+\contentsline {subsection}{\numberline {6.2.2}Weighted Relationships}{13}{subsection.6.2.2}
+\contentsline {section}{\numberline {6.3}Lessons Learned}{14}{section.6.3}
+\contentsline {chapter}{Appendices}{15}{section*.2}
+\contentsline {chapter}{\numberline {A}Name of the first appendix}{16}{Appendix.a.A}

@@ -105,8 +105,11 @@ The Recommend plugin has two key features:
 \item Upload user's installed packages anonymously
 \end{itemize}
 Both functions require a connection to the back end database, a connection over the internet is assumed.\\
-The plugin needed to be easy to use, to counter the desire to open a browser. With this in mind it is designed with two clear commands.\\
-\includegraphics[scale=0.75]{images/recommend_api.png}
+The plugin needed to be easy to use, to counter the desire to open a browser. With this in mind it is designed with two clear commands. See Figure 3.1\\
+\begin{figure}
+\includegraphics[scale=0.7]{images/recommend_api.png}
+\caption{Diagram showing the exchanges between the server and client}
+\end{figure}
 
 
 \section{Database}
@@ -121,11 +124,11 @@ Neo4j was selected as the database of choice for this project. There are several
 \end{itemize}
 
 \subsection{Internal Structure}
-Internally the structure of the graph can be seen in the figure below.
-\vspace{10 px}\\
+Internally the structure of the graph can be seen in Figure 3.2
+\begin{figure}
 \includegraphics[scale=0.9]{images/recommend_graph.png}
-
- 
+\caption{Diagram showing the internal structure of the database}
+\end{figure} 
 %%%%%%%%%%%%%%%%%%%%
 %                  %
 %  IMPLEMENTATION  %
@@ -148,25 +151,38 @@ DNF allows a developer to hook into its core functionality by extending classes,
 \lstinputlisting[firstline=53]{code/recommend.py}
 \end{figure}
 
+\section{Back End Implementation}
+Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of downloading and running a Neo4j instance on a local machine to test scripts.\\
+The initial script written, shown in listing 4.3, read a list of packages from a text file in the format which DNF dumps them and then created each on the database and tied them to a user with a fake ID.\\
+With that was in place, scripts, shown in listing 4.5, to find sets of recommendations between packages can be written and tested.\\
+See Figures 4.1 through 4.3 for graphic examples of how the Neo4j stores user and package information.\\
+\begin{figure}
+\fbox{\includegraphics[scale=0.8]{images/recommend_graph_user.png}}
+\caption{Example of a single real user}
+\end{figure}
+\begin{figure}
+\fbox{\includegraphics[scale=0.75]{images/recommend_graph_packages.png}}
+\caption{Example of two real users sharing packages}
+\end{figure}
+\begin{figure}
+\fbox{\includegraphics[scale=0.9]{images/recommend_graph_sharing.png}}
+\caption{Example of 8 mock users sharing various packages}
+\end{figure}
+
+\section{Bringing it together}
+With the client side UI already written and tested, it was a simple case of changing a constant defining the server address to the operational database which was running on local host.
+
 \section{Testing}
 In order to test this system, two scripts were written in Python to fill the database with both real and mock data. Several small Cypher scripts were also written to test that the database was working internally.\\
 Listing 4.3 and 4.4 show the Python scripts for entering data.\\
 \begin{figure}
 \lstset{caption={Fills the graph with real data},label=codeGraphReal}
-\lstinputlisting{code/graph.py}
+\lstinputlisting[firstline=3]{code/graph.py}
 \end{figure}
 \begin{figure}
 \lstset{caption={Fills the graph with mock data},label=codeGraphMock}
-\lstinputlisting{code/graph_filler.py}
+\lstinputlisting[firstline=4]{code/graph_filler.py}
 \end{figure}
-
-\section{Back End Implementation}
-Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of downloading and running a Neo4j instance on a local machine to test scripts.\\
-The initial script written, shown in figure, read a list of packages from a text file in the format which DNF dumps them and then created each on the database and tied them to a user with a fake ID.\\
-With that was in place, scripts to find sets of recommendations between packages can be written and tested.
-
-\section{Bringing it together}
-With the client side UI already written and tested, it was a simple case of changing a constant defining the server address to the operational database which was running on local host.
  
 %%%%%%%%%%%%%%%%
 %              %
