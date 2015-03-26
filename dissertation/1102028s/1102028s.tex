@@ -56,18 +56,25 @@ frameround=fttt
 \pagenumbering{arabic}
  
 \section{Problem overview}
-In a modern operating system there exists many packages for end users to install and this collection grows every day. Finding useful packages to install can be a laborious task, often involving the use of the internet to track down the package the user has been looking for, if it exists.\\
-Furthermore there exists little support for installing packages commonly installed side by side. For example a user who has vim installed also installs Java Development Kit (JDK), the user may not be aware of the existence of a Java plugin for vim which is extremely useful.
+In a modern operating system there exist many packages for end users to install and this collection grows every day\cite{debpopcon}. Finding useful packages to install can be a laborious task, often involving the use of online search to track down the package the user has been looking for, if it exists. In a series of informal interviews, one users quoted: \emph{"Sometimes, I'll use Google as it has a more intelligent understanding of what I might be looking for and can recommend packages that aren't exact searches"}.\\
+Furthermore there exists little support for installing packages commonly installed concurrently. Debian offers a 'recommended' field in a package's meta data which the author can set manually. For example when a user who has vim\footnote{A well used and long standing text editor for Linux. See http://www.vim.org/about.php} installed then installs JDK\footnote{Java Development Kit. See http://www.oracle.com/technetwork/java/javase/overview/index.html}, the user may not be aware of the existence of a Java plugin for vim which could be extremely useful.
 
 \section{Motivation}
-Package management is an interesting and very useful tool for many users, however the basic implementation has been static for many years. With the addition of this tool, we could see a decrease in users having to use search engines to look for packages they should be able to discover easily on command line. 
+Package management is an interesting and very useful tool for many users, however the basic implementation has been static for many years. With the addition of a package recommendation system, we could see a decrease in users having to use search engines to look for packages they should be able to discover easily on command line or local GUI interaction.\\
+Furthermore if this project can be used as a base to look into package grouping and weighting of relationships between packages. Hopefully this could lead to some very interesting use cases and provide a lot of data for analysis.
  
 \section{Aims}
-This project aims to attempt to address the issues discussed above. Fore-mostly the problem of finding new packages by offering a powerful recommendation system for users to discover packages.\\
-Consider a user on a Linux machine, looking for any new useful developer tools to help their work flow. Using an internet search engine returns a fairly miss match set of results, this project aims to supply that user with a command line interface where they can ask for a recommendation based on package of their choice. In this case our user asks for a recommendation based off of the JDK and is returned with a list of useful debugging tools and plugins which they weren't aware of.
+This project aims to attempt to address the issues discussed above. Primarily the problem of finding new packages by offering a powerful recommendation system for users to discover packages.\\
+Consider a user on a Linux machine, looking for any new useful developer tools to help their work flow. Using an internet search engine returns a massive set of results with various levels of relevance, this project aims to supply that user with a command line interface where they can ask for a recommendation based on package of their choice. In an example scenario our user asks for a recommendation based off of the Java Development Kit package and is returned with a list of useful debugging tools and plugins which they weren't aware of previously.
 
 \section{Report outline}
-This report will begin by looking at the research undertaken at the outset of the project, then continue into design of the system. This will lead into the implementation and finally the evaluation and conclusion.
+This report will be structured as the following:
+\begin{itemize}
+\item Background - A look into the research undertaken for this project in order to design the system
+\item Design - A collection of design documents and details of how the system will be implemented and operated by the end user
+\item Evaluation - Discussion of how useful the system is as well as how well designed it may be
+\item Conclusion - A final chapter to wrap up the report as a whole and discuss future potential work
+\end{itemize}
  
 %%%%%%%%%%%%%%%%
 %              %
@@ -76,16 +83,26 @@ This report will begin by looking at the research undertaken at the outset of th
 %%%%%%%%%%%%%%%%
  
 \chapter{Background}
-A package manager allows users to search for, install and update packages containing useful programs. For many years Unix has relied on package managers to allow easy management of tools and underlying applications. However in recent times, as package numbers increase and the ease of search engines becomes more prominent, searching using a command line tool has become less prevalent. Unless a user knows exactly what they want, often times they will resort to a internet search engine to find new packages.\\
+A package manager\footnote{Examples include dpkg for Debian (http://linux.die.net/man/1/dpkg), YUM for Red Hat Linux (http://yum.baseurl.org/) and pacman for Arch Linux (https://www.archlinux.org/pacman/)} allows users to search for, install and update packages containing useful programs. For many years Unix has relied on package managers to allow easy management of tools and underlying applications. However in recent times, as package numbers increase and the ease of search engines becomes more prominent, searching using a command line tool has become less prevalent. Unless a user knows exactly what they want, often times they will resort to a internet search engine to find new packages. One user in an informal interview quoted the following: \emph{"I generally know the name of the program I want, so `pacman -Ss name` to find the package name"}
 
 \section{Modern Graphical Package Managers}
-A more modern solution to this problem is the use of Graphical User Interfaces (GUIs) to abstract the annoyance of searching on command line away from the user. However this requires that the user is running a system with graphical output, a luxury which is often not found when running Virtual Machines (VMs) or using Secure Shell (SSH).\\
+\begin{figure}
+\centerline{\includegraphics[scale=0.5]{images/ubuntu_software.png}}
+\caption{Ubuntu Software Center}
+\end{figure}
+A more modern solution to this problem is the use of Graphical User Interfaces (GUIs)\footnote{For example the Ubuntu Software Center shown in Figure 2.1.} to abstract the annoyance of searching on command line away from the user. However this requires that the user is running a system with graphical output, a luxury which is often not found when running Virtual Machines (VMs) or using Secure Shell (SSH).
 
-\section{NUGET Concierge}
-In a similar vein NUGET (a .NET package manager) experimented with recommendations based off the same method this project uses, with weighting between packages rather than between user's install habits. A user could upload their project's meta data and Concierge would list packages the user may be interested in using based of what their project needs.\\
+\section{NuGet Concierge}
+NuGet\cite{nuget} is a package manager for Microsoft's .net framework. It's seen large growth since its introduction and has expanded greatly to cover many tools. In 2013 NuGet introduced a new service called Concierge\cite{concierge} which allowed users to upload their project metadata and get recommended packages to use back from the service.\\
+Concierge works by giving each package a popularity score and then giving each package pair a bi-directional pairing weighting, shown in Figure 2.1. It then expects a project.conf file from the user, which it parses and uses the list of required packages to recommend a set of packages from the graph.\\
+Concierge was build by a group of Microsoft interns in order to see what they could do with the growing user and package base. However it seems that, as of writing, the project has been abandoned, with the last commit to their GitHub\footnote{https://github.com/NuGet/Concierge} repository in 2013.
+\begin{figure}
+\centerline{\fbox{\includegraphics[scale=1]{images/nuget_graph.png}}}
+\caption{NuGet Concierge's internal structure}
+\end{figure}
 
 \section{DNF}
-This project aims to supply similar functionality to users of DNF, Fedora 21's new package manager. DNF allows plugins to be easily added by simply dropping a Python file into the plugins directory. This allows DNF to be extended easily with little hardship from the user. Building this functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
+My project aims to supply similar recommendation functionality to users of DNF\footnote{http://fedoraproject.org/wiki/Features/DNF}, Fedora 21's new package manager. DNF allows plugins to be easily added by simply dropping a Python file into the plugins directory. This allows DNF to be extended easily with little hardship from the user. Building in functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
 
 %%%%%%%%%%%%
 %          %
@@ -94,41 +111,58 @@ This project aims to supply similar functionality to users of DNF, Fedora 21's n
 %%%%%%%%%%%%
  
 \chapter{Design}
-This system comes in two parts, a client side plugin for DNF which the user installs by dropping a single Python script into the correct directory. Also a graph server side database to store user's installed packages anonymously and provide data for recommendations.\\
+This system comes in two parts, a client side plugin for DNF which the user installs by dropping a single Python script into the correct directory. Also a server side database to store user's installed packages, anonymously, and provide data for recommendations. See Figure 3.1\\
 Each of these components will be discussed in their own sections.
+\begin{figure}
+\centerline{\fbox{\includegraphics[scale=0.6]{images/packagerecommend.png}}}
+\caption{System Diagram}
+\end{figure}
 
 \section{Recommend Plugin}
-In the choice between DNF and dpkg/apt, DNF was chosen due to it's excellent plugin support over the alternative.\\
+In the choice between DNF and dpkg/apt, DNF was chosen due to its excellent plugin support over the alternative.\\
 The Recommend plugin has two key features:
 \begin{itemize}
 \item Request recommendation from server
 \item Upload user's installed packages anonymously
 \end{itemize}
 Both functions require a connection to the back end database, a connection over the internet is assumed.\\
-The plugin needed to be easy to use, to counter the desire to open a browser. With this in mind it is designed with two clear commands. See Figure 3.1\\
+The plugin needed to be easy to use, otherwise the user will resort to a simple web search. With this in mind it was designed with two clear commands. See Figure 3.2\\
 \begin{figure}
-\includegraphics[scale=0.7]{images/recommend_api.png}
+\centerline{\fbox{\includegraphics[scale=0.7]{images/recommend_api.png}}}
 \caption{Diagram showing the exchanges between the server and client}
 \end{figure}
 
 
 \section{Database}
-The project requires a back end data storage median. Immediately a database comes to mind for a long term, concurrent access method of storing and returning large volumes of data. Below the various potential choices of database are discussed.
+The project requires a back end data storage module. Immediately a database comes to mind for a long term, concurrent access method of storing and returning large volumes of data. Below the various potential choices of database are discussed.
 
 \subsection{Selection}
-Neo4j was selected as the database of choice for this project. There are several key reasons for this:
-\begin{itemize}
-\item NOSQL database which is built for finding paths in mind
-\item A standard SQL database would make storing the data complex
-\item Neo4j is built to scale across distributed systems being a modern database solution
-\end{itemize}
+Neo4j was selected as the database of choice for this project. There are several key reasons for this:\\
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{mySQL} & \textbf{Neo4j}\\
+\hline
+Path finding is difficult & Path finding optimised\\
+\hline
+Many to Many relations expensive & Many to Many relations light weight\\
+\hline
+Expensive joins & Rapid pattern matching\\
+\hline
+Designed to work on one machine & Designed to scale across machines\\
+\end{tabular}
+\end{center}
+With these point in mind, it seemed the logical choice to make use of a graph database like Neo4j for the purposes of the system.
 
 \subsection{Internal Structure}
-Internally the structure of the graph can be seen in Figure 3.2
+Internally the structure of the graph can be seen in Figure 3.3
 \begin{figure}
 \includegraphics[scale=0.9]{images/recommend_graph.png}
 \caption{Diagram showing the internal structure of the database}
 \end{figure} 
+Users are stored as unique nodes within the graph, each with a unique user ID attached to them. This allows us to generate their user id when they first upload their package information, the ID generated is entirely random so the user remained anonymous.\\
+Packages are all uniquely stored with their name as their unique identifier, this means package versions are not considered when making recommendations.\\
+
 %%%%%%%%%%%%%%%%%%%%
 %                  %
 %  IMPLEMENTATION  %
@@ -137,7 +171,7 @@ Internally the structure of the graph can be seen in Figure 3.2
  
 \chapter{Implementation}
 In regards to development environment, all work took place using a GitHub repository with all the Python scripts kept up to date there. Locally the Recommend plugin was kept in the Git repository folder which was then sym linked to the DNF plugin folder. This enabled work and change tracking to take place without disturbing work flow to test the plugin.\\
-With the design settled, work began with a 'Wizard of Oz' style mock up, where the user could use the command line interface as if the system were complete, however anything they go back was simply place holder.
+With the design settled, work began with a 'Wizard of Oz'\cite{wizofoz} style mock up, where the user could use the command line interface as if the system were complete, however anything they go back was simply place holder.
 
 \section{First Pass Mock UI}
 For this initial development two features needed to be implemented. A command to push installed packages to server and request a recommendation from the server.\\

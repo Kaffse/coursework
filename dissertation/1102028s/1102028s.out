@@ -5,7 +5,7 @@
 \BOOKMARK [1][-]{section.1.4}{Report outline}{chapter.1}% 5
 \BOOKMARK [0][-]{chapter.2}{Background}{}% 6
 \BOOKMARK [1][-]{section.2.1}{Modern Graphical Package Managers}{chapter.2}% 7
-\BOOKMARK [1][-]{section.2.2}{NUGET Concierge}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.2}{NuGet Concierge}{chapter.2}% 8
 \BOOKMARK [1][-]{section.2.3}{DNF}{chapter.2}% 9
 \BOOKMARK [0][-]{chapter.3}{Design}{}% 10
 \BOOKMARK [1][-]{section.3.1}{Recommend Plugin}{chapter.3}% 11

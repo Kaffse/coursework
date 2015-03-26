@@ -1,0 +1,23 @@
+\begin{thebibliography}{1}
+
+\bibitem{debpopcon}
+Debian.
+\newblock Debain popularity contest.
+\newblock http://popcon.debian.org/.
+
+\bibitem{wizofoz}
+J.F.Kelley.
+\newblock Wizard of oz user evaluation method.
+\newblock http://www.usabilitybok.org/wizard-of-oz.
+
+\bibitem{concierge}
+Microsoft.
+\newblock Nuget concierge.
+\newblock http://blog.nuget.org/20130816/introducung-nuget-concierge.html.
+
+\bibitem{nuget}
+Microsoft.
+\newblock Nuget package manager.
+\newblock https://www.nuget.org/.
+
+\end{thebibliography}
