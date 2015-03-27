@@ -174,19 +174,19 @@ In regards to development environment, all work took place using a GitHub reposi
 With the design settled, work began with a 'Wizard of Oz'\cite{wizofoz} style mock up, where the user could use the command line interface as if the system were complete, however anything they go back was simply place holder.
 
 \section{First Pass Mock UI}
-For this initial development two features needed to be implemented. A command to push installed packages to server and request a recommendation from the server.\\
+For this initial development two features needed to be implemented. A command to push a list of installed packages to server and another to request a recommendation from the server.\\
 DNF allows a developer to hook into its core functionality by extending classes, which allows new commands to be written and functionality added in a single Python script. Figure 4.1 and 4.2 shows two classes extending DNF plugin and command classes respectively.
 \begin{figure}
 \lstset{caption={Recommend Class},label=codeRecClass}
-\lstinputlisting[firstline=15, lastline=37]{code/recommend.py}
+\lstinputlisting[lastline=7]{code/recommend.py}
 \end{figure}
 \begin{figure}
 \lstset{caption={Recommend Command Class},label=codeRecCommClass}
-\lstinputlisting[firstline=53]{code/recommend.py}
+\lstinputlisting[firstline=9]{code/recommend.py}
 \end{figure}
 
 \section{Back End Implementation}
-Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of downloading and running a Neo4j instance on a local machine to test scripts.\\
+Now that some form of client side had been written, the back end could be implemented. This turned into a simple case of installing and running a Neo4j instance on a local machine to test scripts.\\
 The initial script written, shown in listing 4.3, read a list of packages from a text file in the format which DNF dumps them and then created each on the database and tied them to a user with a fake ID.\\
 With that was in place, scripts, shown in listing 4.5, to find sets of recommendations between packages can be written and tested.\\
 See Figures 4.1 through 4.3 for graphic examples of how the Neo4j stores user and package information.\\
@@ -208,7 +208,7 @@ With the client side UI already written and tested, it was a simple case of chan
 
 \section{Testing}
 In order to test this system, two scripts were written in Python to fill the database with both real and mock data. Several small Cypher scripts were also written to test that the database was working internally.\\
-Listing 4.3 and 4.4 show the Python scripts for entering data.\\
+Listings 4.3 and 4.4 show the Python scripts for entering data.\\
 \begin{figure}
 \lstset{caption={Fills the graph with real data},label=codeGraphReal}
 \lstinputlisting[firstline=3]{code/graph.py}
@@ -216,6 +216,11 @@ Listing 4.3 and 4.4 show the Python scripts for entering data.\\
 \begin{figure}
 \lstset{caption={Fills the graph with mock data},label=codeGraphMock}
 \lstinputlisting[firstline=4]{code/graph_filler.py}
+\end{figure}
+Using a database prepared with data from either of these scripts, a series of cypher queries were run to ensure relationships, users and packages were being correctly translated. See Listings 4.5 for these test queries.
+\begin{figure}
+\lstset{caption={A collection of test Cypher queries},label=queryCyperTest}
+\lstinputlisting[firstline=1]{code/cypher_test.txt}
 \end{figure}
  
 %%%%%%%%%%%%%%%%
@@ -225,8 +230,12 @@ Listing 4.3 and 4.4 show the Python scripts for entering data.\\
 %%%%%%%%%%%%%%%%
  
 \chapter{Evaluation}
-%or lack thereof
-\section{Survey Response}
+All evaluation was based on a series of short, informal interviews with 5 users.\\
+Majority of users found the concept appealing and were interested to use the system. One user in particular could relate well to the problem.\\
+In using the system, no users had trouble with the user interface, but majority commented on the lack of help and the formatting of the output. One user said \emph{"It's concise, but it just needs the format tidied up so it is easier on the eyes to read"}.\\
+All users asked how reliable the recommendations were, as they seemed unsatisfied with the results they were given. One user commented specifically on how his input to the recommend command didn't seem to make any difference to the output of the recommendations.\\
+Four of the five users said they wouldn't use it themselves, with the last user saying they would use the system, but only if it included more specific filter options.\\
+Over all the evaluation has shown the system will need work before being used in a live environment, however it does show promise.
  
 %%%%%%%%%%%%%%%%
 %              %
@@ -237,32 +246,31 @@ Listing 4.3 and 4.4 show the Python scripts for entering data.\\
 \chapter{Conclusion}
 
 \section{Summary}
-%Lets talk about how kinda rubbish it really is unless its making some really interesting recommendations
+To conclude the report, the system as a whole was written using a series of small Python scripts, with the main script being the DNF plugin. A neo4j instance is running on a remote server allowing users to use the system live.\\
+The final system met the minimum requirements. The user is able to upload their installed packages to the database and then ask for a recommendation.\\
+The idea is well received, with users overall agreeing it is an interesting avenue to explore. However many who tried the application were weary of the limited scope of getting recommendations and most users stated they would only use the system if it had finer grain recommendation control.
+
 \section{Future Work}
-There exists a lot of scope for this project to expand. This report will discuss two interesting areas for potential future work.
+There exists a lot of scope for this project to expand. This section will discuss two interesting areas for potential future work.
 
 \subsection{Package Groups}
 As a potential future addition, commonly installed package groups could be identified on the back end, which would be pushed forward to end users, allowing them to quickly install a complete set of tools.\\
 An example of this would be web developers, who commonly install at least the three main browsers\footnote{Google Chrome, Mozilla Firefox and Safari} and any debugging/developer tools associated with them.\footnote{For example Firebug}\\
-This kind of powerful inferencing can be done using a graph database made to look for groups like this. If it's possible to then analyse the group and identify what it is, this would give users a lot of power when installing packages.  
+This kind of powerful inferencing can be done using a graph database made to look for groups like this. If it's possible to then analyse the group and identify what it is, this would give users a lot of power when installing packages clusters.  
 
 \subsection{Weighted Relationships} 
 Weighted relationships is something which NUGET Concierge used to make its recommendations. It's a one directional value assigned between two package nodes to determine how likely it is that one is installed on the same system with the other.\\
-At it's core, it's very simple, however we could go lengths to make this weighting more meaningful, perhaps through the use of labels or special cases we can identify when best to include packages in a recommendation. For example it may be the case that package X is usually only installed when package Y is installed and Z isn't. A weighted relationship would not identify this as it would only recommend the most common. By tagging the relationships we can ensure the correct recommendation is made to the user.
+At its core, it's very simple, however we could go lengths to make this weighting more meaningful, perhaps through the use of labels or special cases we can identify when best to include packages in a recommendation. For example it may be the case that package X is usually only installed when package Y is installed and Z isn't. A weighted relationship would not identify this as it would only recommend the most common. By tagging the relationships we can ensure the correct recommendation is made to the user.
 
 \section{Lessons Learned}
-%Start your dissertation earlier
+A recommendation system is a powerful tool, however it suffers from Metcalfe's law, where in a network is proportionally valuable to the square of the number of nodes. With a small number of users the recommendations have very low value, more than not being complete gibberish. However as you scale the system up, these recommendations become more valuable.\\
+
 %%%%%%%%%%%%%%%%
 %              %
 %  APPENDICES  %
 %              %
 %%%%%%%%%%%%%%%%
  
-\begin{appendices}
- 
-\chapter{Name of the first appendix}
- 
-\end{appendices}
  
 %%%%%%%%%%%%%%%%%%%
 %                 %

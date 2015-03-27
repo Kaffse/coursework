@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.3)  26 MAR 2015 18:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.3)  27 MAR 2015 04:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -378,7 +378,7 @@ LaTeX Info: Redefining \nameref on input line 19.
 
 \c@lstlisting=\count121
 
-<images/CompSci_colour.pdf, id=120, 340.27126pt x 49.18375pt>
+<images/CompSci_colour.pdf, id=108, 340.27126pt x 49.18375pt>
 File: images/CompSci_colour.pdf Graphic file (type pdf)
 
 <use images/CompSci_colour.pdf>
@@ -411,7 +411,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.22 ...{\numberline {6}Conclusion}{18}{chapter.6}
+l.21 ...{\numberline {6}Conclusion}{17}{chapter.6}
                                                    [1
 
 ])
@@ -442,14 +442,14 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 73.
  [2]
 Chapter 2.
-<images/ubuntu_software.png, id=189, 803.0pt x 511.9125pt>
+<images/ubuntu_software.png, id=174, 803.0pt x 511.9125pt>
 File: images/ubuntu_software.png Graphic file (type png)
 
 <use images/ubuntu_software.png>
 Package pdftex.def Info: images/ubuntu_software.png used on input line 90.
 (pdftex.def)             Requested size: 401.49902pt x 255.95563pt.
 
-<images/nuget_graph.png, id=194, 451.6875pt x 287.57437pt>
+<images/nuget_graph.png, id=179, 451.6875pt x 287.57437pt>
 File: images/nuget_graph.png Graphic file (type png)
 
 <use images/nuget_graph.png>
@@ -465,14 +465,14 @@ Underfull \hbox (badness 10000) in paragraph at lines 105--106
 ] [4 <./images/ubuntu_software.png (PNG copy)> <./images/nuget_graph.png>]
 [5]
 Chapter 3.
-<images/packagerecommend.png, id=219, 815.045pt x 696.6025pt>
+<images/packagerecommend.png, id=204, 815.045pt x 696.6025pt>
 File: images/packagerecommend.png Graphic file (type png)
 
 <use images/packagerecommend.png>
 Package pdftex.def Info: images/packagerecommend.png used on input line 117.
 (pdftex.def)             Requested size: 489.03076pt x 417.96472pt.
 
-<images/recommend_api.png, id=220, 639.38875pt x 335.2525pt>
+<images/recommend_api.png, id=205, 639.38875pt x 335.2525pt>
 File: images/recommend_api.png Graphic file (type png)
 
 <use images/recommend_api.png>
@@ -488,7 +488,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 140--141
 [6
 
 ] [7 <./images/packagerecommend.png>]
-<images/recommend_graph.png, id=231, 554.07pt x 184.69pt>
+<images/recommend_graph.png, id=216, 554.07pt x 184.69pt>
 File: images/recommend_graph.png Graphic file (type png)
 
 <use images/recommend_graph.png>
@@ -510,17 +510,9 @@ Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
 nput line 181.
 (./code/recommend.py
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 15.
-) (./code/recommend.py
-LaTeX Font Info:    Try loading font information for OML+ptm on input line 61.
-
-(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlptm.fd
-File: omlptm.fd 
-)
-LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <8> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 61.
-)
-<images/recommend_graph_user.png, id=246, 599.99156pt x 533.74406pt>
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+) (./code/recommend.py)
+<images/recommend_graph_user.png, id=231, 599.99156pt x 533.74406pt>
 File: images/recommend_graph_user.png Graphic file (type png)
 
 <use images/recommend_graph_user.png>
@@ -528,7 +520,7 @@ Package pdftex.def Info: images/recommend_graph_user.png used on input line 194
 .
 (pdftex.def)             Requested size: 479.9939pt x 426.99582pt.
 
-<images/recommend_graph_packages.png, id=247, 660.21657pt x 358.33875pt>
+<images/recommend_graph_packages.png, id=232, 660.21657pt x 358.33875pt>
 File: images/recommend_graph_packages.png Graphic file (type png)
 
 <use images/recommend_graph_packages.png>
@@ -540,53 +532,67 @@ Overfull \hbox (11.43753pt too wide) in paragraph at lines 198--199
 [][] 
  []
 
-<images/recommend_graph_sharing.png, id=248, 529.98pt x 461.47406pt>
+<images/recommend_graph_sharing.png, id=233, 529.98pt x 461.47406pt>
 File: images/recommend_graph_sharing.png Graphic file (type png)
 
 <use images/recommend_graph_sharing.png>
 Package pdftex.def Info: images/recommend_graph_sharing.png used on input line 
 202.
 (pdftex.def)             Requested size: 476.97757pt x 415.3228pt.
- (./code/graph.py)
-(./code/graph_filler.py) [10
+ [10
 
-] [11] [12] [13 <./images/recommend_graph_user.png>] [14 <./images/recommend_gr
-aph_packages.png>] [15 <./images/recommend_graph_sharing.png>] [16]
+] (./code/graph.py)
+(./code/graph_filler.py
+LaTeX Font Info:    Try loading font information for OML+ptm on input line 29.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omlptm.fd
+File: omlptm.fd 
+)
+LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <8> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 29.
+)
+(./code/cypher_test.txt
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 11.
+) [11] [12 <./images/recommend_graph_user.png>] [13 <./images/recommend_graph_p
+ackages.png>] [14 <./images/recommend_graph_sharing.png>] [15]
 Chapter 5.
-[17
+[16
 
 ]
 Chapter 6.
-[18
-
-] [19] [20
-
+[17
 
 ]
-Appendix A.
-(./1102028s.bbl [21
+Underfull \hbox (badness 10000) in paragraph at lines 266--267
 
-])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 275.
- [22
+ []
+
+(./1102028s.bbl [18])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 283.
+ [19
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 275.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 283.
  (./1102028s.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 275.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 275.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 283.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 283.
 Package rerunfilecheck Info: File `1102028s.out' has not changed.
-(rerunfilecheck)             Checksum: AC3B427DDBDA8DD6B76184D1656AB690;1694.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 275.
+(rerunfilecheck)             Checksum: BE540BC862D2C10B64E056909D390175;1520.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 283.
  ) 
 Here is how much of TeX's memory you used:
- 8502 strings out of 494990
- 124373 string characters out of 6180640
- 663296 words of memory out of 5000000
- 11388 multiletter control sequences out of 15000+600000
+ 8448 strings out of 494990
+ 123536 string characters out of 6180640
+ 611002 words of memory out of 5000000
+ 11371 multiletter control sequences out of 15000+600000
  33437 words of font info for 61 fonts, out of 8000000 for 9000
  34 hyphenation exceptions out of 8191
- 34i,9n,40p,891b,1360s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,9n,40p,891b,1328s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/
@@ -594,10 +600,10 @@ fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/latxfont/lcircle1.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/time
 s/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 1102028s.pdf (26 pages, 867605 bytes).
+Output written on 1102028s.pdf (23 pages, 868374 bytes).
 PDF statistics:
- 520 PDF objects out of 1000 (max. 8388607)
- 467 compressed objects within 5 object streams
- 209 named destinations out of 1000 (max. 500000)
- 278 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 448 PDF objects out of 1000 (max. 8388607)
+ 399 compressed objects within 4 object streams
+ 168 named destinations out of 1000 (max. 500000)
+ 254 words of extra memory for PDF output out of 10000 (max. 10000000)
 
