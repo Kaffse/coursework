@@ -236,11 +236,12 @@ Listings 4.3 and 4.4 show the Python scripts for entering data.\\
 \lstset{caption={Fills the graph with mock data},label=codeGraphMock}
 \lstinputlisting[firstline=4]{code/graph_filler.py}
 \end{figure}
-Using a database prepared with data from either of these scripts, a series of cypher queries were run to ensure relationships, users and packages were being correctly translated. See Listings 4.5 for these test queries.
+Using a database prepared with data from either of these scripts, a series of cypher queries were run to ensure relationships, users and packages were being correctly translated. See Listings 4.5 for these test queries.\\
 \begin{figure}
 \lstset{caption={A collection of test Cypher queries},label=queryCyperTest}
 \lstinputlisting[firstline=1]{code/cypher_test.txt}
 \end{figure}
+The system was only tested updating users once due to time constraints, and is therefore unreliable.\\
  
 %%%%%%%%%%%%%%%%
 %              %
