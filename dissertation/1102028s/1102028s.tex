@@ -150,6 +150,7 @@ Many to Many relations expensive & Many to Many relations light weight\\
 Expensive joins & Rapid pattern matching\\
 \hline
 Designed to work on one machine & Designed to scale across machines\\
+\hline
 \end{tabular}
 \end{center}
 With these point in mind, it seemed the logical choice to make use of a graph database like Neo4j for the purposes of the system.
@@ -157,11 +158,29 @@ With these point in mind, it seemed the logical choice to make use of a graph da
 \subsection{Internal Structure}
 Internally the structure of the graph can be seen in Figure 3.3
 \begin{figure}
-\includegraphics[scale=0.9]{images/recommend_graph.png}
+\fbox{\includegraphics[scale=0.9]{images/recommend_graph.png}}
 \caption{Diagram showing the internal structure of the database}
 \end{figure} 
 Users are stored as unique nodes within the graph, each with a unique user ID attached to them. This allows us to generate their user id when they first upload their package information, the ID generated is entirely random so the user remained anonymous.\\
 Packages are all uniquely stored with their name as their unique identifier, this means package versions are not considered when making recommendations.\\
+
+\subsection{Keeping Up to Date}
+As users install and un-install packages the user must update the database with their new state. If the database is not kept up to date it may run into problems making recommendations of deprecated packages or not recommending new packages.\\
+Users may not willing go out their way to update regularly, therefore the following methods were considered to allow users to keep up to date:\\
+\begin{itemize}
+\item Every time the user installs/un-installs a package, automatically update
+\item On DNF initialisation prompt the user to update
+\item Update automatically in set periods
+\end{itemize}
+
+\subsection{Security}
+Security was a serious consideration during design, since malicious users could easily tamper with our data. The resulting decision was to ignore security for the scope of this project, however points to be considered will be listed below.\\
+\begin{itemize}
+\item Users could create many fake users with potentially malicious implications
+\item Users could run arbitrary cypher scripts on the database server
+\item Users could upload users with fake package information
+\item Users could potentially overload server capacity via a Denial of Service\footnote{See http://searchsoftwarequality.techtarget.com/definition/denial-of-service} attack.
+\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%
 %                  %

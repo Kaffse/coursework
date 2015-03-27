@@ -12,6 +12,8 @@
 \contentsline {section}{\numberline {3.2}Database}{6}{section.3.2}
 \contentsline {subsection}{\numberline {3.2.1}Selection}{6}{subsection.3.2.1}
 \contentsline {subsection}{\numberline {3.2.2}Internal Structure}{8}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Keeping Up to Date}{9}{subsection.3.2.3}
+\contentsline {subsection}{\numberline {3.2.4}Security}{9}{subsection.3.2.4}
 \contentsline {chapter}{\numberline {4}Implementation}{10}{chapter.4}
 \contentsline {section}{\numberline {4.1}First Pass Mock UI}{10}{section.4.1}
 \contentsline {section}{\numberline {4.2}Back End Implementation}{10}{section.4.2}
