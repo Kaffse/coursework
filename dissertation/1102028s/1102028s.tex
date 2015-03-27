@@ -19,7 +19,7 @@
 \begin{document}
 \title{Package Recommendation Engine}
 \author{Keir Alexander Smith}
-\date{March 15, 2015}
+\date{\today}
 \maketitle
  
 \begin{abstract}
@@ -92,8 +92,12 @@ A package manager\footnote{Examples include dpkg for Debian (http://linux.die.ne
 \end{figure}
 A more modern solution to this problem is the use of Graphical User Interfaces (GUIs)\footnote{For example the Ubuntu Software Center shown in Figure 2.1.} to abstract the annoyance of searching on command line away from the user. However this requires that the user is running a system with graphical output, a luxury which is often not found when running Virtual Machines (VMs) or using Secure Shell (SSH).
 
+\section{Meta Package Managers}
+A second solution to the problem is providing a wrapper 'meta' package manager over the original package manager. An example of this would be Yaourt\cite{yaourt} which extends pacman\footnote{Arch's native package manager} to provide an extensive range of search options and filters to find packages.\\
+This solution is indeed elegant, it successfully solves the problem this project aims to address, however it is simply a search engine sitting on top of pacman. The recommendation engine has a lot more scope.
+
 \section{NuGet Concierge}
-NuGet\cite{nuget} is a package manager for Microsoft's .net framework. It has seen large growth since its introduction and has expanded greatly to cover many tools. In 2013 NuGet introduced a new service called Concierge\cite{concierge} which allowed users to upload their project metadata and get a list of recommended packages back from the service.\\
+NuGet\cite{nuget} is a package manager for Microsoft's .NET framework. It has seen large growth since its introduction and has expanded greatly to cover many tools. In 2013 NuGet introduced a new service called Concierge\cite{concierge} which allowed users to upload their project metadata and get a list of recommended packages back from the service.\\
 Concierge works by giving each package a popularity score and then giving each package pair a bi-directional pairing weighting, shown in Figure 2.1. It then expects a project.conf file from the user, which it parses and uses the list of required packages to recommend a set of packages from the graph.\\
 Concierge was build by a group of Microsoft interns in order to see what they could do with the growing user and package base. However it seems that, as of writing, the project has been abandoned, with the last commit to their GitHub\footnote{https://github.com/NuGet/Concierge} repository in 2013.
 \begin{figure}
@@ -102,7 +106,7 @@ Concierge was build by a group of Microsoft interns in order to see what they co
 \end{figure}
 
 \section{DNF}
-My project aims to supply similar recommendation functionality to users of DNF\footnote{http://fedoraproject.org/wiki/Features/DNF}, Fedora 21's new package manager. DNF offers better plugin support over dpkg and it allows plugins to be easily added by simply dropping a Python file into a directory. This allows DNF to be extended easily with little hardship from the user. Building in functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
+My project aims to supply similar recommendation functionality to users of DNF\footnote{http://fedoraproject.org/wiki/Features/DNF}, Fedora 21's new package manager. DNF offers better plugin support over dpkg and it allows plugins to be easily added by simply dropping a Python file into a directory\footnote{/etc/dnf/plugins}. This allows DNF to be extended easily with little hardship from the user. Building in functionality into DNF is exactly the behaviour this project aims to provide to the end user.\\ 
 
 %%%%%%%%%%%%
 %          %
@@ -180,6 +184,7 @@ Security was a serious consideration during design, since malicious users could 
 \item Users could upload users with fake package information
 \item Users could potentially overload server capacity via a Denial of Service\footnote{See http://searchsoftwarequality.techtarget.com/definition/denial-of-service} attack.
 \end{itemize}
+To tackle these issues it's suggested to implement a web application layer which sits in front of the database to sanitise input and ensure users are, in fact, real users and not exploits. Alternative some form of certificate could be set up between the server and the client to ensure they have a 1-to-1 relation and they can be trusted.
 
 %%%%%%%%%%%%%%%%%%%%
 %                  %
@@ -188,7 +193,7 @@ Security was a serious consideration during design, since malicious users could 
 %%%%%%%%%%%%%%%%%%%%
  
 \chapter{Implementation}
-In regards to development environment, all work took place using a GitHub repository with all the Python scripts kept up to date there. Locally the Recommend plugin was kept in the Git repository folder which was then sym linked to the DNF plugin folder. This enabled work and change tracking to take place without disturbing work flow to test the plugin.\\
+In regards to development environment, all work took place using a GitHub repository\footnote{Found at https://github.com/Kaffse/coursework} with all the Python scripts kept up to date there. Locally the Recommend plugin was kept in the Git repository folder which was then sym linked to the DNF plugin folder. This enabled work and change tracking to take place without disturbing work flow to test the plugin.\\
 With the design settled, work began with a 'Wizard of Oz'\cite{wizofoz} style mock up, where the user could use the command line interface as if the system were complete, however anything they got back was simply place holder.
 
 \section{First Pass Mock UI}
@@ -210,22 +215,22 @@ With that was in place, scripts, shown in listing 4.5, to find sets of recommend
 See Figures 4.1 through 4.3 for graphic examples of how the Neo4j stores user and package information.\\
 \begin{figure}
 \fbox{\includegraphics[scale=0.8]{images/recommend_graph_user.png}}
-\caption{Example of a single real user}
+\caption{Example of a single real user with a subset of 99 installed packages}
 \end{figure}
 \begin{figure}
 \fbox{\includegraphics[scale=0.75]{images/recommend_graph_packages.png}}
-\caption{Example of two real users sharing packages}
+\caption{Example of two real users sharing packages, limited to a subset of 98 packages}
 \end{figure}
 \begin{figure}
 \fbox{\includegraphics[scale=0.9]{images/recommend_graph_sharing.png}}
-\caption{Example of 8 mock users sharing various packages}
+\caption{Example graph showing 8 mock users and N mock packages, with significant levels of co-installed packages.}
 \end{figure}
 
 \section{Bringing it together}
 With the client side UI already written and tested, it was a simple case of changing a constant defining the server address to the operational database which was running on local host.
 
 \section{Testing}
-In order to test this system, two scripts were written in Python to fill the database with both real and mock data. Several small Cypher scripts were also written to test that the database was working internally.\\
+In order to test this system, two scripts were written in Python to fill the database with both real and mock data. Several small Cypher\footnote{Cypher is a querying language for Neo4j, find more information at http://neo4j.com/docs/stable/cypher-query-lang.html} scripts were also written to test that the database was working internally.\\
 Listings 4.3 and 4.4 show the Python scripts for entering data.\\
 \begin{figure}
 \lstset{caption={Fills the graph with real data},label=codeGraphReal}
@@ -249,11 +254,16 @@ The system was only tested updating users once due to time constraints, and is t
 %%%%%%%%%%%%%%%%
  
 \chapter{Evaluation}
-All evaluation was based on a series of short, informal interviews with 5 users.\\
+\section{Evaluation Method}
+All evaluation was based on a series of short, informal interviews with 5 users. The question set was free form and the users were shown the client side of the system.\\
+This method was used due to time constraints when implementation and design ran on longer than expected. However the format allowed for a level of discussion to take place and for the user to express their opinions freely, and considering the system is immature it allowed discussions of the concept to take place.\\
+Users who took part were all at least experienced in using Linux and had all used at least one package management software.\\ 
+
+\section{Analysis of Results}
 Majority of users found the concept appealing and were interested to use the system. One user in particular could relate well to the problem.\\
 In using the system, no users had trouble with the user interface, but majority commented on the lack of help and the formatting of the output. One user said \emph{"It's concise, but it just needs the format tidied up so it is easier to read"}.\\
-All users asked how reliable the recommendations were, as they seemed unsatisfied with the results they were given. Two users commented specifically on how their input to the recommend command didn't seem to make any difference to the output of the recommendations.\\
-Four of the five users said they wouldn't use it themselves, with the last user saying they would use the system, but only if it included more specific filter options.\\
+All users asked how reliable the recommendations were, as they seemed unsatisfied with the results they were given. Two users commented specifically on how their input to the recommend command didn't seem to make any difference to the output of the recommendations. The system relies on a heavily seeded back end, the data used for testing was not sufficient to provide useful recommendations.\\
+Four of the five users said they wouldn't use it themselves, with the last user saying they would use the system, but only if it included more specific filter options. One user said \emph{"I'm really excited about the idea of the dynamic group packages, I always hate having to hunt down all the packages I need just to develop in Java every time I use a new machine."}.\\
 Overall the evaluation has shown the system will need work before being used in a live environment, however it does show promise.
  
 %%%%%%%%%%%%%%%%
@@ -265,9 +275,9 @@ Overall the evaluation has shown the system will need work before being used in 
 \chapter{Conclusion}
 
 \section{Summary}
-To conclude, the system as a whole was written using a series of small Python scripts, with the main script being the DNF plugin. A Neo4j instance is running on a remote server allowing users to use the system live.\\
-The final system met the minimum requirements. The user is able to upload their installed packages to the database and then ask for a recommendation.\\
-The idea is well received, with users overall agreeing it is an interesting avenue to explore. However many who tried the application were weary of the limited scope of getting recommendations and most users stated they would only use the system if it had finer grain recommendation control.
+To conclude, the system as a whole was written using a series of small Python scripts, with the main script being the DNF plugin. A Neo4j instance is running on a remote server allowing users to query the system live.\\
+The final system met the minimum requirements. The user is able to upload meta data about installed packages to the database and then ask for a recommendation.\\
+The idea is well received, with users overall agreeing it is an interesting avenue to explore. However many who tried the application were weary of the limited scope of getting recommendations and a small sample of users stated they would only use the system if it had more fine-grained recommendation control.
 
 \section{Future Work}
 There exists a lot of scope for this project to expand. This section will discuss two interesting areas for potential future work.
@@ -278,11 +288,11 @@ An example of this would be web developers, who commonly install at least the th
 This kind of powerful inferencing can be done using a graph database made to look for groups like this. If it's possible to then analyse the group and identify what it is, this would give users a lot of power when installing packages clusters. Currently Debian implements a static set of group meta packages, but these are user defined and not extensive.\\ 
 
 \subsection{Weighted Relationships} 
-Weighted relationships is something which NUGET Concierge used to make its recommendations. It's a one directional value assigned between two package nodes to determine how likely it is that one is installed on the same system with the other.\\
-At its core, it's very simple, however we could go lengths to make this weighting more meaningful, perhaps through the use of labels or special cases we can identify when best to include packages in a recommendation. For example it may be the case that package X is usually only installed when package Y is installed and Z isn't. A weighted relationship would not identify this as it would only recommend the most common. By tagging the relationships we can ensure the correct recommendation is made to the user.
+Weighted relationships is something which NUGET Concierge used to make its recommendations. It's a unidirectional value assigned between two package nodes to determine how likely it is that one is installed on the same system with the other.\\
+At its core, it's very simple, however we could go lengths to make this weighting more meaningful, perhaps through the use of labels or special cases we can identify when best to include packages in a recommendation. For example it may be the case that package X is usually only installed when package Y is installed and Z isn't. A weighted relationship would not identify this as it would only recommend the most common. By tagging the relationships we can ensure a more refined recommendation is made to the user.
 
 \section{Lessons Learned}
-A recommendation system is a powerful tool, however it suffers from Metcalfe's law, where in a network is proportionally valuable to the square of the number of nodes. With a small number of users the recommendations have very low value, more than not being complete gibberish. However as you scale the system up, these recommendations become more valuable.\\
+A recommendation system is a powerful tool, however it suffers from Metcalfe's law\cite{law}, where in a network is proportionally valuable to the square of the number of nodes. With a small number of users the recommendations have very low value, more than not being complete gibberish. However as you scale the system up, these recommendations become more valuable.\\
 
 %%%%%%%%%%%%%%%%
 %              %

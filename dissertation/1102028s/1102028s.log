@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.3)  27 MAR 2015 14:15
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2015.3.3)  27 MAR 2015 17:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -378,7 +378,7 @@ LaTeX Info: Redefining \nameref on input line 19.
 
 \c@lstlisting=\count121
 
-<images/CompSci_colour.pdf, id=116, 340.27126pt x 49.18375pt>
+<images/CompSci_colour.pdf, id=128, 340.27126pt x 49.18375pt>
 File: images/CompSci_colour.pdf Graphic file (type pdf)
 
 <use images/CompSci_colour.pdf>
@@ -411,7 +411,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.22 ...{\numberline {5}Evaluation}{16}{chapter.5}
+l.23 ...{\numberline {5}Evaluation}{17}{chapter.5}
                                                    [1
 
 ])
@@ -442,98 +442,97 @@ LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10.95> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 73.
  [2]
 Chapter 2.
-<images/ubuntu_software.png, id=184, 803.0pt x 511.9125pt>
+<images/ubuntu_software.png, id=199, 803.0pt x 511.9125pt>
 File: images/ubuntu_software.png Graphic file (type png)
 
 <use images/ubuntu_software.png>
 Package pdftex.def Info: images/ubuntu_software.png used on input line 90.
 (pdftex.def)             Requested size: 401.49902pt x 255.95563pt.
 
-<images/nuget_graph.png, id=189, 451.6875pt x 287.57437pt>
+<images/nuget_graph.png, id=206, 451.6875pt x 287.57437pt>
 File: images/nuget_graph.png Graphic file (type png)
 
 <use images/nuget_graph.png>
-Package pdftex.def Info: images/nuget_graph.png used on input line 100.
+Package pdftex.def Info: images/nuget_graph.png used on input line 104.
 (pdftex.def)             Requested size: 451.68639pt x 287.57367pt.
+ [3
 
-Underfull \hbox (badness 10000) in paragraph at lines 105--106
+]
+Underfull \hbox (badness 10000) in paragraph at lines 109--110
 
  []
 
-[3
-
-] [4 <./images/ubuntu_software.png (PNG copy)> <./images/nuget_graph.png>]
-[5]
+[4 <./images/ubuntu_software.png (PNG copy)>] [5 <./images/nuget_graph.png>]
 Chapter 3.
-<images/packagerecommend.png, id=214, 815.045pt x 696.6025pt>
+<images/packagerecommend.png, id=235, 815.045pt x 696.6025pt>
 File: images/packagerecommend.png Graphic file (type png)
 
 <use images/packagerecommend.png>
-Package pdftex.def Info: images/packagerecommend.png used on input line 117.
+Package pdftex.def Info: images/packagerecommend.png used on input line 121.
 (pdftex.def)             Requested size: 489.03076pt x 417.96472pt.
 
-<images/recommend_api.png, id=215, 639.38875pt x 335.2525pt>
+<images/recommend_api.png, id=236, 639.38875pt x 335.2525pt>
 File: images/recommend_api.png Graphic file (type png)
 
 <use images/recommend_api.png>
-Package pdftex.def Info: images/recommend_api.png used on input line 130.
+Package pdftex.def Info: images/recommend_api.png used on input line 134.
 (pdftex.def)             Requested size: 447.56906pt x 234.67514pt.
  [6
 
 ] [7 <./images/packagerecommend.png>]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 138.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 142.
 
-<images/recommend_graph.png, id=226, 554.07pt x 184.69pt>
+<images/recommend_graph.png, id=247, 554.07pt x 184.69pt>
 File: images/recommend_graph.png Graphic file (type png)
 
 <use images/recommend_graph.png>
-Package pdftex.def Info: images/recommend_graph.png used on input line 160.
+Package pdftex.def Info: images/recommend_graph.png used on input line 164.
 (pdftex.def)             Requested size: 498.6584pt x 166.21944pt.
 
-Overfull \hbox (14.93472pt too wide) in paragraph at lines 160--161
+Overfull \hbox (14.93472pt too wide) in paragraph at lines 164--165
 [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 158--165
+Underfull \hbox (badness 10000) in paragraph at lines 162--169
 
  []
 
 [8 <./images/recommend_api.png>] [9 <./images/recommend_graph.png>]
 Chapter 4.
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 199.
+nput line 204.
 (./code/recommend.py
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
 ) (./code/recommend.py)
-<images/recommend_graph_user.png, id=243, 599.99156pt x 533.74406pt>
+<images/recommend_graph_user.png, id=265, 599.99156pt x 533.74406pt>
 File: images/recommend_graph_user.png Graphic file (type png)
 
 <use images/recommend_graph_user.png>
-Package pdftex.def Info: images/recommend_graph_user.png used on input line 212
+Package pdftex.def Info: images/recommend_graph_user.png used on input line 217
 .
 (pdftex.def)             Requested size: 479.9939pt x 426.99582pt.
 
-<images/recommend_graph_packages.png, id=244, 660.21657pt x 358.33875pt>
+<images/recommend_graph_packages.png, id=266, 660.21657pt x 358.33875pt>
 File: images/recommend_graph_packages.png Graphic file (type png)
 
 <use images/recommend_graph_packages.png>
 Package pdftex.def Info: images/recommend_graph_packages.png used on input line
- 216.
+ 221.
 (pdftex.def)             Requested size: 495.16121pt x 268.7534pt.
 
-Overfull \hbox (11.43753pt too wide) in paragraph at lines 216--217
+Overfull \hbox (11.43753pt too wide) in paragraph at lines 221--222
 [][] 
  []
 
-<images/recommend_graph_sharing.png, id=245, 529.98pt x 461.47406pt>
+<images/recommend_graph_sharing.png, id=267, 529.98pt x 461.47406pt>
 File: images/recommend_graph_sharing.png Graphic file (type png)
 
 <use images/recommend_graph_sharing.png>
 Package pdftex.def Info: images/recommend_graph_sharing.png used on input line 
-220.
+225.
 (pdftex.def)             Requested size: 476.97757pt x 415.3228pt.
  [10
 
@@ -551,47 +550,52 @@ LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <8> not available
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <8> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 11.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 228--244
+Underfull \hbox (badness 10000) in paragraph at lines 233--249
 
  []
 
 [11] [12 <./images/recommend_graph_user.png>] [13 <./images/recommend_graph_pac
-kages.png>] [14 <./images/recommend_graph_sharing.png>] [15]
+kages.png>] [14 <./images/recommend_graph_sharing.png>] [15] [16]
 Chapter 5.
-[16
 
-]
-Chapter 6.
-
-Underfull \hbox (badness 10000) in paragraph at lines 276--279
+Underfull \hbox (badness 10000) in paragraph at lines 258--261
 
  []
 
 [17
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 285--286
+Chapter 6.
+
+Underfull \hbox (badness 10000) in paragraph at lines 286--289
 
  []
 
-(./1102028s.bbl [18])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 302.
- [19
+[18
 
 ]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 302.
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
+
+ []
+
+(./1102028s.bbl [19])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 312.
+ [20
+
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 312.
  (./1102028s.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 302.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 302.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 312.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 312.
 Package rerunfilecheck Info: File `1102028s.out' has not changed.
-(rerunfilecheck)             Checksum: 1CE6A308AE90E17DB7673CE173DBFDDA;1662.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 302.
+(rerunfilecheck)             Checksum: 6A97C7AD48BD78B911EFC93150875284;1860.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 312.
  ) 
 Here is how much of TeX's memory you used:
- 8453 strings out of 494990
- 123615 string characters out of 6180640
- 611090 words of memory out of 5000000
- 11373 multiletter control sequences out of 15000+600000
+ 8468 strings out of 494990
+ 123774 string characters out of 6180640
+ 611438 words of memory out of 5000000
+ 11378 multiletter control sequences out of 15000+600000
  33437 words of font info for 61 fonts, out of 8000000 for 9000
  34 hyphenation exceptions out of 8191
  34i,9n,40p,891b,1328s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -602,10 +606,10 @@ fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/latxfont/lcircle1.pfb></usr/share/texlive/texmf-dist/fonts
 /type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/time
 s/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on 1102028s.pdf (23 pages, 870478 bytes).
+Output written on 1102028s.pdf (24 pages, 873083 bytes).
 PDF statistics:
- 462 PDF objects out of 1000 (max. 8388607)
- 412 compressed objects within 5 object streams
- 171 named destinations out of 1000 (max. 500000)
- 270 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 496 PDF objects out of 1000 (max. 8388607)
+ 445 compressed objects within 5 object streams
+ 181 named destinations out of 1000 (max. 500000)
+ 294 words of extra memory for PDF output out of 10000 (max. 10000000)
 

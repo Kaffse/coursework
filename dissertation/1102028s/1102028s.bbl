@@ -10,6 +10,11 @@ J.F.Kelley.
 \newblock Wizard of oz user evaluation method.
 \newblock http://www.usabilitybok.org/wizard-of-oz.
 
+\bibitem{law}
+Robert Metcalfe.
+\newblock Metcalfes law.
+\newblock http://searchnetworking.techtarget.com/definition/Metcalfes-Law.
+
 \bibitem{concierge}
 Microsoft.
 \newblock Nuget concierge.
@@ -19,5 +24,10 @@ Microsoft.
 Microsoft.
 \newblock Nuget package manager.
 \newblock https://www.nuget.org/.
+
+\bibitem{yaourt}
+Julien Mischkowitz.
+\newblock Yaourt.
+\newblock https://archlinux.fr/yaourt-en.
 
 \end{thebibliography}
