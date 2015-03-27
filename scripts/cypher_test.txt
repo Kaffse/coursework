@@ -1,0 +1,11 @@
+###This query will return the first user added to the system and the first 99 packages he installed###
+MATCH n RETURN n LIMIT 100
+
+###This query will find the first ~33 sets of packages with more than one user having installed it###
+MATCH (u:User)--(p:Package)--(u2:User) RETURN u, p, u2 LIMIT 100
+
+###This query will return 2500 packages recommened for this user 1 (a mock user) for the Yum package###
+MATCH n--u WHERE u.name = "yum" AND n.id = "1"  MATCH u--n1 WHERE n1.id <> n.id MATCH n1--u1 WHERE u1.name <> "yum" AND NOT u1--n RETURN u1 LIMIT 2500
+
+###This query will return 100 packages attached to user X where X is their user id###
+MATCH (u:User {id=x})--(p:Package) RETURN u, p LIMIT 100
