@@ -1,4 +1,4 @@
 coursework
 ==========
 
-All my coursework stuff, yo
+All my coursework stuff
